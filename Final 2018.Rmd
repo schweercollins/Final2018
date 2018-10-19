@@ -9,25 +9,36 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+## Nhanes 2015-2016 instructions
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+The code chunk below explains the nhanes and the other packages that are needed and how to load the data.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+``` {r nhanes data, echo = TRUE}
 
-```{r cars}
-summary(cars)
+install.packages("nhanesA")
+
+library(nhanesA)
+library(tidyverse)
+
 ```
+The nhanesA package lets you import data directly from the CDC website on nhanes data. The code below will import data and I have created an object for it to be loaded to.
+Below are examples of data from the 2015-2016 datasets.
+You can also view the data but be prepared for your computer to take a while since it takes so long to download all the data.
+It might be best to just view the data on the [nhanes website](https://wwwn.cdc.gov/Nchs/Nhanes/2015-2016/PAQ_I.htm) and then create an object with the specific variables we want to look at.
 
-## Including Plots
+Now we don't have to load data through  daniel's method using the tidyverse `data_ex <- import(head("specific_folder", "dataset_name_ex" ))`
 
-You can also embed plots, for example:
+** Note: We could also look at visuals between the years since many of these variables reappear throughout all the years. **
+[nhanes datasets by different years](https://wwwn.cdc.gov/nchs/nhanes/Default.aspx)
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+``` {r importing data, echo = TRUE}
+
+# Example of body measures dataset from 2015-2016
+bmx_i <- nhanes('BMX_I')
+
+# Example of physical activity measures from 2015-2016
+paq_i <- nhanes('PAQ_I')
+
+View(bmx_i)
+View(paq_i)
 ```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
-
-git tracked, lets you know files exist in the repo but changes not committed 
-
