@@ -41,4 +41,11 @@ paq_i <- nhanes('PAQ_I')
 
 View(bmx_i)
 View(paq_i)
+
+# bmx_i %>% 
+  # select(put variables in here)
+  
+# Example of exporting data into csv files
+write.csv(bmx_i, "bmx_i.csv")
+
 ```
