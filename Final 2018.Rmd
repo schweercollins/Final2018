@@ -25,13 +25,15 @@ library(janitor)
 
 ```
 The nhanesA package lets you import data directly from the CDC website on nhanes data. The code below will import data and I have created an object for it to be loaded to.
+
 Below are examples of data from the 2015-2016 datasets.
+
 You can also view the data but be prepared for your computer to take a while since it takes so long to download all the data.
+
 It might be best to just view the data on the [nhanes website](https://wwwn.cdc.gov/Nchs/Nhanes/2015-2016/PAQ_I.htm) and then create an object with the specific variables we want to look at.
 
-Now we don't have to load data through  daniel's method using the tidyverse `data_ex <- import(head("specific_folder", "dataset_name_ex" ))`
-
 ** Note: We could also look at visuals between the years since many of these variables reappear throughout all the years. **
+
 [nhanes datasets by different years](https://wwwn.cdc.gov/nchs/nhanes/Default.aspx)
 
 ``` {r load_data, echo = TRUE, eval = FALSE}
@@ -78,14 +80,32 @@ hiq_i <- import(here("data", "hiq_i.csv"),
 d <- merge(duq_i,demo_i, by = "V1")
 d1 <- merge(dpq_i, huq_i, by = "V1")
 d2 <- merge(d, d1, by = "V1") 
-fd <- merge(d2, hiq_i, by = "V1")
+fd <- merge(d2, hiq_i, by = "V1") # fd stands for final data
+
+View(fd)
             
 # Clean variables - DOESNT WORK YETTTTT!!!!!!
 #fd%>% 
   #clean_names()
 
-# Select columns (variables)
-duq_i %>% 
-  
 
+# Select columns (variables)
+td <-  fd %>% 
+  select(DPQ010, DPQ020, DPQ030, DPQ040, DPQ050, DPQ060, DPQ070, DPQ080, DPQ090, DPQ100, RIDRETH1, RIAGENDR, DMDEDUC2, INDHHIN2, RIDAGEYR, DUQ260, DUQ300, DUQ340, DUQ430, DUQ210, HIQ011, HUQ090)
+
+View(td)
+  
+# taking out missing data
+
+td_without_missing <- na.omit(td) # if missing data is removed, we would just have a sample of 17 people. When doing calculation, we will use the na.rm = TRUE. 
+
+View(td_without_missing)
+
+  
 ```
+
+
+
+
+
+
