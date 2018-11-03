@@ -95,11 +95,15 @@ td <-  fd %>%
 
 View(td)
   
-# taking out missing data
+# Evaluation of missing data
 
 td_without_missing <- na.omit(td) # if missing data is removed, we would just have a sample of 17 people. When doing calculation, we will use the na.rm = TRUE. 
 
-View(td_without_missing)
+View(td_without_missing) 
+
+# The DUQ variables are mostly missing data, I don't know if it makes sense to use variables. 
+
+
 
   
 ```
