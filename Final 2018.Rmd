@@ -22,7 +22,7 @@ library(tidyverse)
 library(rio)
 library(here)
 library(janitor)
-
+theme_set(theme_classic())
 ```
 The nhanesA package lets you import data directly from the CDC website on nhanes data. The code below will import data and I have created an object for it to be loaded to.
 
@@ -91,7 +91,7 @@ View(fd)
 
 # Select columns (variables)
 td <-  fd %>% 
-  select(DPQ010, DPQ020, DPQ030, DPQ040, DPQ050, DPQ060, DPQ070, DPQ080, DPQ090, DPQ100, RIDRETH1, RIAGENDR, DMDEDUC2, INDHHIN2, RIDAGEYR, DUQ260, DUQ300, DUQ340, DUQ430, DUQ210, HIQ011, HUQ090)
+  select(V1,DPQ010, DPQ020, DPQ030, DPQ040, DPQ050, DPQ060, DPQ070, DPQ080, DPQ090, DPQ100, RIDRETH1, RIAGENDR, DMDEDUC2, INDHHIN2, RIDAGEYR, DUQ260, DUQ300, DUQ340, DUQ430, DUQ210, HIQ011, HUQ090)
 
 View(td)
   
@@ -103,10 +103,36 @@ View(td_without_missing)
 
 # The DUQ variables are mostly missing data, I don't know if it makes sense to use variables. 
 
+# Computing depression total score
+
+td <-td %>%
+  group_by(V1) %>%
+  mutate(sum_depression = sum(DPQ010+ DPQ020+ DPQ030+DPQ040+ DPQ050+ DPQ060+ DPQ070+ DPQ080 + DPQ090, 
+                              na.rm=TRUE))
 
 
   
 ```
+
+```{r exploratory_visuals}
+#Maria's visualization 
+
+#prepare data
+
+gender <- as.factor(td$RIAGENDR)
+
+#Create boxplot of total depression scores by gender
+
+plot1 <- ggplot(td, aes(gender, sum_depression))
+plot1 + geom_boxplot(varwidth=T, fill="plum") + 
+    labs(title="Box plot", 
+         subtitle="Total Depression Score by Gender",
+         caption="Source: NHANES",
+         x="Gender",
+         y="Total Depression Score")
+
+```
+
 
 
 
