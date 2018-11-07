@@ -87,11 +87,13 @@ View(fd)
 # Clean variables - DOESNT WORK YETTTTT!!!!!!
 #fd%>% 
   #clean_names()
+```
 
+```{r tidy}
 
 # Select columns (variables)
 td <-  fd %>% 
-  select(V1,DPQ010, DPQ020, DPQ030, DPQ040, DPQ050, DPQ060, DPQ070, DPQ080, DPQ090, DPQ100, RIDRETH1, RIAGENDR, DMDEDUC2, INDHHIN2, RIDAGEYR, DUQ260, DUQ300, DUQ340, DUQ430, DUQ210, HIQ011, HUQ090)
+  select(V1,DPQ010, DPQ020, DPQ030, DPQ040, DPQ050, DPQ060, DPQ070, DPQ080, DPQ090, DPQ100, RIDRETH3, RIAGENDR, DMDEDUC2, INDHHIN2, RIDAGEYR, DUQ260, DUQ300, DUQ340, DUQ430, DUQ210, HIQ011, HUQ090)
 
 View(td)
   
@@ -109,9 +111,22 @@ td <-td %>%
   group_by(V1) %>%
   mutate(sum_depression = sum(DPQ010+ DPQ020+ DPQ030+DPQ040+ DPQ050+ DPQ060+ DPQ070+ DPQ080 + DPQ090, 
                               na.rm=TRUE))
+# Computing stimulant composite
+ td <- td %>% 
+   mutate(age_stim = mean(DUQ260 + DUQ340, na.rm = TRUE)) %>% 
+ 
 
-
-  
+# Labels for categorical variables
+td %>% 
+  mutate(RIDRETH3 = factor(RIDRETH3)) %>% 
+  mutate(case_when(RIDRETH3 == 1 ~ "Mexican American", 
+                 RIDRETH3 == 2 ~ "Other Hispanic", 
+                 RIDRETH3 == 3 ~ "Non-Hispanic White",
+                 RIDRETH3 == 4 ~ "Non-Hispanic Black",
+                 RIDRETH3 == 6 ~ "Non-Hispanic Asian",
+                 RIDRETH3 == 7 ~ "Other Race - Including Multi-Racial",
+                 TRUE ~ na_character_))
+ 
 ```
 
 ```{r exploratory_visuals}
@@ -132,6 +147,7 @@ plot1 + geom_boxplot(varwidth=T, fill="plum") +
          y="Total Depression Score")
 
 ```
+
 
 
 
