@@ -108,24 +108,30 @@ View(td_without_missing)
 # Computing depression total score
 
 td <-td %>%
-  group_by(V1) %>%
-  mutate(sum_depression = sum(DPQ010+ DPQ020+ DPQ030+DPQ040+ DPQ050+ DPQ060+ DPQ070+ DPQ080 + DPQ090, 
-                              na.rm=TRUE))
-# Computing stimulant composite
+  mutate(sum_depression = DPQ010+ DPQ020+ DPQ030+DPQ040+ DPQ050+ DPQ060+ DPQ070+ DPQ080 + DPQ090)
+View(td) #DA changed this because the original code messed up the data frame
+
+#td %>% 
+  #mutate(sum_depress = rowSums(.[ ,15:20], na.rm = TRUE)) #can use rowmeans
+
+# Computing stimulant composite and converting demographic variables to factors
  td <- td %>% 
-   mutate(age_stim = mean(DUQ260 + DUQ340, na.rm = TRUE)) %>% 
- 
+   mutate(age_stim = mean(DUQ260 & DUQ340, na.rm = TRUE)) %>% #this composite wont work yet becuase data is not tidy, Per DA suggestion, we need to tidy so that we have column for item and column for domain (e.g., depression) then you can group by and summarize means. 
+   mutate(RIDRETH3 = factor(RIDRETH3)) %>%
+   mutate(RIAGENDR = factor(RIAGENDR))
 
 # Labels for categorical variables
 td %>% 
-  mutate(RIDRETH3 = factor(RIDRETH3)) %>% 
-  mutate(case_when(RIDRETH3 == 1 ~ "Mexican American", 
+  mutate(ethnicity = case_when(RIDRETH3 == 1 ~ "Mexican American", 
                  RIDRETH3 == 2 ~ "Other Hispanic", 
                  RIDRETH3 == 3 ~ "Non-Hispanic White",
                  RIDRETH3 == 4 ~ "Non-Hispanic Black",
                  RIDRETH3 == 6 ~ "Non-Hispanic Asian",
                  RIDRETH3 == 7 ~ "Other Race - Including Multi-Racial",
-                 TRUE ~ na_character_))
+                 TRUE ~ NA_character_)) %>% View()
+
+td %>% 
+  mutate(sex = case_when())
  
 ```
 
