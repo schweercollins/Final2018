@@ -95,7 +95,6 @@ View(fd)
 td <-  fd %>% 
   select(V1,DPQ010, DPQ020, DPQ030, DPQ040, DPQ050, DPQ060, DPQ070, DPQ080, DPQ090, DPQ100, RIDRETH3, RIAGENDR, DMDEDUC2, INDHHIN2, RIDAGEYR, DUQ260, DUQ300, DUQ340, DUQ430, DUQ210, HIQ011, HUQ090)
 
-View(td)
   
 # Evaluation of missing data
 
@@ -116,22 +115,57 @@ View(td) #DA changed this because the original code messed up the data frame
 
 # Computing stimulant composite and converting demographic variables to factors
  td <- td %>% 
-   mutate(age_stim = mean(DUQ260 & DUQ340, na.rm = TRUE)) %>% #this composite wont work yet becuase data is not tidy, Per DA suggestion, we need to tidy so that we have column for item and column for domain (e.g., depression) then you can group by and summarize means. 
+   mutate(age_stim = (DUQ260 + DUQ340) / 2) %>% #should be using group by and mean but cant yet because data is not tidy, Per DA suggestion, we need to tidy so that we have column for item and column for domain (e.g., depression) then you can group by and summarize means. 
    mutate(RIDRETH3 = factor(RIDRETH3)) %>%
    mutate(RIAGENDR = factor(RIAGENDR))
 
 # Labels for categorical variables
-td %>% 
+td <- td %>% 
   mutate(ethnicity = case_when(RIDRETH3 == 1 ~ "Mexican American", 
                  RIDRETH3 == 2 ~ "Other Hispanic", 
                  RIDRETH3 == 3 ~ "Non-Hispanic White",
                  RIDRETH3 == 4 ~ "Non-Hispanic Black",
                  RIDRETH3 == 6 ~ "Non-Hispanic Asian",
                  RIDRETH3 == 7 ~ "Other Race - Including Multi-Racial",
-                 TRUE ~ NA_character_)) %>% View()
+                 TRUE ~ NA_character_)) 
 
-td %>% 
-  mutate(sex = case_when())
+td <- td %>% 
+  mutate(sex = case_when(RIAGENDR == 1 ~ "Male", 
+                 RIAGENDR == 2 ~ "Female", 
+                 TRUE ~ NA_character_)) 
+
+td <- td %>% 
+  mutate(education = case_when(DMDEDUC2 == 1 ~ "Less than 9th grade",
+                               DMDEDUC2 == 2 ~ "9-12th grade (no diploma)",
+                               DMDEDUC2 == 3 ~ "High school graduate/GED or equivalent",
+                               DMDEDUC2 == 4 ~ "Some college of AA degree",
+                               DMDEDUC2 == 5 ~ "College graduate of above", 
+                               DMDEDUC2 == 7 ~ "Refused",
+                               DMDEDUC2 == 9 ~ "Don't know",
+                               TRUE ~ NA_character_))
+
+td <- td %>% 
+  mutate(income = case_when(INDHHIN2 == 1 ~ "$0 - $4,999",
+                            INDHHIN2 == 2 ~ "$5,000 to $9,999",
+                            INDHHIN2 == 3 ~ "10,000 to $14,999",
+                            INDHHIN2 == 4 ~ "$15,000 to $19,999",
+                            INDHHIN2 == 5 ~ "$20,000 to $24,999",
+                            INDHHIN2 == 6 ~ "$25,000 to $34,999",
+                            INDHHIN2 == 7 ~ "$35,000 to $44,999",
+                            INDHHIN2 == 8 ~ "$45,000 to $54,999",
+                            INDHHIN2 == 9 ~ "$55,000 to $64,999",
+                            INDHHIN2 == 10 ~ "$65,000 to $74,999",
+                            INDHHIN2 == 12 ~ "$20,000 and over",## duplicates/composites from above
+                            INDHHIN2 == 13 ~ "Under $20,000",## duplicates/composites from above
+                            INDHHIN2 == 14 ~ "$75,000 to $99,999",
+                            INDHHIN2 == 15 ~ "$100,000 and over",
+                            INDHHIN2 == 77 ~ "Refused",
+                            INDHHIN2 == 99 ~ "Don't know",
+                            TRUE ~ NA_character_))
+#RIDAGEYR is half categorical (0-79 are values and 80 is 80 and older)
+
+
+
  
 ```
 
