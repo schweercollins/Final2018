@@ -16,6 +16,7 @@ The code chunk below explains the nhanes and the other packages that are needed 
 ``` {r nhanes data, echo = FALSE}
 
 # install.packages("nhanesA")
+# install.packages("naniar")
 
 library(nhanesA)
 library(tidyverse)
@@ -104,6 +105,9 @@ View(td_without_missing)
 
 # The DUQ variables are mostly missing data, I don't know if it makes sense to use variables. 
 
+```
+
+```{r composite}
 # Computing depression total score
 
 td <-td %>%
@@ -115,9 +119,16 @@ View(td) #DA changed this because the original code messed up the data frame
 
 # Computing stimulant composite and converting demographic variables to factors
  td <- td %>% 
-   mutate(age_stim = (DUQ260 + DUQ340) / 2) %>% #should be using group by and mean but cant yet because data is not tidy, Per DA suggestion, we need to tidy so that we have column for item and column for domain (e.g., depression) then you can group by and summarize means. 
-   mutate(RIDRETH3 = factor(RIDRETH3)) %>%
-   mutate(RIAGENDR = factor(RIAGENDR))
+   naniar::replace_with_na(replace = list(DUQ340 = 999)) %>% 
+   mutate(age_stim = (DUQ260 + DUQ340) / 2) #should be using group by and mean but cant yet because data is not tidy, Per DA suggestion, we need to tidy so that we have column for item and column for domain (e.g., depression) then you can group by and summarize means. 
+   
+```
+
+```{r factors}
+
+td <- td %>% #Not sure if we still need this if we are creating new variables that are already characters?
+  mutate(RIDRETH3 = factor(RIDRETH3)) %>%
+  mutate(RIAGENDR = factor(RIAGENDR))
 
 # Labels for categorical variables
 td <- td %>% 
@@ -164,9 +175,37 @@ td <- td %>%
                             TRUE ~ NA_character_))
 #RIDAGEYR is half categorical (0-79 are values and 80 is 80 and older)
 
+td <- td %>% 
+  mutate(insurance = case_when(HIQ011 == 1 ~ "Yes",
+                               HIQ011 == 2 ~ "No",
+                               HIQ011 == 7 ~ "Refused",
+                               HIQ011 == 9 ~ "Don't know",
+                               TRUE ~ NA_character_))
 
+td <- td %>% 
+  mutate(mental_health = case_when(HUQ090 == 1 ~ "Yes",
+                            HUQ090 == 2 ~ "No",
+                            HUQ090 == 7 ~ "Refused",
+                            HUQ090 == 9 ~ "Don't know",
+                            TRUE ~ NA_character_))
 
- 
+td <- td %>% 
+  mutate(rehab = case_when(DUQ430 == 1 ~ "Yes",
+                           DUQ430 == 2 ~ "No",
+                           DUQ430 == 7 ~ "Refused",
+                           DUQ430 == 9 ~ "Don't know",
+                           TRUE ~ NA_character_))
+
+```
+
+```{r select_rename}
+td1 <- td %>% 
+  select(-2:-15, -HIQ011, -HUQ090, -DUQ430) %>% 
+  rename(age_marijuana = DUQ210, age_cocaine = DUQ260, age_heroin = DUQ300, age_meth = DUQ340)
+
+#reorder
+td1 <- td1 %>% 
+  select(1:6, age_stim, sum_depression, rehab, mental_health, insurance, 7:10)
 ```
 
 ```{r exploratory_visuals}
@@ -177,7 +216,7 @@ td <- td %>%
 gender <- as.factor(td$RIAGENDR)
 
 #Create boxplot of total depression scores by gender
-
+  #if this doesnt work anymore may just need to change gender to sex
 plot1 <- ggplot(td, aes(gender, sum_depression))
 plot1 + geom_boxplot(varwidth=T, fill="plum") + 
     labs(title="Box plot", 
@@ -188,6 +227,33 @@ plot1 + geom_boxplot(varwidth=T, fill="plum") +
 
 ```
 
+```{r ST_plot}
+td1 %>% 
+  select(1, 3:6, rehab) %>% 
+  gather(drug, age, 2:4) %>% 
+  separate(drug, c("dis", "drug"), sep = "_") %>% 
+  select(-dis) %>% 
+  na.omit() %>% 
+
+ggplot(aes(x = age)) +
+  geom_histogram(aes(fill = rehab)) +
+  facet_wrap (~ drug)
+
+
+```
+
+```{r ST_plot1}
+td1 %>% 
+  select(1, 3:6, sum_depression) %>% 
+  gather(drug, age, 2:4) %>% 
+  separate(drug, c("dis", "drug"), sep = "_") %>% 
+  select(-dis) %>% 
+  na.omit() %>% 
+  
+  ggplot(aes(x = sum_depression, y = age, color = drug)) +
+  geom_point(size = .75) +
+  geom_smooth(method = "lm", se = FALSE, size = 1.25)
+```
 
 
 
