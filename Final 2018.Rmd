@@ -120,7 +120,7 @@ View(td) #DA changed this because the original code messed up the data frame
 # Computing stimulant composite and converting demographic variables to factors
  td <- td %>% 
    naniar::replace_with_na(replace = list(DUQ340 = 999)) %>% 
-   mutate(age_stim = (DUQ260 + DUQ340) / 2) #should be using group by and mean but cant yet because data is not tidy, Per DA suggestion, we need to tidy so that we have column for item and column for domain (e.g., depression) then you can group by and summarize means. 
+   mutate(age_stim = (DUQ260 + DUQ340) / 2) # should be using group by and mean but cant yet because data is not tidy, Per DA suggestion, we need to tidy so that we have column for item and column for domain (e.g., depression) then you can group by and summarize means. 
    
 ```
 
