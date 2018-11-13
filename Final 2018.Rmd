@@ -155,6 +155,7 @@ td <- td %>%
                                DMDEDUC2 == 9 ~ "Don't know",
                                TRUE ~ NA_character_))
 
+# JP - adjusted the code to simply remove the answer choices that did not make sense
 td <- td %>% 
   mutate(income = case_when(INDHHIN2 == 1 ~ "$0 - $4,999",
                             INDHHIN2 == 2 ~ "$5,000 to $9,999",
@@ -166,8 +167,8 @@ td <- td %>%
                             INDHHIN2 == 8 ~ "$45,000 to $54,999",
                             INDHHIN2 == 9 ~ "$55,000 to $64,999",
                             INDHHIN2 == 10 ~ "$65,000 to $74,999",
-                            INDHHIN2 == 12 ~ "$20,000 and over",## duplicates/composites from above
-                            INDHHIN2 == 13 ~ "Under $20,000",## duplicates/composites from above
+                            INDHHIN2 == 12 ~ NA_character_,
+                            INDHHIN2 == 13 ~ NA_character_,
                             INDHHIN2 == 14 ~ "$75,000 to $99,999",
                             INDHHIN2 == 15 ~ "$100,000 and over",
                             INDHHIN2 == 77 ~ "Refused",
@@ -206,6 +207,22 @@ td1 <- td %>%
 #reorder
 td1 <- td1 %>% 
   select(1:6, age_stim, sum_depression, rehab, mental_health, insurance, 7:10)
+```
+
+``` {r JP age id and income}
+# JP's work
+# Im not going to change age or recode it since I think it acts as another integer and does not affect the findings. It just shows it as 80+.
+td1 <- td1 %>% 
+  rename(age = RIDAGEYR,
+         id = V1) 
+
+td1 %>%  
+  select(age) %>% 
+  ggplot(aes(age)) +
+  geom_histogram()
+
+td1 %>%
+  count(income)
 ```
 
 ```{r exploratory_visuals}
