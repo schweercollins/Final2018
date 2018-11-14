@@ -37,8 +37,11 @@ It might be best to just view the data on the [nhanes website](https://wwwn.cdc.
 [nhanes datasets by different years](https://wwwn.cdc.gov/nchs/nhanes/Default.aspx)
 
 ``` {r load_data, echo = TRUE, eval = FALSE}
+
 # Don't need to run this - it is only prep work
+#
 # drug use dataset from 2015-2016
+
 duq_i <- nhanes('DUQ_I')
 
 # Demographics measures from 2015-2016
@@ -64,6 +67,7 @@ write.csv(hiq_i, "hiq_i.csv")
 ```
 
 ```{r import_data}
+
 # Loading CSV files
 duq_i <- import(here("data", "duq_i.csv"), 
                 setclass = "tbl_df")
@@ -101,6 +105,7 @@ View(td_without_missing)
 ```
 
 ```{r composite}
+
 # Computing depression total score
 
 td <-td %>%
@@ -116,11 +121,8 @@ td <-td %>%
 #install.packages("naniar")
  td <- td %>% 
    naniar::replace_with_na(replace = list(DUQ340 = 999)) %>% 
-   mutate(age_stim = (DUQ260 + DUQ340) / 2) # should be using group by and mean but cant yet because data is not tidy, Per DA suggestion, we need to tidy so that we have column for item and column for domain (e.g., depression) then you can group by and summarize means. 
- 
-# LETS TALK ABOUT THIS.
+   mutate(age_stim = (DUQ260 + DUQ340) / 2) 
 
-   
 ```
 
 ```{r factors}
@@ -208,6 +210,7 @@ td1 <- td1 %>%
   select(1:6, age_stim, sum_depression, rehab, mental_health, insurance, income, 7:10) %>%
   rename(age = RIDAGEYR,
          id = V1) 
+View(td1)
 ```
 
 ``` {r JP age id and income}
@@ -274,8 +277,22 @@ td1 %>%
   geom_point(size = .75) +
   geom_smooth(method = "lm", se = FALSE, size = 1.25)
 ```
+```{r plot by ethnicity}
+
+td1 %>% 
+  mutate(ethnicity = fct_infreq(ethnicity)) %>%
+  group_by(ethnicity) %>%
+  ggplot(aes(x = ethnicity, y = sum_depression)) +
+  geom_col(fill = "cornflowerblue") +
+  coord_flip()
+
+```
 
 
+```{r descriptives}
+# age of first drug use by ethnicity plot
+
+```
 
 
 
