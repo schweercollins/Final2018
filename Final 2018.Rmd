@@ -206,15 +206,16 @@ td1 <- td %>%
 
 #reorder
 td1 <- td1 %>% 
-  select(1:6, age_stim, sum_depression, rehab, mental_health, insurance, 7:10)
+  select(1:6, age_stim, sum_depression, rehab, mental_health, insurance, 7:10) %>%
+  rename(age = RIDAGEYR,
+         id = V1) 
 ```
 
 ``` {r JP age id and income}
 # JP's work
 # Im not going to change age or recode it since I think it acts as another integer and does not affect the findings. It just shows it as 80+.
-td1 <- td1 %>% 
-  rename(age = RIDAGEYR,
-         id = V1) 
+# Maria moved age and id rename up to the tidying above
+
 
 td1 %>%  
   select(age) %>% 
@@ -223,6 +224,8 @@ td1 %>%
 
 td1 %>%
   count(income)
+
+
 ```
 
 ```{r exploratory_visuals}
@@ -233,13 +236,14 @@ td1 %>%
 gender <- as.factor(td$RIAGENDR)
 
 #Create boxplot of total depression scores by gender
-  #if this doesnt work anymore may just need to change gender to sex
-plot1 <- ggplot(td, aes(gender, sum_depression))
+# Maria updated to include the new td1
+
+plot1 <- ggplot(td1, aes(sex, sum_depression))
 plot1 + geom_boxplot(varwidth=T, fill="plum") + 
     labs(title="Box plot", 
          subtitle="Total Depression Score by Gender",
          caption="Source: NHANES",
-         x="Gender",
+         x="Sex",
          y="Total Depression Score")
 
 ```
