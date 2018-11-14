@@ -81,13 +81,10 @@ hiq_i <- import(here("data", "hiq_i.csv"),
 d <- merge(duq_i,demo_i, by = "V1")
 d1 <- merge(dpq_i, huq_i, by = "V1")
 d2 <- merge(d, d1, by = "V1") 
-fd <- merge(d2, hiq_i, by = "V1") # fd stands for final data
+fd <- merge(d2, hiq_i, by = "V1") # fd stands for final merged data
 
 View(fd)
             
-# Clean variables - DOESNT WORK YETTTTT!!!!!!
-#fd%>% 
-  #clean_names()
 ```
 
 ```{r tidy}
@@ -99,11 +96,9 @@ td <-  fd %>%
   
 # Evaluation of missing data
 
-td_without_missing <- na.omit(td) # if missing data is removed, we would just have a sample of 17 people. When doing calculation, we will use the na.rm = TRUE. 
+td_without_missing <- na.omit(td) # if all missing data is removed, we would just have a sample of 17 people. When doing calculation, we will use the na.rm = TRUE. 
 
 View(td_without_missing) 
-
-# The DUQ variables are mostly missing data, I don't know if it makes sense to use variables. 
 
 ```
 
@@ -111,16 +106,23 @@ View(td_without_missing)
 # Computing depression total score
 
 td <-td %>%
-  mutate(sum_depression = DPQ010+ DPQ020+ DPQ030+DPQ040+ DPQ050+ DPQ060+ DPQ070+ DPQ080 + DPQ090)
-View(td) #DA changed this because the original code messed up the data frame
+  mutate(sum_depression = DPQ010 + DPQ020 + DPQ030 + DPQ040 + DPQ050 + DPQ060 + DPQ070 + DPQ080 + DPQ090) #DPQ100 is not included because the response scale changes. 
+
 
 #td %>% 
-  #mutate(sum_depress = rowSums(.[ ,15:20], na.rm = TRUE)) #can use rowmeans
+  #mutate(sum_depress = rowSums(.[ ,15:20], na.rm = TRUE)) # This is an alternative way to do it that DA suggested. Not used here, though. Can also use rowmeans in this line of code.
 
 # Computing stimulant composite and converting demographic variables to factors
+# Install package first, if needed (uncomment and run code below):
+
+#install.packages("naniar")
  td <- td %>% 
    naniar::replace_with_na(replace = list(DUQ340 = 999)) %>% 
    mutate(age_stim = (DUQ260 + DUQ340) / 2) # should be using group by and mean but cant yet because data is not tidy, Per DA suggestion, we need to tidy so that we have column for item and column for domain (e.g., depression) then you can group by and summarize means. 
+ 
+# LETS TALK ABOUT THIS.
+
+ View(td) 
    
 ```
 
@@ -201,12 +203,12 @@ td <- td %>%
 
 ```{r select_rename}
 td1 <- td %>% 
-  select(-2:-15, -HIQ011, -HUQ090, -DUQ430) %>% 
+  select(-2:-15, -HIQ011, -HUQ090, -DUQ430, income) %>% 
   rename(age_marijuana = DUQ210, age_cocaine = DUQ260, age_heroin = DUQ300, age_meth = DUQ340)
 
 #reorder
 td1 <- td1 %>% 
-  select(1:6, age_stim, sum_depression, rehab, mental_health, insurance, 7:10) %>%
+  select(1:6, age_stim, sum_depression, rehab, mental_health, insurance, income, 7:10) %>%
   rename(age = RIDAGEYR,
          id = V1) 
 ```
@@ -239,12 +241,12 @@ gender <- as.factor(td$RIAGENDR)
 # Maria updated to include the new td1
 
 plot1 <- ggplot(td1, aes(sex, sum_depression))
-plot1 + geom_boxplot(varwidth=T, fill="plum") + 
-    labs(title="Box plot", 
-         subtitle="Total Depression Score by Gender",
-         caption="Source: NHANES",
-         x="Sex",
-         y="Total Depression Score")
+plot1 + geom_boxplot(varwidth = T, fill = "plum") + 
+    labs(title = "Box plot", 
+         subtitle = "Total Depression Score by Gender",
+         caption = "Source: NHANES",
+         x = "Sex",
+         y = "Total Depression Score") 
 
 ```
 
