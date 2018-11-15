@@ -213,7 +213,7 @@ td1 <- td1 %>%
 View(td1)
 ```
 
-``` {r JP age id and income}
+``` {r age id and income}
 # JP's work
 # Im not going to change age or recode it since I think it acts as another integer and does not affect the findings. It just shows it as 80+.
 # Maria moved age and id rename up to the tidying above
@@ -226,7 +226,6 @@ td1 %>%
 
 td1 %>%
   count(income)
-
 
 ```
 
@@ -305,7 +304,57 @@ td1 %>%
 
 ```
 
+``` {r summarizing depresssion and age}
+# summarizing data for depression and ages of drug uses across the different ethnicities
+# tables included
+# also have whether or not they used mental health services.
 
+sum_td1 <- td1 %>% 
+  group_by(ethnicity) %>% 
+  summarize(depress_avg = mean(sum_depression, na.rm = TRUE),
+            depress_sd = sd(sum_depression, na.rm = TRUE),
+            cocaine_avg = mean(age_cocaine, na.rm = TRUE),
+            cocaine_sd = sd(age_cocaine, na.rm = TRUE),
+            heroin_avg = mean(age_heroin, na.rm = TRUE),
+            heroin_sd = sd(age_heroin, na.rm = TRUE),
+            meth_avg = mean(age_meth, na.rm = TRUE),
+            meth_sd = mean(age_meth, na.rm = TRUE),
+            marijuana_avg = mean(age_marijuana, na.rm = TRUE),
+            marijuana_sd = sd(age_marijuana, na.rm = TRUE))
 
+knitr::kable(sum_td1, format = "html", digits = round(2))
 
+sum_td1_mental_no <- td1 %>% 
+  group_by(ethnicity) %>%
+  filter(mental_health == "No") %>% 
+  summarize(depress_avg = mean(sum_depression, na.rm = TRUE),
+            depress_sd = sd(sum_depression, na.rm = TRUE),
+            cocaine_avg = mean(age_cocaine, na.rm = TRUE),
+            cocaine_sd = sd(age_cocaine, na.rm = TRUE),
+            heroin_avg = mean(age_heroin, na.rm = TRUE),
+            heroin_sd = sd(age_heroin, na.rm = TRUE),
+            meth_avg = mean(age_meth, na.rm = TRUE),
+            meth_sd = mean(age_meth, na.rm = TRUE),
+            marijuana_avg = mean(age_marijuana, na.rm = TRUE),
+            marijuana_sd = sd(age_marijuana, na.rm = TRUE))
+
+knitr::kable(sum_td1_mental_no, format = "html", digits = round(2))
+
+sum_td1_mental_yes <- td1 %>% 
+  group_by(ethnicity) %>%
+  filter(mental_health == "Yes") %>% 
+  summarize(depress_avg = mean(sum_depression, na.rm = TRUE),
+            depress_sd = sd(sum_depression, na.rm = TRUE),
+            cocaine_avg = mean(age_cocaine, na.rm = TRUE),
+            cocaine_sd = sd(age_cocaine, na.rm = TRUE),
+            heroin_avg = mean(age_heroin, na.rm = TRUE),
+            heroin_sd = sd(age_heroin, na.rm = TRUE),
+            meth_avg = mean(age_meth, na.rm = TRUE),
+            meth_sd = mean(age_meth, na.rm = TRUE),
+            marijuana_avg = mean(age_marijuana, na.rm = TRUE),
+            marijuana_sd = sd(age_marijuana, na.rm = TRUE))
+
+knitr::kable(sum_td1_mental_yes, format = "html", digits = round(2))
+
+```
 
