@@ -276,6 +276,7 @@ td1 %>%
   geom_point(size = .75) +
   geom_smooth(method = "lm", se = FALSE, size = 1.25)
 ```
+
 ```{r plot by ethnicity}
 
 td1 %>% 
@@ -283,20 +284,21 @@ td1 %>%
   group_by(ethnicity) %>%
   ggplot(aes(x = ethnicity, y = sum_depression)) +
   geom_col(fill = "cornflowerblue") +
-  coord_flip()
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  facet_wrap(~ sex)
 
 ```
 
 
 ```{r descriptives}
-# age of first drug use by ethnicity plot 
-# We will also visualize reported usage of mental health services in the past year and health insurance coverage by racial/ethnic group
+
+# reported usage of mental health services in the past year and health insurance coverage by racial/ethnic group
 
 
-# Reviewers, please let us know if you know how to get rid of "Refused" and
-# "Don't know" from our plots
+# Reviewers, please let us know if you know how to get rid of "Refused" and "Don't know" from the insurance variable.
 
 td1 %>%
+  filter(mental_health != "Don't know") %>% 
   mutate(ethnicity = fct_infreq(ethnicity),
          mental_health = fct_infreq(mental_health)) %>%
     group_by(ethnicity, mental_health) %>%
@@ -304,7 +306,18 @@ td1 %>%
   geom_col(aes(fill = mental_health),
            position = "dodge") +
   facet_wrap(~insurance) +
-  coord_flip()
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+```
+
+
+```{r boxplot}
+
+td1 %>%
+  mutate(ethnicity = factor(ethnicity)) %>%
+  ggplot(aes(insurance, sum_depression)) +
+  geom_boxplot(aes(fill = ethnicity)) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 ```
 
