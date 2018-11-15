@@ -292,10 +292,14 @@ td1 %>%
 # age of first drug use by ethnicity plot 
 # We will also visualize reported usage of mental health services in the past year and health insurance coverage by racial/ethnic group
 
-td1 %>% 
+
+# Reviewers, please let us know if you know how to get rid of "Refused" and
+# "Don't know" from our plots
+
+td1 %>%
   mutate(ethnicity = fct_infreq(ethnicity),
          mental_health = fct_infreq(mental_health)) %>%
-  group_by(ethnicity, mental_health) %>%
+    group_by(ethnicity, mental_health) %>%
   ggplot(aes(x = ethnicity, y = sum_depression)) +
   geom_col(aes(fill = mental_health),
            position = "dodge") +
