@@ -362,3 +362,12 @@ knitr::kable(sum_td1_mental_yes, format = "html", digits = round(2))
 
 ```
 
+```{r exploratory spreading}
+# demographics_ex <- td1 %>%
+#   group_by(sex, income, ethnicity, age) %>% 
+#   summarize(age_avg = mean(age),
+#             age_sd = sd(age),
+#             n = n())
+```
+
+
