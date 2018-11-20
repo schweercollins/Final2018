@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 The code chunk below explains the nhanes and the other packages that are needed and how to load the data.
 
-```{r nhanes data, echo = FALSE}
+```{r nhanes data, echo = FALSE, warning = FALSE, message = FALSE}
 
 #install.packages("nhanesA")
 #install.packages("naniar")
@@ -24,7 +24,7 @@ library(rio)
 library(here)
 theme_set(theme_classic())
 
-##AAC: You might want to mention here that I have to install the packages (if I don't already have them) and then I have to hashtag them before I knit, or else it won't work.
+##AAC: You might want to mention here that I have to install the packages (if I don't already have them) and then I have to hashtag them before I knit, or else it won't work. I also changed your chunk options, so that it would knit without warning or error messages.
 ```
 The `nhanesA` package lets you import data directly from the CDC website on nhanes data. The code below will import data and I have created an object for it to be loaded to.
 
@@ -431,6 +431,9 @@ knitr::kable(sum_td1_mental_yes, format = "html", digits = round(2))
 
 
 ##AAC: I'm not sure what this is or if I should run it or not. 
+
+
+##AAC: I just ran it, and it knits! YAY!! Great job! You might want to include no errors or warnings in your chunks though because it knitted with a bunch of warnings. 
 ```
 
 
