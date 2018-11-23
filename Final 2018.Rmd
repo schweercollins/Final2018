@@ -90,7 +90,7 @@ d1 <- merge(dpq_i, huq_i, by = "V1")
 d2 <- merge(d, d1, by = "V1") 
 fd <- merge(d2, hiq_i, by = "V1") # fd stands for final merged data
 #ST added this code to write fd to csv so we dont need all merge codes in presentation etc. 
-write.csv(fd, "fd.csv")
+#write.csv(fd, "fd.csv")
 
 ##AAC: Code worked perfectly to load data- great job!  
             
