@@ -22,6 +22,7 @@ library(nhanesA)
 library(tidyverse)
 library(rio)
 library(here)
+library(xaringan)
 theme_set(theme_classic())
 
 ##AAC: You might want to mention here that I have to install the packages (if I don't already have them) and then I have to hashtag them before I knit, or else it won't work. I also changed your chunk options, so that it would knit without warning or error messages.
