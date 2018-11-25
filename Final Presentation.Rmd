@@ -1,7 +1,7 @@
 ---
 title: "Final Presentation Group 2"
 subtitle: "A ScaRy Journey"
-author: "Shaina Trevino, name 2, name 3, name 4"
+author: "Shaina Trevino, Maria Schweer-Collins, name 3, name 4"
 date: "November 28, 2018"
 output:
   xaringan::moon_reader:
@@ -136,6 +136,41 @@ td1 <- td1 %>%
 ---
 #Maria Victories and Challenges
 
+Challenge: Downloading and merging multiple dataframes from NHANES
+```{r example}
+#library(nhanesA)
+
+#Mental health services measure
+#huq_i <- nhanes('HUQ_I')
+
+#Health insurance measure
+#hiq_i <- nhanes('HIQ_I')
+
+```
+Victory: We merged these files after first converting to CSV files
+```{r merge}
+#write.csv(duq_i, "duq_i.csv")
+
+#import csv files
+#duq_i <- import(here("data", "duq_i.csv"), 
+#                 setclass = "tbl_df")
+#demo_i <- import(here("data", "demo_i.csv"),
+#                 setclass = "tbl_df")
+#merge
+#d <- merge(duq_i,demo_i, by = "V1")
+```
+---
+#Maria Victories and Challenges
+
+Challenge: Using our new and unrefined Github skills to work collaboratively on this final project
+
+Victory: We were creative in our initial problem-solving  
+
+1.We met on campus in a room with a projector  
+2.We took turns pulling and pushing the main project file from Github  
+3.We problem-solved code on one person's screen as a team  
+
+---
 ---
 #Shaina Victories and Challenges
 
@@ -246,13 +281,49 @@ td1 %>%
 ---
 #Maria Findings 
 
+```{r onset of druge use by ethnicty and mental health coverage, echo = FALSE, fig.height=4, dev='svg'}
+
+td_plot <- td1 %>%
+    select(age_stim, age_heroin, ethnicity, mental_health) 
+
+td_plot %>%
+     drop_na(mental_health) %>%
+     ggplot(aes(ethnicity, age_stim)) + 
+     geom_boxplot(aes(fill = mental_health)) +
+     theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+     scale_y_continuous(name="Age at First Use of Stimulants", limits=c(10, 45)) +
+     labs(title = "Age of First Use of Stimulants by Ethnicity", 
+          subtitle = "Colored to show differences between those with and without mental health insurance",
+          caption = "Source: NHANES",
+          x = "Ethnicity")
+
+```
+---
+#Maria Findings
+```{r onset of opiod by ethnicty and mental health coverage, echo = FALSE, warning = FALSE, message = FALSE}
+
+td_plot %>%
+     drop_na(mental_health) %>%
+     ggplot(aes(ethnicity, age_heroin)) + 
+     geom_boxplot(aes(fill = mental_health)) +
+     theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+     scale_y_continuous(name="Age at First Use of Opiods", limits=c(10, 45)) +
+     labs(title = "Age of First Use of Opiods by Ethnicity", 
+          subtitle = "Colored to show differences between those with and without mental health insurance",
+          caption = "Source: NHANES",
+          x = "Ethnicity")
+```
+
 ---
 #Alejandra Findings 
 
 ---
-#Next Hurdle
--APA Papaja 
--Making this presentation prettier 
+#Next Hurdles
+
+-APA Papaja   
+-Making this presentation prettier via adjusting options  
+
+---
 
 
 

@@ -23,6 +23,7 @@ library(tidyverse)
 library(rio)
 library(here)
 library(xaringan)
+library(ggridges)
 theme_set(theme_classic())
 
 ##AAC: You might want to mention here that I have to install the packages (if I don't already have them) and then I have to hashtag them before I knit, or else it won't work. I also changed your chunk options, so that it would knit without warning or error messages.
@@ -254,7 +255,7 @@ td1 %>%
 ```
 
 ```{r exploratory_visuals}
-#Maria's visualization 
+
 
 #prepare data
 
@@ -423,6 +424,41 @@ knitr::kable(sum_td1_mental_yes, format = "html", digits = round(2))
 
 ##AAC- Great use of tables and the kable function. It looks really neat and clean. You could consider cleaning up the column names in the dataframe and then the column names in your table would also be clean. 
 
+```
+
+```{r opiod and stimulant by ethnicity, fig.width = 10, fig.height = 8}
+td_plot <- td1 %>%
+    select(age_stim, age_heroin, ethnicity, mental_health) 
+
+
+#one option for a visualization of onset of stim and opiod use by ethnicity
+# td_plot %>%
+#      drop_na(mental_health) %>%
+#      ggplot(aes(age_stim, ethnicity)) + 
+#      geom_density_ridges(aes(fill = mental_health)) 
+
+td_plot %>%
+     drop_na(mental_health) %>%
+     ggplot(aes(ethnicity, age_stim)) + 
+     geom_boxplot(aes(fill = mental_health)) +
+     theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+     scale_y_continuous(name="Age at First Use of Stimulants", limits=c(10, 45)) +
+     labs(title = "Age of First Use of Stimulants by Ethnicity", 
+          subtitle = "Colored to show differences between those who had mental health insurance",
+          caption = "Source: NHANES",
+          x = "Ethnicity")
+
+td_plot %>%
+     drop_na(mental_health) %>%
+     ggplot(aes(ethnicity, age_heroin)) + 
+     geom_boxplot(aes(fill = mental_health)) +
+     theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+     scale_y_continuous(name="Age at First Use of Opiods", limits=c(10, 45)) +
+     labs(title = "Age of First Use of Opiods by Ethnicity", 
+          subtitle = "Colored to show differences between those who had mental health insurance",
+          caption = "Source: NHANES",
+          x = "Ethnicity")
+    
 ```
 
 ```{r exploratory spreading}
