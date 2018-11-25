@@ -23,6 +23,8 @@ class: center, middle, inverse, title-slide
 
 
 
+
+
 ---
 #Introduction
 
@@ -38,8 +40,37 @@ class: center, middle, inverse, title-slide
 ---
 #Shaina Victories and Challenges
 
+Challenge: Age of methamphetamine first use is 999 years for one participant.
+
+
+```r
+td0 %&gt;% 
+  arrange(desc(DUQ340)) %&gt;% 
+  select(V1, DUQ340) %&gt;% 
+  head()
+```
+
+```
+##     V1 DUQ340
+## 1 3175    999
+## 2 1453     53
+## 3 3718     50
+## 4 4457     45
+## 5 3641     44
+## 6 2876     41
+```
+Victory: Figuring out how to replace a single value in a column to a missing value.
+
+
+```r
+#install.packages("naniar")
+ td &lt;- td0 %&gt;% 
+   naniar::replace_with_na(replace = list(DUQ340 = 999)) %&gt;% 
+   mutate(age_stim = (DUQ260 + DUQ340) / 2) 
+```
+
 ---
-#Ongoing Challenges
+#Ongoing Challenges 
 
 ---
 #JP Findings 
@@ -673,7 +704,8 @@ names(xaringan:::list_css())
 ## [16] "rladies-fonts"    "rladies"          "robot-fonts"     
 ## [19] "robot"            "rutgers-fonts"    "rutgers"         
 ## [22] "shinobi"          "tamu-fonts"       "tamu"            
-## [25] "uo-fonts"         "uo"
+## [25] "uo-fonts"         "uo"               "uol-fonts"       
+## [28] "uol"
 ```
 
 ---

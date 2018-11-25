@@ -14,6 +14,113 @@ output:
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
+library(tidyverse)
+library(rio)
+library(here)
+theme_set(theme_minimal())
+```
+
+```{r data, echo = FALSE}
+
+# Loading CSV files
+duq_i <- import(here("data", "duq_i.csv"), 
+                setclass = "tbl_df")
+demo_i <- import(here("data", "demo_i.csv"),
+                setclass = "tbl_df")
+dpq_i <- import(here("data", "dpq_i.csv"),
+                setclass = "tbl_df")
+huq_i <- import(here("data", "huq_i.csv"),
+                setclass = "tbl_df")
+hiq_i <- import(here("data", "hiq_i.csv"),
+                setclass = "tbl_df")
+#merge files
+d <- merge(duq_i,demo_i, by = "V1")
+d1 <- merge(dpq_i, huq_i, by = "V1")
+d2 <- merge(d, d1, by = "V1") 
+fd <- merge(d2, hiq_i, by = "V1")
+
+#select columns
+td0 <- fd %>% 
+  select(V1,DPQ010, DPQ020, DPQ030, DPQ040, DPQ050, DPQ060, DPQ070, DPQ080, DPQ090, DPQ100, RIDRETH3, RIAGENDR, DMDEDUC2, INDHHIN2, RIDAGEYR, DUQ260, DUQ300, DUQ340, DUQ430, DUQ210, HIQ011, HUQ090) 
+#computing depression total score
+td0 <- td0 %>%
+  mutate(sum_depression = DPQ010 + DPQ020 + DPQ030 + DPQ040 + DPQ050 + DPQ060 + DPQ070 + DPQ080 + DPQ090)
+#replace value with NA
+#install.packages("naniar")
+ td <- td0 %>% 
+   naniar::replace_with_na(replace = list(DUQ340 = 999)) %>% 
+   mutate(age_stim = (DUQ260 + DUQ340) / 2) 
+# Labels for categorical variables
+td <- td %>% 
+  mutate(ethnicity = case_when(RIDRETH3 == 1 ~ "Mexican American", 
+                               RIDRETH3 == 2 ~ "Other Hispanic", 
+                               RIDRETH3 == 3 ~ "Non-Hispanic White",
+                               RIDRETH3 == 4 ~ "Non-Hispanic Black",
+                               RIDRETH3 == 6 ~ "Non-Hispanic Asian",
+                               RIDRETH3 == 7 ~ "Other Race - Including Multi-Racial",
+                               TRUE ~ NA_character_)) 
+td <- td %>% 
+  mutate(sex = case_when(RIAGENDR == 1 ~ "Male", 
+                         RIAGENDR == 2 ~ "Female", 
+                         TRUE ~ NA_character_)) 
+td <- td %>% 
+  mutate(education = case_when(DMDEDUC2 == 1 ~ "Less than 9th grade",
+                               DMDEDUC2 == 2 ~ "9-12th grade (no diploma)",
+                               DMDEDUC2 == 3 ~ "High school graduate/GED or equivalent",
+                               DMDEDUC2 == 4 ~ "Some college of AA degree",
+                               DMDEDUC2 == 5 ~ "College graduate of above", 
+                               DMDEDUC2 == 7 ~ "Refused",
+                               DMDEDUC2 == 9 ~ "Don't know",
+                               TRUE ~ NA_character_))
+td <- td %>% 
+  mutate(income = case_when(INDHHIN2 == 1 ~ "$0 - $4,999",
+                            INDHHIN2 == 2 ~ "$5,000 to $9,999",
+                            INDHHIN2 == 3 ~ "10,000 to $14,999",
+                            INDHHIN2 == 4 ~ "$15,000 to $19,999",
+                            INDHHIN2 == 5 ~ "$20,000 to $24,999",
+                            INDHHIN2 == 6 ~ "$25,000 to $34,999",
+                            INDHHIN2 == 7 ~ "$35,000 to $44,999",
+                            INDHHIN2 == 8 ~ "$45,000 to $54,999",
+                            INDHHIN2 == 9 ~ "$55,000 to $64,999",
+                            INDHHIN2 == 10 ~ "$65,000 to $74,999",
+                            INDHHIN2 == 12 ~ NA_character_,
+                            INDHHIN2 == 13 ~ NA_character_,
+                            INDHHIN2 == 14 ~ "$75,000 to $99,999",
+                            INDHHIN2 == 15 ~ "$100,000 and over",
+                            INDHHIN2 == 77 ~ "Refused",
+                            INDHHIN2 == 99 ~ "Don't know",
+                            TRUE ~ NA_character_))
+#RIDAGEYR is half categorical (0-79 are values and 80 is 80 and older)
+td <- td %>% 
+  mutate(insurance = case_when(HIQ011 == 1 ~ "Yes",
+                               HIQ011 == 2 ~ "No",
+                               HIQ011 == 7 ~ "Refused",
+                               HIQ011 == 9 ~ "Don't know",
+                               TRUE ~ NA_character_))
+td <- td %>% 
+  mutate(mental_health = case_when(HUQ090 == 1 ~ "Yes",
+                                   HUQ090 == 2 ~ "No",
+                                   HUQ090 == 7 ~ "Refused",
+                                   HUQ090 == 9 ~ "Don't know",
+                                   TRUE ~ NA_character_))
+td <- td %>% 
+  mutate(rehab = case_when(DUQ430 == 1 ~ "Yes",
+                           DUQ430 == 2 ~ "No",
+                           DUQ430 == 7 ~ "Refused",
+                           DUQ430 == 9 ~ "Don't know",
+                           TRUE ~ NA_character_))
+#select and rename
+td1 <- td %>% 
+  select(-2:-15, -HIQ011, -HUQ090, -DUQ430, income) %>% 
+  rename(age_marijuana = DUQ210, 
+         age_cocaine = DUQ260, 
+         age_heroin = DUQ300, 
+         age_meth = DUQ340)
+#reorder
+td1 <- td1 %>% 
+  select(1:6, age_stim, sum_depression, rehab, mental_health, insurance, income, 7:10) %>%
+  rename(age = RIDAGEYR,
+         id = V1)
 ```
 
 
@@ -32,14 +139,109 @@ options(htmltools.dir.version = FALSE)
 ---
 #Shaina Victories and Challenges
 
+Challenge: Age of methamphetamine first use is 999 years for one participant.
+
+```{r nairn}
+td0 %>% 
+  arrange(desc(DUQ340)) %>% 
+  select(V1, DUQ340) %>% 
+  head()
+```
+Victory: Figuring out how to replace a single value in a column to a missing value.
+
+```{r replace_with_na, eval = FALSE}
+#install.packages("naniar")
+ td <- td0 %>% 
+   naniar::replace_with_na(replace = list(DUQ340 = 999)) %>% 
+   mutate(age_stim = (DUQ260 + DUQ340) / 2) 
+```
+
 ---
-#Ongoing Challenges
+# ST's Challenge & Victory #2
+Challenge: No labels for categorical variables
+
+```{r no_labels}
+td0 %>% 
+  select(RIAGENDR, RIDRETH3) %>% 
+  head()
+```
+
+Victory: Mutating variables to create labels by referencing the [online codebook][https://wwwn.cdc.gov/Nchs/Nhanes/2015-2016/demo_I.htm].
+
+```{r labels, eval = FALSE}
+td <- td %>% 
+  mutate(sex = case_when(RIAGENDR == 1 ~ "Male", 
+                         RIAGENDR == 2 ~ "Female", 
+                         TRUE ~ NA_character_))
+td <- td %>% 
+  mutate(income = case_when(INDHHIN2 == 1 ~ "$0 - $4,999",
+                            INDHHIN2 == 2 ~ "$5,000 to $9,999",
+                            INDHHIN2 == 3 ~ "10,000 to $14,999",
+                            INDHHIN2 == 4 ~ "$15,000 to $19,999",
+                            INDHHIN2 == 5 ~ "$20,000 to $24,999",
+                            INDHHIN2 == 6 ~ "$25,000 to $34,999",
+                            INDHHIN2 == 7 ~ "$35,000 to $44,999",
+                            INDHHIN2 == 8 ~ "$45,000 to $54,999",
+                            INDHHIN2 == 9 ~ "$55,000 to $64,999",
+                            INDHHIN2 == 10 ~ "$65,000 to $74,999",
+                            INDHHIN2 == 12 ~ NA_character_,
+                            INDHHIN2 == 13 ~ NA_character_,
+                            INDHHIN2 == 14 ~ "$75,000 to $99,999",
+                            INDHHIN2 == 15 ~ "$100,000 and over",
+                            INDHHIN2 == 77 ~ "Refused",
+                            INDHHIN2 == 99 ~ "Don't know",
+                            TRUE ~ NA_character_))
+```
+
+---
+#ST's Challenge & Victory #3
+
+Challenge: Thinking the data were tidy, but not being able to produce a plot by drug types
+
+```{r td}
+td1 %>% 
+  select(1:5, 9:14) %>% 
+  arrange(desc(age_heroin)) %>% 
+  head()
+```
+
+Victory: Creating a tidy dataset that could plot variables by different drug types
+
+```{r plot_code}
+td1 %>% 
+  select(1, 3:6) %>% 
+  gather(drug, age, 2:5) %>% 
+  separate(drug, c("dis", "drug"), sep = "_") %>% 
+  select(-dis) %>% 
+  na.omit()
+```
+Graph will be presented in following slides
+
+---
+#Ongoing Challenges 
 
 ---
 #JP Findings 
 
 ---
 #Shaina Fidings
+
+```{r ST_plot, echo = FALSE}
+td1 %>% 
+  select(1, age_cocaine, age_meth, age_heroin, rehab) %>% 
+  gather(drug, age, 2:4) %>% 
+  separate(drug, c("dis", "drug"), sep = "_") %>% 
+  select(-dis) %>% 
+  na.omit() %>% 
+  ggplot(aes(x = age)) +
+  geom_histogram(aes(fill = rehab), alpha = .8) +
+  facet_wrap (~ drug) +
+  labs(title = "Age of First Use by Drug Type", 
+       subtitle = "Colored to show differences between those who've recieved rehab and not",
+       caption = "Source: NHANES",
+       x = "Age at first use ",
+       y = "Frequency") 
+```
 
 ---
 #Maria Findings 
