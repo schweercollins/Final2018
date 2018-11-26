@@ -124,8 +124,6 @@ td1 <- td1 %>%
          id = V1)
 ```
 
-
----
 #Introduction
 
 
@@ -385,7 +383,7 @@ class: inverse, center, middle
 # Substantive Findings & Interpretations
 
 ---
-#Shaina Findings (Plot 1)
+#Shaina Findings
 
 ```{r ST_plot, echo = FALSE, fig.height = 4, dev = 'svg'}
 td1 %>% 
@@ -403,29 +401,32 @@ td1 %>%
        x = "Age at first use ",
        y = "Frequency") 
 ```
-DESCRIBE GRAPH HERE
+- Substantially more participants reported cocaine use without receiveing rehab services.
+- The majority started using drugs around 15-25, regardless of drug type.
 
 ---
-#Plot 2
+#Shaina Findings
 
 ```{r ST_plot1, echo = FALSE, fig.height = 4, dev = 'svg'}
 td1 %>% 
   select(1, 3:6, sum_depression) %>% 
-  gather(drug, age, 2:4) %>% 
+  gather(drug, age_use, 2:4) %>% 
   separate(drug, c("dis", "drug"), sep = "_") %>% 
   select(-dis) %>% 
   na.omit() %>% 
-  ggplot(aes(x = sum_depression, y = age, color = drug)) +
+  ggplot(aes(x = age_use, y = sum_depression, color = drug)) +
   geom_point(size = .75) +
-  geom_smooth(method = "lm", se = FALSE, size = 1.25) +
-  labs(title = "Age of First Use by Drug Type", 
-       subtitle = "Colored to show differences between those who've recieved rehab and not",
+  geom_smooth(method = "lm", se = FALSE, size = 1) +
+  labs(title = "Association between Age at First Use and Depression", 
+       subtitle = "Colored to show differences among drug types",
        caption = "Source: NHANES",
        x = "Age at first use ",
-       y = "Frequency")
+       y = "Total depression score") 
+
 ```
 
-DESCRIBE PLOT HERE
+- Those who start using stimulants earlier are more likely to have lower depression scores, compared to those who start using later.
+- The opposite was observed for heroin use.
 
 ---
 #Maria Findings 
@@ -497,13 +498,13 @@ td1 %>%
 
 #R Hurdles to Tackle
 ###Shaina
-- SHAINAS THING
+Become familiar with Rmd presentation options (e.g., images, animations, emojis, memes, layouts)
 ###name 2
-- Making this presentation prettier via adjusting options  
+something 
 ###name3
-- something else :) 
+something else
 ###name 4
-- something else :) 
+something else else :) 
 ---
 class: center, middle
 #Questions?
