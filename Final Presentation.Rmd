@@ -1,7 +1,7 @@
 ---
 title: "Final Presentation Group 2"
 subtitle: "A ScaRy Journey"
-author: "Shaina Trevino, Maria Schweer-Collins, name 3, name 4"
+author: "Shaina Trevino, Maria Schweer-Collins, Alejandra Garcia Isaza, name 4"
 date: "November 28, 2018"
 output:
   xaringan::moon_reader:
@@ -128,94 +128,16 @@ td1 <- td1 %>%
 ---
 #Introduction
 
----
-#JP Victories and Challenges 
 
 ---
-#Alejandra Victories and Challenges
+class: inverse, center, middle
 
-##Challenges: 
-
--	Remembering the order of actions to pull/push commits on GitHub. 
--	How to evaluate missing data.
--	Cluttered plots with levels we were not interested in. 
-- The use of filter with the Boolean symbols. 
-
+# Victories and Challenges
 ---
-##Victories:
-
-- Changing the theme of these slides!
--	Succesfully using a data set that we didn’t know about. 
--	Figuring out how to visualize more than one categorical variable at a time by combining fill and facet_wrap. 
-
-```{r using fill & facer_wrap}
-
-td1 %>% 
-  mutate(ethnicity = fct_infreq(ethnicity)) %>%
-  group_by(ethnicity) %>%
-  ggplot(aes(x = ethnicity, y = sum_depression)) +
-  geom_col(fill = "cornflowerblue") +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-  facet_wrap(~ sex)
-
-
-```
-
----
-#Finding useful tips in peers code and suggestions and being able to unclutter the visualizations.
-
-```{r cluttered vs uncluttered}
-
-td1 %>%
-  filter(mental_health != "Don't know") %>% 
-  mutate(ethnicity = fct_infreq(ethnicity),
-         mental_health = fct_infreq(mental_health)) %>%
-  group_by(ethnicity, mental_health) %>%
-  ggplot(aes(x = ethnicity, y = sum_depression)) +
-  geom_col(aes(fill = mental_health),
-           position = "dodge") + 
-  labs(title = "Total Depression Score by Ethnicity and Usage of Mental Health Services",
-       subtitle = "Faceted by Insurance Coverage",
-         caption = "Source: NHANES",
-         x = "Ethnicity",
-         y = "Total Depression Score",
-       fill = "Usage of Mental Health Services") +
-  facet_wrap(~insurance) +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1))
-
-
-td1 %>%
-  filter(mental_health != "Don't know") %>% 
-  filter(insurance == "Yes" | insurance == "No") %>% 
-  mutate(ethnicity = fct_infreq(ethnicity),
-         mental_health = fct_infreq(mental_health)) %>%
-  group_by(ethnicity, mental_health) %>%
-  ggplot(aes(x = ethnicity, y = sum_depression)) +
-  geom_col(aes(fill = mental_health),
-           position = "dodge") +
-   labs(title = "Total Depression Score by Ethnicity and Usage of Mental Health Services",
-       subtitle = "Faceted by Insurance Coverage",
-         caption = "Source: NHANES",
-         x = "Ethnicity",
-         y = "Total Depression Score",
-       fill = "Usage of Mental Health Services") +
-  facet_wrap(~insurance) +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1))
-
-```
-
-
-
-
----
-
-
-
-
----
-#Maria Victories and Challenges
+# Maria's Victories and Challenges No.1
 
 Challenge: Downloading and merging multiple dataframes from NHANES
+
 ```{r example}
 #library(nhanesA)
 
@@ -226,7 +148,9 @@ Challenge: Downloading and merging multiple dataframes from NHANES
 #hiq_i <- nhanes('HIQ_I')
 
 ```
+
 Victory: We merged these files after first converting to CSV files
+
 ```{r merge}
 #write.csv(duq_i, "duq_i.csv")
 
@@ -239,19 +163,19 @@ Victory: We merged these files after first converting to CSV files
 #d <- merge(duq_i,demo_i, by = "V1")
 ```
 ---
-#Maria Victories and Challenges
+# Maria's Victories and Challenges No.2
 
 Challenge: Using our new and unrefined Github skills to work collaboratively on this final project
 
 Victory: We were creative in our initial problem-solving  
 
-1.We met on campus in a room with a projector  
-2.We took turns pulling and pushing the main project file from Github  
-3.We problem-solved code on one person's screen as a team  
+1. We met on campus in a room with a projector  
+2. We took turns pulling and pushing the main project file from Github  
+3. We problem-solved code on one person's screen as a team  
 
 ---
----
-#Shaina Victories and Challenges
+
+# Shaina's Victories and Challenges No.1
 
 Challenge: Age of methamphetamine first use is 999 years for one participant.
 
@@ -261,6 +185,7 @@ td0 %>%
   select(V1, DUQ340) %>% 
   head()
 ```
+
 Victory: Figuring out how to replace a single value in a column to a missing value.
 
 ```{r replace_with_na, eval = FALSE}
@@ -271,7 +196,8 @@ Victory: Figuring out how to replace a single value in a column to a missing val
 ```
 
 ---
-# ST's Challenge & Victory #2
+# Shaina's Victories and Challenges No.2
+
 Challenge: No labels for categorical variables
 
 ```{r no_labels}
@@ -308,7 +234,7 @@ td <- td %>%
 ```
 
 ---
-#ST's Challenge & Victory #3
+# Shaina's Victories and Challenges No.3
 
 Challenge: Thinking the data were tidy, but not being able to produce a plot by drug types
 
@@ -332,7 +258,125 @@ td1 %>%
 Graph will be presented in following slides
 
 ---
-#Ongoing Challenges 
+
+# Alejandra's Victories and Challenges No.1
+
+Challenge: Not remembering the order of actions to pull/push commits on GitHub. 
+
+Victory: I finally learned them! 
+
+1. Pull to make sure you are working on the latest version of the project.
+2. Work on your project.
+3. Save your work.
+4. Stage what you are pushing.
+5. Write a brief message so everyone knows about your updates.
+6. Commit.
+6. Push.
+7. Pray that no merging conflicts occur. 
+
+---
+
+# Alejandra's Victories and Challenges No.2
+
+Challenge: Evaluating missing data. 
+
+Victory: I read how to evaluate missing data and that was certainly not what I did before. You live and you learn!
+
+---
+# Alejandra's Victories and Challenges No.3
+
+Challenge: Cluttered plots with levels we were not interested in.
+
+```{r plot_clutt, message = FALSE, warning = FALSE}
+td1 %>%
+  filter(mental_health != "Don't know") %>% 
+  mutate(ethnicity = fct_infreq(ethnicity),
+         mental_health = fct_infreq(mental_health)) %>%
+  group_by(ethnicity, mental_health) %>%
+  ggplot(aes(x = ethnicity, y = sum_depression)) +
+  geom_col(aes(fill = mental_health),
+           position = "dodge") + 
+  labs(title = "Total Depression Score by Ethnicity and Usage of Mental Health Services",
+       subtitle = "Faceted by Insurance Coverage",
+         caption = "Source: NHANES",
+         x = "Ethnicity",
+         y = "Total Depression Score",
+       fill = "Usage of Mental Health Services") +
+  facet_wrap(~insurance) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+---
+
+Victory: Finding useful tips in peers code and suggestions and being able to unclutter the visualizations.
+
+```{r plot_unclutt, message = FALSE, warning = FALSE}
+td1 %>%
+  filter(mental_health != "Don't know") %>% 
+  filter(insurance == "Yes" | insurance == "No") %>% 
+  mutate(ethnicity = fct_infreq(ethnicity),
+         mental_health = fct_infreq(mental_health)) %>%
+  group_by(ethnicity, mental_health) %>%
+  ggplot(aes(x = ethnicity, y = sum_depression)) +
+  geom_col(aes(fill = mental_health),
+           position = "dodge") +
+   labs(title = "Total Depression Score by Ethnicity and Usage of Mental Health Services",
+       subtitle = "Faceted by Insurance Coverage",
+         caption = "Source: NHANES",
+         x = "Ethnicity",
+         y = "Total Depression Score",
+       fill = "Usage of Mental Health Services") +
+  facet_wrap(~insurance) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+*Those pesky Boolean symbols always get me!* 
+
+---
+# Alejandra's Victories and Challenges No.4
+
+Challenge: Not liking the default theme of the slides using the `xaringan` package. 
+
+Victory: Succesfully changing the theme by adding just a line of code!
+
+```{r}
+#output:
+  #xaringan::moon_reader:
+    #css: [default, rladies, rladies-fonts]
+```
+
+
+---
+
+# Alejandra's Victories and Challenges No.5
+
+Challenge: Not knowing how to visualize more than one categorical variable at a time.
+
+Victory: Figuring out how to do it by combining fill and facet_wrap. 
+
+
+```{r using fill & facer_wrap, message = FALSE, warning = FALSE}
+
+td1 %>% 
+  mutate(ethnicity = fct_infreq(ethnicity)) %>%
+  group_by(ethnicity) %>%
+  ggplot(aes(x = ethnicity, y = sum_depression)) +
+  geom_col(fill = "cornflowerblue") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  facet_wrap(~ sex)
+
+```
+
+---
+#JP's Victories and Challenges No.1
+
+Challenge:
+
+Victory:
+
+---
+
+#Ongoing Challenges
 
 ##Alejandra
 - Thinking in data frames
@@ -340,10 +384,13 @@ Graph will be presented in following slides
 - Using gather and spread
 
 ---
-#JP Findings 
+
+class: inverse, center, middle
+
+# Substantive Findings & Interpretations
 
 ---
-#Shaina Fidings
+#Shaina Findings
 
 ```{r ST_plot, echo = FALSE}
 td1 %>% 
@@ -399,20 +446,48 @@ td_plot %>%
 ```
 
 ---
-#Alejandra Findings 
+#Alejandra's Findings 
+
+```{r use MH services by insurance cov and ethnicity, echo = FALSE, warning = FALSE, message = FALSE}
+# reported usage of mental health services in the past year and health insurance coverage by racial/ethnic group
+
+td1 %>%
+  filter(mental_health != "Don't know") %>% 
+  filter(insurance == "Yes" | insurance == "No") %>% 
+  mutate(ethnicity = fct_infreq(ethnicity),
+         mental_health = fct_infreq(mental_health)) %>%
+  group_by(ethnicity, mental_health) %>%
+  ggplot(aes(x = ethnicity, y = sum_depression)) +
+  geom_col(aes(fill = mental_health),
+           position = "dodge") +
+   labs(title = "Total Depression Score by Ethnicity and Usage of Mental Health Services",
+       subtitle = "Faceted by Insurance Coverage",
+         caption = "Source: NHANES",
+         x = "Ethnicity",
+         y = "Total Depression Score",
+       fill = "Usage of Mental Health Services") +
+  facet_wrap(~insurance) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
 
 ---
-#Next Hurdles
 
--APA Papaja   
--Making this presentation prettier via adjusting options  
+#Jp findings
+
+---
+
+#R Hurdles to Tackle
+
+- Using the `Papaja` package to do the write-up of the project   
+- Making this presentation prettier via adjusting options  
 
 ---
 
 
 
 
-
+---
 see template notes below (keep until all slides are finished)
 
 background-image: url(https://upload.wikimedia.org/wikipedia/commons/b/be/Sharingan_triple.svg)
