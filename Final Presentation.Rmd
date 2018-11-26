@@ -258,15 +258,30 @@ Graph will be presented in following slides
 
 Challenge: Not remembering the order of actions to pull/push commits on GitHub. 
 
-Victory: I finally learned them! 
+Victory: I wrote them down and I have almost memorized them!
 
+--
 1. Pull to make sure you are working on the latest version of the project.
+
+--
 2. Work on your project.
+
+--
 3. Save your work.
+
+--
 4. Stage what you are pushing.
+
+--
 5. Write a brief message so everyone knows about your updates.
+
+--
 6. Commit.
+
+--
 6. Push.
+
+--
 7. Pray that no merging conflicts occur. 
 
 ---
@@ -282,7 +297,7 @@ Victory: I read how to evaluate missing data and that was certainly not what I d
 
 Challenge: Cluttered plots with levels we were not interested in.
 
-```{r plot_clutt, message = FALSE, warning = FALSE}
+```{r plot_clutt1, message = FALSE, warning = FALSE, eval = FALSE}
 td1 %>%
   filter(mental_health != "Don't know") %>% 
   mutate(ethnicity = fct_infreq(ethnicity),
@@ -303,9 +318,58 @@ td1 %>%
 
 ---
 
-Victory: Finding useful tips in peers code and suggestions and being able to unclutter the visualizations.
+```{r plot_clutt2, message = FALSE, warning = FALSE, echo = FALSE}
+td1 %>%
+  filter(mental_health != "Don't know") %>% #<<
+  mutate(ethnicity = fct_infreq(ethnicity),
+         mental_health = fct_infreq(mental_health)) %>%
+  group_by(ethnicity, mental_health) %>%
+  ggplot(aes(x = ethnicity, y = sum_depression)) +
+  geom_col(aes(fill = mental_health),
+           position = "dodge") + 
+  labs(title = "Total Depression Score by Ethnicity and Usage of Mental Health Services",
+       subtitle = "Faceted by Insurance Coverage",
+         caption = "Source: NHANES",
+         x = "Ethnicity",
+         y = "Total Depression Score",
+       fill = "Usage of Mental Health Services") +
+  facet_wrap(~insurance) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
-```{r plot_unclutt, message = FALSE, warning = FALSE}
+```
+
+
+---
+
+*Victory: Finding useful tips in peers code and suggestions and being able to unclutter the visualizations.*
+
+```{r plot_unclutt1, message = FALSE, warning = FALSE, eval = FALSE}
+td1 %>%
+  filter(mental_health != "Don't know") %>% 
+  filter(insurance == "Yes" | insurance == "No") %>% #<<
+  mutate(ethnicity = fct_infreq(ethnicity),
+         mental_health = fct_infreq(mental_health)) %>%
+  group_by(ethnicity, mental_health) %>%
+  ggplot(aes(x = ethnicity, y = sum_depression)) +
+  geom_col(aes(fill = mental_health),
+           position = "dodge") +
+   labs(title = "Total Depression Score by Ethnicity and Usage of Mental Health Services",
+       subtitle = "Faceted by Insurance Coverage",
+         caption = "Source: NHANES",
+         x = "Ethnicity",
+         y = "Total Depression Score",
+       fill = "Usage of Mental Health Services") +
+  facet_wrap(~insurance) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+--
+
+*Those pesky Boolean operators always get me!* 
+
+---
+
+```{r plot_unclutt2, message = FALSE, warning = FALSE, echo = FALSE}
 td1 %>%
   filter(mental_health != "Don't know") %>% 
   filter(insurance == "Yes" | insurance == "No") %>% 
@@ -325,14 +389,13 @@ td1 %>%
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
 
-*Those pesky Boolean symbols always get me!* 
 
 ---
 # Alejandra's Victories and Challenges No.4
 
 Challenge: Not liking the default theme of the slides using the `xaringan` package. 
 
-Victory: Succesfully changing the theme by adding just a line of code!
+Victory: Succesfully changing the theme by adding just a line of code and learning other nifty tricks to make the slides cooler. 
 
 ```{r}
 #output:
@@ -350,17 +413,32 @@ Challenge: Not knowing how to visualize more than one categorical variable at a 
 Victory: Figuring out how to do it by combining fill and facet_wrap. 
 
 
-```{r using fill & facer_wrap, message = FALSE, warning = FALSE}
+```{r using fill & facer_wrap1, message = FALSE, warning = FALSE, eval = FALSE}
 
 td1 %>% 
   mutate(ethnicity = fct_infreq(ethnicity)) %>%
   group_by(ethnicity) %>%
   ggplot(aes(x = ethnicity, y = sum_depression)) +
   geom_col(fill = "cornflowerblue") +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   facet_wrap(~ sex)
 
 ```
+
+---
+
+```{r using fill & facer_wrap2, message = FALSE, warning = FALSE, echo = FALSE}
+
+td1 %>% 
+  mutate(ethnicity = fct_infreq(ethnicity)) %>%
+  group_by(ethnicity) %>%
+  ggplot(aes(x = ethnicity, y = sum_depression)) +
+  geom_col(fill = "cornflowerblue") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  facet_wrap(~ sex)
+
+```
+
 
 ---
 #JP's Victories and Challenges No.1
@@ -500,8 +578,8 @@ td1 %>%
 - SHAINAS THING
 ###name 2
 - Making this presentation prettier via adjusting options  
-###name3
-- something else :) 
+###Alejandra
+- Manage my anxiety, continue to learn the R language and being able to completely ditch SPSS and use only R!
 ###name 4
 - something else :) 
 ---
