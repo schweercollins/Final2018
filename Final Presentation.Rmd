@@ -181,8 +181,9 @@ td0 %>%
   select(V1, DUQ340) %>% 
   head(n = 3)
 ```
+--
 
-Victory: Figuring out how to replace a single value in a column to a missing value.
+*Victory: Figuring out how to replace a single value in a column to a missing value.*
 ```{r replace_with_na, eval = FALSE}
 #install.packages("naniar")
  td <- td0 %>% 
@@ -238,8 +239,8 @@ td1 %>%
   arrange(desc(age_heroin)) %>% 
   head(n = 4)
 ```
-
-Victory: Creating a tidy dataset that could plot variables by different drug types
+--
+*Victory: Creating a tidy dataset that could plot variables by different drug types*
 ```{r plot_code, eval = FALSE}
 td1 %>% 
   select(1, 3:6) %>% 
@@ -248,7 +249,8 @@ td1 %>%
   select(-dis) %>% 
   na.omit()
 ```
-Graph will be presented in following slides
+--
+*Graph will be presented in following slides*
 
 ---
 
@@ -453,6 +455,7 @@ Victory:
 - Thinking in data frames
 - Too afraid to just "Google it!"
 - Using gather and spread
+- Tidying data to successfully use count function with full dataset
 
 ---
 
@@ -569,7 +572,6 @@ td1 %>%
 
 
 ---
-
 #Jp findings
 
 ---
