@@ -182,15 +182,30 @@ Graph will be presented in following slides
 
 Challenge: Not remembering the order of actions to pull/push commits on GitHub. 
 
-Victory: I finally learned them! 
+Victory: I wrote them down and I have almost memorized them!
 
+--
 1. Pull to make sure you are working on the latest version of the project.
+
+--
 2. Work on your project.
+
+--
 3. Save your work.
+
+--
 4. Stage what you are pushing.
+
+--
 5. Write a brief message so everyone knows about your updates.
+
+--
 6. Commit.
+
+--
 6. Push.
+
+--
 7. Pray that no merging conflicts occur. 
 
 ---
@@ -226,17 +241,20 @@ td1 %&gt;%
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
 
-![](Final_Presentation_files/figure-html/plot_clutt-1.png)&lt;!-- --&gt;
+---
+
+![](Final_Presentation_files/figure-html/plot_clutt2-1.png)&lt;!-- --&gt;
+
 
 ---
 
-Victory: Finding useful tips in peers code and suggestions and being able to unclutter the visualizations.
+*Victory: Finding useful tips in peers code and suggestions and being able to unclutter the visualizations.*
 
 
 ```r
 td1 %&gt;%
   filter(mental_health != "Don't know") %&gt;% 
-  filter(insurance == "Yes" | insurance == "No") %&gt;% 
+* filter(insurance == "Yes" | insurance == "No") %&gt;%
   mutate(ethnicity = fct_infreq(ethnicity),
          mental_health = fct_infreq(mental_health)) %&gt;%
   group_by(ethnicity, mental_health) %&gt;%
@@ -253,16 +271,21 @@ td1 %&gt;%
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
 
-![](Final_Presentation_files/figure-html/plot_unclutt-1.png)&lt;!-- --&gt;
+--
 
-*Those pesky Boolean symbols always get me!* 
+*Those pesky Boolean operators always get me!* 
+
+---
+
+![](Final_Presentation_files/figure-html/plot_unclutt2-1.png)&lt;!-- --&gt;
+
 
 ---
 # Alejandra's Victories and Challenges No.4
 
 Challenge: Not liking the default theme of the slides using the `xaringan` package. 
 
-Victory: Succesfully changing the theme by adding just a line of code!
+Victory: Succesfully changing the theme by adding just a line of code and learning other nifty tricks to make the slides cooler. 
 
 
 ```r
@@ -288,11 +311,14 @@ td1 %&gt;%
   group_by(ethnicity) %&gt;%
   ggplot(aes(x = ethnicity, y = sum_depression)) +
   geom_col(fill = "cornflowerblue") +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   facet_wrap(~ sex)
 ```
 
-![](Final_Presentation_files/figure-html/using fill &amp; facer_wrap-1.png)&lt;!-- --&gt;
+---
+
+![](Final_Presentation_files/figure-html/using fill &amp; facer_wrap2-1.png)&lt;!-- --&gt;
+
 
 ---
 #JP's Victories and Challenges No.1
@@ -361,8 +387,8 @@ class: inverse, center, middle
 Become familiar with Rmd presentation options (e.g., images, animations, emojis, memes, layouts)
 ###name 2
 something 
-###name3
-something else
+###Alejandra
+- Manage my anxiety, continue to learn the R language and being able to completely ditch SPSS and use only R!
 ###name 4
 something else else :) 
 ---
