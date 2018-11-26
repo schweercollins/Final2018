@@ -276,13 +276,13 @@ plot1 + geom_boxplot(varwidth = T, fill = "plum") +
 ```
 
 ```{r ST_plot}
-td1 %>% 
+td2 <- td1 %>% 
   select(1, 3:6, rehab) %>% 
-  gather(drug, age, 2:4) %>% 
+  gather(drug, age_use, 2:4) %>% 
   separate(drug, c("dis", "drug"), sep = "_") %>% 
   select(-dis) %>% 
-  na.omit() %>% 
-  ggplot(aes(x = age)) +
+  na.omit() 
+  ggplot(aes(x = age_use)) +
   geom_histogram(aes(fill = rehab)) +
   facet_wrap (~ drug)
 
@@ -293,11 +293,11 @@ td1 %>%
 ```{r ST_plot1}
 td1 %>% 
   select(1, 3:6, sum_depression) %>% 
-  gather(drug, age, 2:4) %>% 
+  gather(drug, age_use, 2:4) %>% 
   separate(drug, c("dis", "drug"), sep = "_") %>% 
   select(-dis) %>% 
   na.omit() %>% 
-  ggplot(aes(x = sum_depression, y = age, color = drug)) +
+  ggplot(aes(x = sum_depression, y = age_use, color = drug)) +
   geom_point(size = .75) +
   geom_smooth(method = "lm", se = FALSE, size = 1.25)
 

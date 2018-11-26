@@ -176,25 +176,21 @@ Victory: We were creative in our initial problem-solving
 ---
 
 # Shaina's Victories and Challenges No.1
-
 Challenge: Age of methamphetamine first use is 999 years for one participant.
-
 ```{r nairn}
 td0 %>% 
   arrange(desc(DUQ340)) %>% 
   select(V1, DUQ340) %>% 
-  head()
+  head(n = 3)
 ```
 
 Victory: Figuring out how to replace a single value in a column to a missing value.
-
 ```{r replace_with_na, eval = FALSE}
 #install.packages("naniar")
  td <- td0 %>% 
    naniar::replace_with_na(replace = list(DUQ340 = 999)) %>% 
    mutate(age_stim = (DUQ260 + DUQ340) / 2) 
 ```
-
 ---
 # Shaina's Victories and Challenges No.2
 
@@ -205,8 +201,9 @@ td0 %>%
   select(RIAGENDR, RIDRETH3) %>% 
   head()
 ```
+---
 
-Victory: Mutating variables to create labels by referencing the [online codebook][https://wwwn.cdc.gov/Nchs/Nhanes/2015-2016/demo_I.htm].
+** Victory: Mutating variables to create labels by referencing the [online codebook](https://wwwn.cdc.gov/Nchs/Nhanes/2015-2016/demo_I.htm). **
 
 ```{r labels, eval = FALSE}
 td <- td %>% 
@@ -237,20 +234,18 @@ td <- td %>%
 # Shaina's Victories and Challenges No.3
 
 Challenge: Thinking the data were tidy, but not being able to produce a plot by drug types
-
-```{r td}
+```{r td, echo = FALSE}
 td1 %>% 
-  select(1:5, 9:14) %>% 
+  select(1:5, 9:11) %>% 
   arrange(desc(age_heroin)) %>% 
-  head()
+  head(n = 4)
 ```
 
 Victory: Creating a tidy dataset that could plot variables by different drug types
-
-```{r plot_code}
+```{r plot_code, eval = FALSE}
 td1 %>% 
   select(1, 3:6) %>% 
-  gather(drug, age, 2:5) %>% 
+  gather(drug, age_use, 2:5) %>% 
   separate(drug, c("dis", "drug"), sep = "_") %>% 
   select(-dis) %>% 
   na.omit()
@@ -378,7 +373,7 @@ Victory:
 
 #Ongoing Challenges
 
-##Alejandra
+- Using the `Papaja` package to do the write-up of the project
 - Thinking in data frames
 - Too afraid to just "Google it!"
 - Using gather and spread
@@ -390,17 +385,17 @@ class: inverse, center, middle
 # Substantive Findings & Interpretations
 
 ---
-#Shaina Findings
+#Shaina Findings (Plot 1)
 
-```{r ST_plot, echo = FALSE}
+```{r ST_plot, echo = FALSE, fig.height = 4, dev = 'svg'}
 td1 %>% 
   select(1, age_cocaine, age_meth, age_heroin, rehab) %>% 
-  gather(drug, age, 2:4) %>% 
+  gather(drug, age_use, 2:4) %>% 
   separate(drug, c("dis", "drug"), sep = "_") %>% 
   select(-dis) %>% 
   na.omit() %>% 
-  ggplot(aes(x = age)) +
-  geom_histogram(aes(fill = rehab), alpha = .8) +
+  ggplot(aes(x = age_use)) +
+  geom_histogram(aes(fill = rehab), alpha = .8, binwidth = 2) +
   facet_wrap (~ drug) +
   labs(title = "Age of First Use by Drug Type", 
        subtitle = "Colored to show differences between those who've recieved rehab and not",
@@ -408,6 +403,29 @@ td1 %>%
        x = "Age at first use ",
        y = "Frequency") 
 ```
+DESCRIBE GRAPH HERE
+
+---
+#Plot 2
+
+```{r ST_plot1, echo = FALSE, fig.height = 4, dev = 'svg'}
+td1 %>% 
+  select(1, 3:6, sum_depression) %>% 
+  gather(drug, age, 2:4) %>% 
+  separate(drug, c("dis", "drug"), sep = "_") %>% 
+  select(-dis) %>% 
+  na.omit() %>% 
+  ggplot(aes(x = sum_depression, y = age, color = drug)) +
+  geom_point(size = .75) +
+  geom_smooth(method = "lm", se = FALSE, size = 1.25) +
+  labs(title = "Age of First Use by Drug Type", 
+       subtitle = "Colored to show differences between those who've recieved rehab and not",
+       caption = "Source: NHANES",
+       x = "Age at first use ",
+       y = "Frequency")
+```
+
+DESCRIBE PLOT HERE
 
 ---
 #Maria Findings 
@@ -478,13 +496,17 @@ td1 %>%
 ---
 
 #R Hurdles to Tackle
-
-- Using the `Papaja` package to do the write-up of the project   
+###Shaina
+- SHAINAS THING
+###name 2
 - Making this presentation prettier via adjusting options  
-
+###name3
+- something else :) 
+###name 4
+- something else :) 
 ---
-
-
+class: center, middle
+#Questions?
 
 
 ---
