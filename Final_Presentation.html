@@ -6,7 +6,8 @@
     <meta name="author" content="Shaina Trevino, Maria Schweer-Collins, name 3, name 4" />
     <meta name="date" content="2018-11-28" />
     <link href="libs/remark-css/default.css" rel="stylesheet" />
-    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+    <link href="libs/remark-css/rladies.css" rel="stylesheet" />
+    <link href="libs/remark-css/rladies-fonts.css" rel="stylesheet" />
   </head>
   <body>
     <textarea id="source">
@@ -23,9 +24,6 @@ class: center, middle, inverse, title-slide
 
 
 
-```
-## Warning: package 'bindrcpp' was built under R version 3.5.1
-```
 
 
 ---
@@ -36,6 +34,100 @@ class: center, middle, inverse, title-slide
 
 ---
 #Alejandra Victories and Challenges
+
+##Challenges: 
+
+-	Remembering the order of actions to pull/push commits on GitHub. 
+-	How to evaluate missing data.
+-	Cluttered plots with levels we were not interested in. 
+- The use of filter with the Boolean symbols. 
+
+---
+##Victories:
+
+- Changing the theme of these slides!
+-	Succesfully using a data set that we didn’t know about. 
+-	Figuring out how to visualize more than one categorical variable at a time by combining fill and facet_wrap. 
+
+
+```r
+td1 %&gt;% 
+  mutate(ethnicity = fct_infreq(ethnicity)) %&gt;%
+  group_by(ethnicity) %&gt;%
+  ggplot(aes(x = ethnicity, y = sum_depression)) +
+  geom_col(fill = "cornflowerblue") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  facet_wrap(~ sex)
+```
+
+```
+## Warning: Removed 480 rows containing missing values (position_stack).
+```
+
+![](Final_Presentation_files/figure-html/using fill &amp; facer_wrap-1.png)&lt;!-- --&gt;
+
+---
+#Finding useful tips in peers code and suggestions and being able to unclutter the visualizations.
+
+
+```r
+td1 %&gt;%
+  filter(mental_health != "Don't know") %&gt;% 
+  mutate(ethnicity = fct_infreq(ethnicity),
+         mental_health = fct_infreq(mental_health)) %&gt;%
+  group_by(ethnicity, mental_health) %&gt;%
+  ggplot(aes(x = ethnicity, y = sum_depression)) +
+  geom_col(aes(fill = mental_health),
+           position = "dodge") + 
+  labs(title = "Total Depression Score by Ethnicity and Usage of Mental Health Services",
+       subtitle = "Faceted by Insurance Coverage",
+         caption = "Source: NHANES",
+         x = "Ethnicity",
+         y = "Total Depression Score",
+       fill = "Usage of Mental Health Services") +
+  facet_wrap(~insurance) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+```
+## Warning: Removed 427 rows containing missing values (geom_col).
+```
+
+![](Final_Presentation_files/figure-html/cluttered vs uncluttered-1.png)&lt;!-- --&gt;
+
+```r
+td1 %&gt;%
+  filter(mental_health != "Don't know") %&gt;% 
+  filter(insurance == "Yes" | insurance == "No") %&gt;% 
+  mutate(ethnicity = fct_infreq(ethnicity),
+         mental_health = fct_infreq(mental_health)) %&gt;%
+  group_by(ethnicity, mental_health) %&gt;%
+  ggplot(aes(x = ethnicity, y = sum_depression)) +
+  geom_col(aes(fill = mental_health),
+           position = "dodge") +
+   labs(title = "Total Depression Score by Ethnicity and Usage of Mental Health Services",
+       subtitle = "Faceted by Insurance Coverage",
+         caption = "Source: NHANES",
+         x = "Ethnicity",
+         y = "Total Depression Score",
+       fill = "Usage of Mental Health Services") +
+  facet_wrap(~insurance) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+```
+## Warning: Removed 425 rows containing missing values (geom_col).
+```
+
+![](Final_Presentation_files/figure-html/cluttered vs uncluttered-2.png)&lt;!-- --&gt;
+
+
+
+
+---
+
+
+
 
 ---
 #Maria Victories and Challenges
@@ -2703,6 +2795,11 @@ Graph will be presented in following slides
 ---
 #Ongoing Challenges 
 
+##Alejandra
+- Thinking in data frames
+- Too afraid to just "Google it!"
+- Using gather and spread
+
 ---
 #JP Findings 
 
@@ -3355,7 +3452,8 @@ names(xaringan:::list_css())
 ## [16] "rladies-fonts"    "rladies"          "robot-fonts"     
 ## [19] "robot"            "rutgers-fonts"    "rutgers"         
 ## [22] "shinobi"          "tamu-fonts"       "tamu"            
-## [25] "uo-fonts"         "uo"
+## [25] "uo-fonts"         "uo"               "uol-fonts"       
+## [28] "uol"
 ```
 
 ---

@@ -109,8 +109,6 @@ td <- fd %>%
 
 td_without_missing <- na.omit(td) # if all missing data is removed, we would just have a sample of 17 people. When doing calculation, we will use the na.rm = TRUE. 
 
-#View(td_without_missing) 
-
 ##AAC: Great use of select! You could also use column indexing to make the code look cleaner (instead of column names), but that is probably just a stylistic preference. I think that this "evaluation of missing data" might not be necessary to include, if you're not using it in your analyses or visualizations, but again I do like your transparency and seeing your thought process. You could also use the clean_names function here if you wanted the column names to be neat and snake_case, but that's only a preference. Also, you named this code chunk "tidy", but I wouldn't say the "select" function is representative of that. 
 
 ```
@@ -312,11 +310,14 @@ td1 %>%
   mutate(ethnicity = fct_infreq(ethnicity)) %>%
   group_by(ethnicity) %>%
   ggplot(aes(x = ethnicity, y = sum_depression)) +
-  geom_col(fill = "cornflowerblue") +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-  facet_wrap(~ sex)
-
-##AAC: Whoa!! Awesome fill and faceting. Also, great job on rotating the x-axis labels! The only thing I would say would be adding the gridlines, adding a title, and changing the y axis to "Total Depression Score". 
+  geom_col(aes(fill = sex),
+           position = "dodge")  +
+  labs(title = "Total Depression Score by Ethnicity and Gender", 
+         caption = "Source: NHANES",
+         x = "Ethnicity",
+         y = "Total Depression Score",
+       fill = "Sex") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 ```
 
@@ -325,23 +326,6 @@ td1 %>%
 
 # reported usage of mental health services in the past year and health insurance coverage by racial/ethnic group
 
-
-# Reviewers, please let us know if you know how to get rid of "Refused" and "Don't know" from the insurance variable.
-
-td1 %>%
-  filter(mental_health != "Don't know") %>% 
-  mutate(ethnicity = fct_infreq(ethnicity),
-         mental_health = fct_infreq(mental_health)) %>%
-  group_by(ethnicity, mental_health) %>%
-  ggplot(aes(x = ethnicity, y = sum_depression)) +
-  geom_col(aes(fill = mental_health),
-           position = "dodge") +
-  facet_wrap(~insurance) +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1))
-
-##AAC: Can you filter for only yes and no responses for insurance? See code below, I just added one line that you can probably incorpoate into the code better. I would also change the legend label and y axis label to remove the underscores and add a title. 
-
-#Example code: 
 td1 %>%
   filter(mental_health != "Don't know") %>% 
   filter(insurance == "Yes" | insurance == "No") %>% 
@@ -351,6 +335,12 @@ td1 %>%
   ggplot(aes(x = ethnicity, y = sum_depression)) +
   geom_col(aes(fill = mental_health),
            position = "dodge") +
+   labs(title = "Total Depression Score by Ethnicity and Usage of Mental Health Services",
+       subtitle = "Faceted by Insurance Coverage",
+         caption = "Source: NHANES",
+         x = "Ethnicity",
+         y = "Total Depression Score",
+       fill = "Usage of Mental Health Services") +
   facet_wrap(~insurance) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
@@ -360,12 +350,16 @@ td1 %>%
 ```{r boxplot}
 
 td1 %>%
+  filter(insurance == "Yes" | insurance == "No") %>% 
   mutate(ethnicity = factor(ethnicity)) %>%
   ggplot(aes(insurance, sum_depression)) +
   geom_boxplot(aes(fill = ethnicity)) +
+   labs(title = "Total Depression Score by Insurance Coverage and Ethnicity",
+         caption = "Source: NHANES",
+         x = "Insurance Coverage",
+         y = "Total Depression Score",
+       fill = "Ethnicities") +
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
-
-##AAC: I would eliminate the "don't know" and "refused" answers in this plot as well. Really cool plot - so pretty and colorful! I would also change the y axis label to remove the underscores and add a title. 
 
 ```
 

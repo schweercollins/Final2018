@@ -5,6 +5,7 @@ author: "Shaina Trevino, Maria Schweer-Collins, name 3, name 4"
 date: "November 28, 2018"
 output:
   xaringan::moon_reader:
+    css: [default, rladies, rladies-fonts]
     lib_dir: libs
     nature:
       highlightStyle: github
@@ -133,6 +134,84 @@ td1 <- td1 %>%
 ---
 #Alejandra Victories and Challenges
 
+##Challenges: 
+
+-	Remembering the order of actions to pull/push commits on GitHub. 
+-	How to evaluate missing data.
+-	Cluttered plots with levels we were not interested in. 
+- The use of filter with the Boolean symbols. 
+
+---
+##Victories:
+
+- Changing the theme of these slides!
+-	Succesfully using a data set that we didn’t know about. 
+-	Figuring out how to visualize more than one categorical variable at a time by combining fill and facet_wrap. 
+
+```{r using fill & facer_wrap}
+
+td1 %>% 
+  mutate(ethnicity = fct_infreq(ethnicity)) %>%
+  group_by(ethnicity) %>%
+  ggplot(aes(x = ethnicity, y = sum_depression)) +
+  geom_col(fill = "cornflowerblue") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  facet_wrap(~ sex)
+
+
+```
+
+---
+#Finding useful tips in peers code and suggestions and being able to unclutter the visualizations.
+
+```{r cluttered vs uncluttered}
+
+td1 %>%
+  filter(mental_health != "Don't know") %>% 
+  mutate(ethnicity = fct_infreq(ethnicity),
+         mental_health = fct_infreq(mental_health)) %>%
+  group_by(ethnicity, mental_health) %>%
+  ggplot(aes(x = ethnicity, y = sum_depression)) +
+  geom_col(aes(fill = mental_health),
+           position = "dodge") + 
+  labs(title = "Total Depression Score by Ethnicity and Usage of Mental Health Services",
+       subtitle = "Faceted by Insurance Coverage",
+         caption = "Source: NHANES",
+         x = "Ethnicity",
+         y = "Total Depression Score",
+       fill = "Usage of Mental Health Services") +
+  facet_wrap(~insurance) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+
+td1 %>%
+  filter(mental_health != "Don't know") %>% 
+  filter(insurance == "Yes" | insurance == "No") %>% 
+  mutate(ethnicity = fct_infreq(ethnicity),
+         mental_health = fct_infreq(mental_health)) %>%
+  group_by(ethnicity, mental_health) %>%
+  ggplot(aes(x = ethnicity, y = sum_depression)) +
+  geom_col(aes(fill = mental_health),
+           position = "dodge") +
+   labs(title = "Total Depression Score by Ethnicity and Usage of Mental Health Services",
+       subtitle = "Faceted by Insurance Coverage",
+         caption = "Source: NHANES",
+         x = "Ethnicity",
+         y = "Total Depression Score",
+       fill = "Usage of Mental Health Services") +
+  facet_wrap(~insurance) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+```
+
+
+
+
+---
+
+
+
+
 ---
 #Maria Victories and Challenges
 
@@ -254,6 +333,11 @@ Graph will be presented in following slides
 
 ---
 #Ongoing Challenges 
+
+##Alejandra
+- Thinking in data frames
+- Too afraid to just "Google it!"
+- Using gather and spread
 
 ---
 #JP Findings 
