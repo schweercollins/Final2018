@@ -281,7 +281,7 @@ td2 <- td1 %>%
   gather(drug, age_use, 2:4) %>% 
   separate(drug, c("dis", "drug"), sep = "_") %>% 
   select(-dis) %>% 
-  na.omit() 
+  na.omit() %>%
   ggplot(aes(x = age_use)) +
   geom_histogram(aes(fill = rehab)) +
   facet_wrap (~ drug)
