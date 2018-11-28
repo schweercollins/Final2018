@@ -13,19 +13,22 @@ knitr::opts_chunk$set(echo = TRUE)
 
 The code chunk below explains the nhanes and the other packages that are needed and how to load the data.
 
-``` {r nhanes data, echo = FALSE}
+```{r nhanes data, echo = FALSE, warning = FALSE, message = FALSE}
 
-# install.packages("nhanesA")
-# install.packages("naniar")
+#install.packages("nhanesA")
+#install.packages("naniar")
 
 library(nhanesA)
 library(tidyverse)
 library(rio)
 library(here)
-library(janitor)
+library(xaringan)
+library(ggridges)
 theme_set(theme_classic())
+
+##AAC: You might want to mention here that I have to install the packages (if I don't already have them) and then I have to hashtag them before I knit, or else it won't work. I also changed your chunk options, so that it would knit without warning or error messages.
 ```
-The nhanesA package lets you import data directly from the CDC website on nhanes data. The code below will import data and I have created an object for it to be loaded to.
+The `nhanesA` package lets you import data directly from the CDC website on nhanes data. The code below will import data and I have created an object for it to be loaded to.
 
 Below are examples of data from the 2015-2016 datasets.
 
@@ -37,34 +40,40 @@ It might be best to just view the data on the [nhanes website](https://wwwn.cdc.
 
 [nhanes datasets by different years](https://wwwn.cdc.gov/nchs/nhanes/Default.aspx)
 
-``` {r load_data, echo = TRUE, eval = FALSE}
+```{r load_data, echo = TRUE, eval = FALSE}
 
+# Don't need to run this - it is only prep work
+#
 # drug use dataset from 2015-2016
-duq_i <- nhanes('DUQ_I')
+
+#duq_i <- nhanes('DUQ_I')
 
 # Demographics measures from 2015-2016
-demo_i <- nhanes('DEMO_I')
+#demo_i <- nhanes('DEMO_I')
 
 # Depression measure
-dpq_i <- nhanes('DPQ_I')
+#dpq_i <- nhanes('DPQ_I')
 
 # Mental health services measure
-huq_i <- nhanes('HUQ_I')
+#huq_i <- nhanes('HUQ_I')
 
 # Health insurance measure
-hiq_i <- nhanes('HIQ_I')
+#hiq_i <- nhanes('HIQ_I')
 
 
 # Example of exporting data into csv files
-write.csv(duq_i, "duq_i.csv")
-write.csv(demo_i, "demo_i.csv")
-write.csv(dpq_i, "dpq_i.csv")
-write.csv(huq_i, "huq_i.csv")
-write.csv(hiq_i, "hiq_i.csv")
+#write.csv(duq_i, "duq_i.csv")
+#write.csv(demo_i, "demo_i.csv")
+#write.csv(dpq_i, "dpq_i.csv")
+#write.csv(huq_i, "huq_i.csv")
+#write.csv(hiq_i, "hiq_i.csv")
 
+
+##AAC: Really interesting dataset that you used, and it's awesome that you took advantage of this great resource! Super cool!! However, the instructions above are a little confusing. I would hashtag it or something like that (which I did), so that it doesn't run when I knit it (and take a really long time to knit). It was difficult for me to understand which code to run and which to not run to get the data. I think the code below (using the here library) is all that I really need to see! But I really did like your transparency and your explanation of the dataset, as well as your warning about the data taking a long time to load.
 ```
 
 ```{r import_data}
+
 # Loading CSV files
 duq_i <- import(here("data", "duq_i.csv"), 
                 setclass = "tbl_df")
@@ -82,15 +91,17 @@ d <- merge(duq_i,demo_i, by = "V1")
 d1 <- merge(dpq_i, huq_i, by = "V1")
 d2 <- merge(d, d1, by = "V1") 
 fd <- merge(d2, hiq_i, by = "V1") # fd stands for final merged data
+#ST added this code to write fd to csv so we dont need all merge codes in presentation etc. 
+#write.csv(fd, "fd.csv")
 
-View(fd)
+##AAC: Code worked perfectly to load data- great job!  
             
 ```
 
 ```{r tidy}
 
 # Select columns (variables)
-td <-  fd %>% 
+td <- fd %>% 
   select(V1,DPQ010, DPQ020, DPQ030, DPQ040, DPQ050, DPQ060, DPQ070, DPQ080, DPQ090, DPQ100, RIDRETH3, RIAGENDR, DMDEDUC2, INDHHIN2, RIDAGEYR, DUQ260, DUQ300, DUQ340, DUQ430, DUQ210, HIQ011, HUQ090)
 
   
@@ -98,19 +109,20 @@ td <-  fd %>%
 
 td_without_missing <- na.omit(td) # if all missing data is removed, we would just have a sample of 17 people. When doing calculation, we will use the na.rm = TRUE. 
 
-View(td_without_missing) 
+##AAC: Great use of select! You could also use column indexing to make the code look cleaner (instead of column names), but that is probably just a stylistic preference. I think that this "evaluation of missing data" might not be necessary to include, if you're not using it in your analyses or visualizations, but again I do like your transparency and seeing your thought process. You could also use the clean_names function here if you wanted the column names to be neat and snake_case, but that's only a preference. Also, you named this code chunk "tidy", but I wouldn't say the "select" function is representative of that. 
 
 ```
 
 ```{r composite}
+
 # Computing depression total score
 
-td <-td %>%
+td <- td %>%
   mutate(sum_depression = DPQ010 + DPQ020 + DPQ030 + DPQ040 + DPQ050 + DPQ060 + DPQ070 + DPQ080 + DPQ090) #DPQ100 is not included because the response scale changes. 
 
 
 #td %>% 
-  #mutate(sum_depress = rowSums(.[ ,15:20], na.rm = TRUE)) # This is an alternative way to do it that DA suggested. Not used here, though. Can also use rowmeans in this line of code.
+  #mutate(sum_depress = rowSums(.[ ,15:20], na.rm = TRUE)) # This is an alternative way to do it that DA suggested. Not used here, though. Can also use rowmeans in this line of code. Keeping for future reference.
 
 # Computing stimulant composite and converting demographic variables to factors
 # Install package first, if needed (uncomment and run code below):
@@ -118,34 +130,36 @@ td <-td %>%
 #install.packages("naniar")
  td <- td %>% 
    naniar::replace_with_na(replace = list(DUQ340 = 999)) %>% 
-   mutate(age_stim = (DUQ260 + DUQ340) / 2) # should be using group by and mean but cant yet because data is not tidy, Per DA suggestion, we need to tidy so that we have column for item and column for domain (e.g., depression) then you can group by and summarize means. 
+   mutate(age_stim = (DUQ260 + DUQ340) / 2) 
  
-# LETS TALK ABOUT THIS.
 
- View(td) 
-   
+##AAC: It's a super small thing, but I would try to keep your spacing consistent. You have no space between the "<-td" in this chunk, but then two spaces in the chunk above. I changed it, but feel free to take what you like :D I love that you provided an alternative way to mutate the composite score - good commentary!
+
 ```
 
 ```{r factors}
 
 td <- td %>% #Not sure if we still need this if we are creating new variables that are already characters?
-  mutate(RIDRETH3 = factor(RIDRETH3)) %>%
-  mutate(RIAGENDR = factor(RIAGENDR))
+  mutate(RIDRETH3 = factor(RIDRETH3),
+         RIAGENDR = factor(RIAGENDR))
+
+##AAC: I'm not sure. You could put the mutates above together (again, I changed the code, but feel free to take it or leave it)
+
 
 # Labels for categorical variables
 td <- td %>% 
   mutate(ethnicity = case_when(RIDRETH3 == 1 ~ "Mexican American", 
-                 RIDRETH3 == 2 ~ "Other Hispanic", 
-                 RIDRETH3 == 3 ~ "Non-Hispanic White",
-                 RIDRETH3 == 4 ~ "Non-Hispanic Black",
-                 RIDRETH3 == 6 ~ "Non-Hispanic Asian",
-                 RIDRETH3 == 7 ~ "Other Race - Including Multi-Racial",
-                 TRUE ~ NA_character_)) 
+                               RIDRETH3 == 2 ~ "Other Hispanic", 
+                               RIDRETH3 == 3 ~ "Non-Hispanic White",
+                               RIDRETH3 == 4 ~ "Non-Hispanic Black",
+                               RIDRETH3 == 6 ~ "Non-Hispanic Asian",
+                               RIDRETH3 == 7 ~ "Other Race - Including Multi-Racial",
+                               TRUE ~ NA_character_)) 
 
 td <- td %>% 
   mutate(sex = case_when(RIAGENDR == 1 ~ "Male", 
-                 RIAGENDR == 2 ~ "Female", 
-                 TRUE ~ NA_character_)) 
+                         RIAGENDR == 2 ~ "Female", 
+                         TRUE ~ NA_character_)) 
 
 td <- td %>% 
   mutate(education = case_when(DMDEDUC2 == 1 ~ "Less than 9th grade",
@@ -187,10 +201,10 @@ td <- td %>%
 
 td <- td %>% 
   mutate(mental_health = case_when(HUQ090 == 1 ~ "Yes",
-                            HUQ090 == 2 ~ "No",
-                            HUQ090 == 7 ~ "Refused",
-                            HUQ090 == 9 ~ "Don't know",
-                            TRUE ~ NA_character_))
+                                   HUQ090 == 2 ~ "No",
+                                   HUQ090 == 7 ~ "Refused",
+                                   HUQ090 == 9 ~ "Don't know",
+                                   TRUE ~ NA_character_))
 
 td <- td %>% 
   mutate(rehab = case_when(DUQ430 == 1 ~ "Yes",
@@ -199,26 +213,32 @@ td <- td %>%
                            DUQ430 == 9 ~ "Don't know",
                            TRUE ~ NA_character_))
 
+##AAC: Awesome job with labels and mutate! I adjusted the spaces a little bit in the mutate function to make it look a little better to the eye. Also, you might want to eliminate the commentaries between the team members in your final version? ("#JP - adjusted the code to simply remove the answer choices that did not make sense")
+
 ```
 
 ```{r select_rename}
 td1 <- td %>% 
   select(-2:-15, -HIQ011, -HUQ090, -DUQ430, income) %>% 
-  rename(age_marijuana = DUQ210, age_cocaine = DUQ260, age_heroin = DUQ300, age_meth = DUQ340)
+  rename(age_marijuana = DUQ210, 
+         age_cocaine = DUQ260, 
+         age_heroin = DUQ300, 
+         age_meth = DUQ340)
 
 #reorder
 td1 <- td1 %>% 
   select(1:6, age_stim, sum_depression, rehab, mental_health, insurance, income, 7:10) %>%
   rename(age = RIDAGEYR,
          id = V1) 
-View(td1)
+#View(td1)
+
+##AAC: I adjusted the spacing a little in the "rename" function, so that each new variable was on a new line. I also hashtagged the View function, so that it wouldn't pop up in my knitted version. I liked how you renamed the column names to make them more intuitive to read.
 ```
 
-``` {r JP age id and income}
+```{r age id and income}
 # JP's work
 # Im not going to change age or recode it since I think it acts as another integer and does not affect the findings. It just shows it as 80+.
 # Maria moved age and id rename up to the tidying above
-
 
 td1 %>%  
   select(age) %>% 
@@ -228,11 +248,12 @@ td1 %>%
 td1 %>%
   count(income)
 
+#AAC: Great use of ggplot and count function! I would add a title to this graph. I'm not quite sure what it means (and maybe gridlines and outlines of the bars- it's hard for me to read without gridlines). I would also eliminate some of the comments above (who did what- "JP's work"). You could also use kable function in order to make the income/count table look super pretty. Also- for some reason my computer didn't like the fact that there was a space inbetween the three tick marks ` at the top and the {r}, so I eliminated them. 
 
 ```
 
 ```{r exploratory_visuals}
-#Maria's visualization 
+
 
 #prepare data
 
@@ -243,45 +264,209 @@ gender <- as.factor(td$RIAGENDR)
 
 plot1 <- ggplot(td1, aes(sex, sum_depression))
 plot1 + geom_boxplot(varwidth = T, fill = "plum") + 
-    labs(title = "Box plot", 
+    labs(title = "Box Plot", 
          subtitle = "Total Depression Score by Gender",
          caption = "Source: NHANES",
          x = "Sex",
          y = "Total Depression Score") 
 
+
+##AAC: Great boxplot! Again, I don't think it's necessary to say who did what in the chunk "Maria's visualization" - it kind of distracts/confuses me from the actual. Also, I might consider putting gender in different colors (by putting it in the global aesthetic). Easier to distinguish. Cool caption at the bottom right - I didn't know you could do that!
+
 ```
 
 ```{r ST_plot}
-td1 %>% 
+td2 <- td1 %>% 
   select(1, 3:6, rehab) %>% 
-  gather(drug, age, 2:4) %>% 
+  gather(drug, age_use, 2:4) %>% 
   separate(drug, c("dis", "drug"), sep = "_") %>% 
   select(-dis) %>% 
-  na.omit() %>% 
-
-ggplot(aes(x = age)) +
+  na.omit() 
+  ggplot(aes(x = age_use)) +
   geom_histogram(aes(fill = rehab)) +
   facet_wrap (~ drug)
 
+##AAC: Great use of facet/spread/separate and cool plot- you went above and beyond! The only thing I would say is that it is kind of hard for me to read without the gridlines on the plot. I would also add a title to this graph. 
 
 ```
 
 ```{r ST_plot1}
 td1 %>% 
   select(1, 3:6, sum_depression) %>% 
-  gather(drug, age, 2:4) %>% 
+  gather(drug, age_use, 2:4) %>% 
   separate(drug, c("dis", "drug"), sep = "_") %>% 
   select(-dis) %>% 
   na.omit() %>% 
-  
-  ggplot(aes(x = sum_depression, y = age, color = drug)) +
+  ggplot(aes(x = sum_depression, y = age_use, color = drug)) +
   geom_point(size = .75) +
   geom_smooth(method = "lm", se = FALSE, size = 1.25)
+
+#Your tidying and plotting game is on point! Love how you separated the lines and points by drug through color. I would add a title to this graph and change the x-axis to "Total Depression Score". 
+```
+
+```{r plot by ethnicity}
+
+td1 %>% 
+  mutate(ethnicity = fct_infreq(ethnicity)) %>%
+  group_by(ethnicity) %>%
+  ggplot(aes(x = ethnicity, y = sum_depression)) +
+  geom_col(aes(fill = sex),
+           position = "dodge")  +
+  labs(title = "Total Depression Score by Ethnicity and Gender", 
+         caption = "Source: NHANES",
+         x = "Ethnicity",
+         y = "Total Depression Score",
+       fill = "Sex") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
 ```
 
 
+```{r descriptives}
+
+# reported usage of mental health services in the past year and health insurance coverage by racial/ethnic group
+
+td1 %>%
+  filter(mental_health != "Don't know") %>% 
+  filter(insurance == "Yes" | insurance == "No") %>% 
+  mutate(ethnicity = fct_infreq(ethnicity),
+         mental_health = fct_infreq(mental_health)) %>%
+  group_by(ethnicity, mental_health) %>%
+  ggplot(aes(x = ethnicity, y = sum_depression)) +
+  geom_col(aes(fill = mental_health),
+           position = "dodge") +
+   labs(title = "Total Depression Score by Ethnicity and Usage of Mental Health Services",
+       subtitle = "Faceted by Insurance Coverage",
+         caption = "Source: NHANES",
+         x = "Ethnicity",
+         y = "Total Depression Score",
+       fill = "Usage of Mental Health Services") +
+  facet_wrap(~insurance) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+```
 
 
+```{r boxplot}
 
+td1 %>%
+  filter(insurance == "Yes" | insurance == "No") %>% 
+  mutate(ethnicity = factor(ethnicity)) %>%
+  ggplot(aes(insurance, sum_depression)) +
+  geom_boxplot(aes(fill = ethnicity)) +
+   labs(title = "Total Depression Score by Insurance Coverage and Ethnicity",
+         caption = "Source: NHANES",
+         x = "Insurance Coverage",
+         y = "Total Depression Score",
+       fill = "Ethnicities") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+```
+
+```{r summarizing depresssion and age}
+# summarizing data for depression and ages of drug uses across the different ethnicities
+# tables included
+# also have whether or not they used mental health services.
+
+sum_td1 <- td1 %>% 
+  group_by(ethnicity) %>% 
+  summarize(depress_avg = mean(sum_depression, na.rm = TRUE),
+            depress_sd = sd(sum_depression, na.rm = TRUE),
+            cocaine_avg = mean(age_cocaine, na.rm = TRUE),
+            cocaine_sd = sd(age_cocaine, na.rm = TRUE),
+            heroin_avg = mean(age_heroin, na.rm = TRUE),
+            heroin_sd = sd(age_heroin, na.rm = TRUE),
+            meth_avg = mean(age_meth, na.rm = TRUE),
+            meth_sd = mean(age_meth, na.rm = TRUE),
+            marijuana_avg = mean(age_marijuana, na.rm = TRUE),
+            marijuana_sd = sd(age_marijuana, na.rm = TRUE))
+
+knitr::kable(sum_td1, format = "html", digits = round(2))
+
+sum_td1_mental_no <- td1 %>% 
+  group_by(ethnicity) %>%
+  filter(mental_health == "No") %>% 
+  summarize(depress_avg = mean(sum_depression, na.rm = TRUE),
+            depress_sd = sd(sum_depression, na.rm = TRUE),
+            cocaine_avg = mean(age_cocaine, na.rm = TRUE),
+            cocaine_sd = sd(age_cocaine, na.rm = TRUE),
+            heroin_avg = mean(age_heroin, na.rm = TRUE),
+            heroin_sd = sd(age_heroin, na.rm = TRUE),
+            meth_avg = mean(age_meth, na.rm = TRUE),
+            meth_sd = mean(age_meth, na.rm = TRUE),
+            marijuana_avg = mean(age_marijuana, na.rm = TRUE),
+            marijuana_sd = sd(age_marijuana, na.rm = TRUE))
+
+knitr::kable(sum_td1_mental_no, format = "html", digits = round(2))
+
+sum_td1_mental_yes <- td1 %>% 
+  group_by(ethnicity) %>%
+  filter(mental_health == "Yes") %>% 
+  summarize(depress_avg = mean(sum_depression, na.rm = TRUE),
+            depress_sd = sd(sum_depression, na.rm = TRUE),
+            cocaine_avg = mean(age_cocaine, na.rm = TRUE),
+            cocaine_sd = sd(age_cocaine, na.rm = TRUE),
+            heroin_avg = mean(age_heroin, na.rm = TRUE),
+            heroin_sd = sd(age_heroin, na.rm = TRUE),
+            meth_avg = mean(age_meth, na.rm = TRUE),
+            meth_sd = mean(age_meth, na.rm = TRUE),
+            marijuana_avg = mean(age_marijuana, na.rm = TRUE),
+            marijuana_sd = sd(age_marijuana, na.rm = TRUE))
+
+knitr::kable(sum_td1_mental_yes, format = "html", digits = round(2))
+
+
+##AAC- Great use of tables and the kable function. It looks really neat and clean. You could consider cleaning up the column names in the dataframe and then the column names in your table would also be clean. 
+
+```
+
+```{r opiod and stimulant by ethnicity, fig.width = 10, fig.height = 8}
+td_plot <- td1 %>%
+    select(age_stim, age_heroin, ethnicity, mental_health) 
+
+
+#one option for a visualization of onset of stim and opiod use by ethnicity
+# td_plot %>%
+#      drop_na(mental_health) %>%
+#      ggplot(aes(age_stim, ethnicity)) + 
+#      geom_density_ridges(aes(fill = mental_health)) 
+
+td_plot %>%
+     drop_na(mental_health) %>%
+     ggplot(aes(ethnicity, age_stim)) + 
+     geom_boxplot(aes(fill = mental_health)) +
+     theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+     scale_y_continuous(name="Age at First Use of Stimulants", limits=c(10, 45)) +
+     labs(title = "Age of First Use of Stimulants by Ethnicity", 
+          subtitle = "Colored to show differences between those who had mental health insurance",
+          caption = "Source: NHANES",
+          x = "Ethnicity")
+
+td_plot %>%
+     drop_na(mental_health) %>%
+     ggplot(aes(ethnicity, age_heroin)) + 
+     geom_boxplot(aes(fill = mental_health)) +
+     theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+     scale_y_continuous(name="Age at First Use of Opiods", limits=c(10, 45)) +
+     labs(title = "Age of First Use of Opiods by Ethnicity", 
+          subtitle = "Colored to show differences between those who had mental health insurance",
+          caption = "Source: NHANES",
+          x = "Ethnicity")
+    
+```
+
+```{r exploratory spreading}
+# demographics_ex <- td1 %>%
+#   group_by(sex, income, ethnicity, age) %>% 
+#   summarize(age_avg = mean(age),
+#             age_sd = sd(age),
+#             n = n())
+
+
+##AAC: I'm not sure what this is or if I should run it or not. 
+
+
+##AAC: I just ran it, and it knits! YAY!! Great job! You might want to include no errors or warnings in your chunks though because it knitted with a bunch of warnings. 
+```
 
 
