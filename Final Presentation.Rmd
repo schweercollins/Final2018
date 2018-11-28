@@ -288,9 +288,13 @@ Victory: I wrote them down and I have almost memorized them!
 
 # Alejandra's Victories and Challenges No.2
 
-Challenge: Evaluating missing data. 
+Challenge: Accidentaly deleting code from the script the night before our presentation!
 
-Victory: I read how to evaluate missing data and that was certainly not what I did before. You live and you learn!
+Victory: With the power of GitHub and DA combined, I was able to recover the latest version of the script!
+
+--
+
+Victory 2: Now I know that I don't need to panic. 
 
 ---
 # Alejandra's Victories and Challenges No.3
@@ -546,7 +550,7 @@ td_plot %>%
 ```
 
 ---
-#Alejandra's Findings 
+#Alejandra's Findings
 
 ```{r use MH services by insurance cov and ethnicity, echo = FALSE, warning = FALSE, message = FALSE}
 # reported usage of mental health services in the past year and health insurance coverage by racial/ethnic group
@@ -569,6 +573,25 @@ td1 %>%
   facet_wrap(~insurance) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
+
+---
+#Alejandra's Findings
+
+```{r, message = FALSE, warning = FALSE, echo = FALSE}
+td1 %>% 
+  mutate(ethnicity = fct_infreq(ethnicity)) %>%
+  group_by(ethnicity) %>%
+  ggplot(aes(x = ethnicity, y = sum_depression)) +
+  geom_col(aes(fill = sex),
+           position = "dodge")  +
+  labs(title = "Total Depression Score by Ethnicity and Gender", 
+         caption = "Source: NHANES",
+         x = "Ethnicity",
+         y = "Total Depression Score",
+       fill = "Sex") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
 
 
 ---
