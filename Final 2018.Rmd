@@ -439,7 +439,7 @@ td_plot %>%
      theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
      scale_y_continuous(name="Age at First Use of Stimulants", limits=c(10, 45)) +
      labs(title = "Age of First Use of Stimulants by Ethnicity", 
-          subtitle = "Colored to show differences between those who had mental health insurance",
+          subtitle = "Colored to show differences between those with and without mental health insurance",
           caption = "Source: NHANES",
           x = "Ethnicity")
 
@@ -450,7 +450,7 @@ td_plot %>%
      theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
      scale_y_continuous(name="Age at First Use of Opiods", limits=c(10, 45)) +
      labs(title = "Age of First Use of Opiods by Ethnicity", 
-          subtitle = "Colored to show differences between those who had mental health insurance",
+          subtitle = "Colored to show differences between those with and without mental health insurance",
           caption = "Source: NHANES",
           x = "Ethnicity")
     
