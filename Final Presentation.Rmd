@@ -146,8 +146,10 @@ Challenge: Downloading and merging multiple dataframes from NHANES
 #hiq_i <- nhanes('HIQ_I')
 
 ```
+--
 
-Victory: We merged these files after first converting to CSV files
+*Victory: We merged these files after first converting to CSV files* 
+
 
 ```{r merge}
 #write.csv(duq_i, "duq_i.csv")
@@ -163,13 +165,20 @@ Victory: We merged these files after first converting to CSV files
 ---
 # Maria's Victories and Challenges No.2
 
-Challenge: Using our new and unrefined Github skills to work collaboratively on this final project
+Challenge: Using our new and unrefined Github skills to work collaboratively on this final project 
 
-Victory: We were creative in our initial problem-solving  
+--
 
-1. We met on campus in a room with a projector  
-2. We took turns pulling and pushing the main project file from Github  
-3. We problem-solved code on one person's screen as a team  
+*Victory: We were creative in our initial problem-solving* 
+
+--
+1. We met on campus in a room with a projector 
+
+--
+2. We took turns pulling and pushing the main project file from Github   
+
+--
+3. We problem-solved code on one person's screen as a team   
 
 ---
 
@@ -516,8 +525,8 @@ td1 %>%
 ---
 #Maria Findings 
 
-```{r onset of druge use by ethnicty and mental health coverage, echo = FALSE, fig.height=4, dev='svg'}
-
+```{r  warning = FALSE, echo = FALSE, fig.height=5, dev='svg'}
+#onset of druge use by ethnicty and mental health coverage
 td_plot <- td1 %>%
     select(age_stim, age_heroin, ethnicity, mental_health) 
 
@@ -528,15 +537,15 @@ td_plot %>%
      theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
      scale_y_continuous(name="Age at First Use of Stimulants", limits=c(10, 45)) +
      labs(title = "Age of First Use of Stimulants by Ethnicity", 
-          subtitle = "Colored to show differences between those with and without mental health insurance",
+          subtitle = "Colored to show differences between those who have and have not accessed mental health insurance",
           caption = "Source: NHANES",
           x = "Ethnicity")
 
 ```
 ---
 #Maria Findings
-```{r onset of opiod by ethnicty and mental health coverage, echo = FALSE, warning = FALSE, message = FALSE}
-
+```{r  echo = FALSE, fig.height = 5, dev = 'svg', warning = FALSE, message = FALSE}
+#onset of opiod by ethnicty and mental health coverage,
 td_plot %>%
      drop_na(mental_health) %>%
      ggplot(aes(ethnicity, age_heroin)) + 
@@ -544,7 +553,7 @@ td_plot %>%
      theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
      scale_y_continuous(name="Age at First Use of Opiods", limits=c(10, 45)) +
      labs(title = "Age of First Use of Opiods by Ethnicity", 
-          subtitle = "Colored to show differences between those with and without mental health insurance",
+          subtitle = "Colored to show differences between those have and have not accessed mental health services",
           caption = "Source: NHANES",
           x = "Ethnicity")
 ```
@@ -600,14 +609,14 @@ td1 %>%
 ---
 
 #R Hurdles to Tackle
-###Shaina
+##Shaina
 Become familiar with Rmd presentation options (e.g., images, animations, emojis, memes, layouts)
 ###name 2
 something 
-###Alejandra
+##Alejandra
 - Manage my anxiety, continue to learn the R language and being able to completely ditch SPSS and use only R!
-###name 4
-something else else :) 
+##Maria
+- Build a website using R and/or use github to share research presentations 
 ---
 class: center, middle
 #Questions?
