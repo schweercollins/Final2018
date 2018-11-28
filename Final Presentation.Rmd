@@ -1,7 +1,7 @@
 ---
 title: "Final Presentation Group 2"
-subtitle: "A ScaRy Journey"
-author: "Shaina Trevino, Maria Schweer-Collins, Alejandra Garcia Isaza, name 4"
+subtitle: "R ScaRy JouRney"
+author: "Shaina Trevino, Maria Schweer-Collins, Alejandra Garcia Isaza, Jonathan Pedroza (JP)"
 date: "November 28, 2018"
 output:
   xaringan::moon_reader:
@@ -15,9 +15,11 @@ output:
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
+devtools::install_github("haozhu233/kableExtra")
 library(tidyverse)
 library(rio)
 library(here)
+library(kableExtra)
 theme_set(theme_minimal())
 ```
 
@@ -124,9 +126,84 @@ td1 <- td1 %>%
          id = V1)
 ```
 
-#Introduction
+#R ScaRy JouRney
 
+![get it](get_it.jpg)
 
+We were interested in using a publicly-available dataset that could translate our skills as researchers and data scientists. 
+
+The dataset that came to mind was the Center for Disease Control and Prevention's (CDC) National Health and Nutrition Examination Survey (NHANES) dataset.
+
+We decided on the 2015-2016 years because it was the most recent data collected.
+
+---
+#Why did we use this data?
+--
+
+1. it is a widely used dataset for researchers in several fields
+--
+
+2. has a wide variety of biofeedback, self-report, and other measures of health constructs
+--
+
+3. It has a large sample to draw from
+--
+
+4. taught us how to navigate bigger datasets
+--
+
+5. but the real reason is because I apparently like to make things harder than they have to be. 
+
+---
+![nhanes years](nhanes_years.jpg)
+
+[nhanes datasets by different years](https://wwwn.cdc.gov/nchs/nhanes/Default.aspx)
+---
+![nhanes 2015-2016](2015_2016.jpg)
+---
+#Variables used
+
+For our project we decided on several variables including:
+
+1. depressive symptoms
+2. insurance (yes/no)
+3. race/ethnicity
+4. sex
+5. education
+6. income
+7. seeking mental health services (yes/no)
+8. if individuals have been to rehab (yes/no)
+9. age
+10. age which began using substances (marijuana, cocaine, heroin, meth)
+
+---
+# So how did we do this
+
+Just a little ![imagination](imagination.jpg)
+
+But seriously...
+If you try to download NHANES data right now, you get SAS files in `.xpt` files. 
+
+This makes you have to download a file reader from their website. It's really just a huge mess.
+
+---
+# Our plan
+So after some thinking 
+
+![coffee](spongebob_coffee.gif) 
+
+We found the `nhanesA` [package](https://cran.r-project.org/web/packages/nhanesA/nhanesA.pdf).
+
+---
+This lets you download files straight to *R* without having to use `rio` or `here`.
+
+It was a great resource and the most basic function was to create an object and type in the dataframe to view data straight from the nhanes website.
+
+```{r, echo = TRUE, eval = FALSE}
+#huq_i <- nhanes('HUQ_I')
+```
+
+Or so we thought.
 ---
 class: inverse, center, middle
 
@@ -429,8 +506,6 @@ td1 %>%
 
 ```
 
----
-
 ```{r using fill & facer_wrap2, message = FALSE, warning = FALSE, echo = FALSE}
 
 td1 %>% 
@@ -442,14 +517,25 @@ td1 %>%
   facet_wrap(~ sex)
 
 ```
-
-
 ---
 #JP's Victories and Challenges No.1
 
-Challenge:
+Challenge: Recommending this package
 
-Victory:
+Victory: We all learned a lot of valuable skills from working with this package and these data frames. 
+
+![nhanes variables](nhanes_variables.jpg)
+---
+#JP's Victories and Challenges No.2
+
+Challenge: including pictures and gifs in slides
+
+Victory: a lot of googling and different methods but decided on saving the image followed by some code.
+
+```{r images, echo = FALSE, eval = FALSE}
+# ![explanation of image](image name followed by file type)
+# ![nhanes variables](nhanes_variables.jpg)
+```
 
 ---
 
@@ -460,6 +546,7 @@ Victory:
 - Too afraid to just "Google it!"
 - Using gather and spread
 - Tidying data to successfully use count function with full dataset
+- Trying to make one comprehensive demographics table 
 
 ---
 
@@ -592,22 +679,74 @@ td1 %>%
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
 
-
-
 ---
-#Jp findings
+#JP's findings
 
+```{r code for table, echo = FALSE, eval = TRUE}
+sum_td1 <- td1 %>% 
+  group_by(ethnicity) %>% 
+  summarize(depress_avg = mean(sum_depression, na.rm = TRUE),
+            depress_sd = sd(sum_depression, na.rm = TRUE),
+            cocaine_avg = mean(age_cocaine, na.rm = TRUE),
+            cocaine_sd = sd(age_cocaine, na.rm = TRUE),
+            heroin_avg = mean(age_heroin, na.rm = TRUE),
+            heroin_sd = sd(age_heroin, na.rm = TRUE),
+            meth_avg = mean(age_meth, na.rm = TRUE),
+            meth_sd = mean(age_meth, na.rm = TRUE),
+            marijuana_avg = mean(age_marijuana, na.rm = TRUE),
+            marijuana_sd = sd(age_marijuana, na.rm = TRUE))
+```
+
+```{r table, echo = FALSE, eval = TRUE}
+kable(sum_td1, format = "html", digits = 2) %>%
+  kable_styling(bootstrap_options = "striped", full_width = F, position = "left",
+                font_size = 10)
+```
 ---
 
+#JP's findings
+```{r code for table 2, echo = FALSE, eval = TRUE}
+td1$sex <- as.factor(td1$sex)
+td1$income <- as.factor(td1$income)
+td1$ethnicity <- as.factor(td1$ethnicity)
+td1$age <- as.numeric(td1$age)
+
+td1 <- td1 %>% 
+  mutate(sex = factor(sex),
+         income = factor(income),
+         ethnicity = factor(ethnicity))
+  
+demographics_ex <- table(td1$sex)
+demographics <- table(td1$ethnicity)
+demographics_3 <- table(td1$income)
+```
+
+```{r table 2, echo = FALSE, eval = TRUE}
+knitr::kable(demographics_ex, format = "html", digits = 2) %>%
+  kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "left", font_size = 10)
+
+knitr::kable(demographics, format = "html", digits = 2) %>%
+  kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "left", font_size = 10)
+```
+---
+``` {r table 4, echo = FALSE, eval = TRUE}
+knitr::kable(demographics_3, format = "html", digits = 2) %>%
+  kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "left", font_size = 10)
+
+```
+---
 #R Hurdles to Tackle
 ###Shaina
 Become familiar with Rmd presentation options (e.g., images, animations, emojis, memes, layouts)
-###name 2
-something 
+###Maria
+utilize papaja more in academic writing
+---
+#R Hurdles to Tackle
 ###Alejandra
-- Manage my anxiety, continue to learn the R language and being able to completely ditch SPSS and use only R!
-###name 4
-something else else :) 
+Manage my anxiety, continue to learn the R language and being able to completely ditch SPSS and use only R!
+
+###JP
+further my knowledge of analyses in R (e.g., lavaan) through the datacamp modules and to learn more base r coding
 ---
 class: center, middle
 #Questions?
@@ -641,7 +780,7 @@ class: inverse, center, middle
 Install the **xaringan** package from [Github](https://github.com/yihui/xaringan):
 
 ```{r eval=FALSE, tidy=FALSE}
-devtools::install_github("yihui/xaringan")
+# devtools::install_github("yihui/xaringan")
 ```
 
 --

@@ -3,19 +3,20 @@
   <head>
     <title>Final Presentation Group 2</title>
     <meta charset="utf-8">
-    <meta name="author" content="Shaina Trevino, Maria Schweer-Collins, Alejandra Garcia Isaza, name 4" />
+    <meta name="author" content="Shaina Trevino, Maria Schweer-Collins, Alejandra Garcia Isaza, Jonathan Pedroza (JP)" />
     <meta name="date" content="2018-11-28" />
     <link href="libs/remark-css/default.css" rel="stylesheet" />
     <link href="libs/remark-css/rladies.css" rel="stylesheet" />
     <link href="libs/remark-css/rladies-fonts.css" rel="stylesheet" />
+    <script src="libs/kePrint/kePrint.js"></script>
   </head>
   <body>
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
 # Final Presentation Group 2
-## A ScaRy Journey
-### Shaina Trevino, Maria Schweer-Collins, Alejandra Garcia Isaza, name 4
+## R ScaRy JouRney
+### Shaina Trevino, Maria Schweer-Collins, Alejandra Garcia Isaza, Jonathan Pedroza (JP)
 ### November 28, 2018
 
 ---
@@ -25,9 +26,85 @@ class: center, middle, inverse, title-slide
 
 
 
-#Introduction
+#R ScaRy JouRney
+
+![get it](get_it.jpg)
+
+We were interested in using a publicly-available dataset that could translate our skills as researchers and data scientists. 
+
+The dataset that came to mind was the Center for Disease Control and Prevention's (CDC) National Health and Nutrition Examination Survey (NHANES) dataset.
+
+We decided on the 2015-2016 years because it was the most recent data collected.
+
+---
+#Why did we use this data?
+--
+
+1. it is a widely used dataset for researchers in several fields
+--
+
+2. has a wide variety of biofeedback, self-report, and other measures of health constructs
+--
+
+3. It has a large sample to draw from
+--
+
+4. taught us how to navigate bigger datasets
+--
+
+5. but the real reason is because I apparently like to make things harder than they have to be. 
+
+---
+![nhanes years](nhanes_years.jpg)
+
+[nhanes datasets by different years](https://wwwn.cdc.gov/nchs/nhanes/Default.aspx)
+---
+![nhanes 2015-2016](2015_2016.jpg)
+---
+#Variables used
+
+For our project we decided on several variables including:
+
+1. depressive symptoms
+2. insurance (yes/no)
+3. race/ethnicity
+4. sex
+5. education
+6. income
+7. seeking mental health services (yes/no)
+8. if individuals have been to rehab (yes/no)
+9. age
+10. age which began using substances (marijuana, cocaine, heroin, meth)
+
+---
+# So how did we do this
+
+Just a little ![imagination](imagination.jpg)
+
+But seriously...
+If you try to download NHANES data right now, you get SAS files in `.xpt` files. 
+
+This makes you have to download a file reader from their website. It's really just a huge mess.
+
+---
+# Our plan
+So after some thinking 
+
+![coffee](spongebob_coffee.gif) 
+
+We found the `nhanesA` [package](https://cran.r-project.org/web/packages/nhanesA/nhanesA.pdf).
+
+---
+This lets you download files straight to *R* without having to use `rio` or `here`.
+
+It was a great resource and the most basic function was to create an object and type in the dataframe to view data straight from the nhanes website.
 
 
+```r
+#huq_i &lt;- nhanes('HUQ_I')
+```
+
+Or so we thought.
 ---
 class: inverse, center, middle
 
@@ -321,17 +398,23 @@ td1 %&gt;%
   facet_wrap(~ sex)
 ```
 
----
-
 ![](Final_Presentation_files/figure-html/using fill &amp; facer_wrap2-1.png)&lt;!-- --&gt;
-
-
 ---
 #JP's Victories and Challenges No.1
 
-Challenge:
+Challenge: Recommending this package
 
-Victory:
+Victory: We all learned a lot of valuable skills from working with this package and these data frames. 
+
+![nhanes variables](nhanes_variables.jpg)
+---
+#JP's Victories and Challenges No.2
+
+Challenge: including pictures and gifs in slides
+
+Victory: a lot of googling and different methods but decided on saving the image followed by some code.
+
+
 
 ---
 
@@ -342,6 +425,7 @@ Victory:
 - Too afraid to just "Google it!"
 - Using gather and spread
 - Tidying data to successfully use count function with full dataset
+- Trying to make one comprehensive demographics table 
 
 ---
 
@@ -385,24 +469,248 @@ class: inverse, center, middle
 ---
 #Alejandra's Findings
 
-![](Final_Presentation_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
-
-
+![](Final_Presentation_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
 
 ---
-#Jp findings
+#JP's findings
 
+
+
+&lt;table class="table table-striped" style="font-size: 10px; width: auto !important; "&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; ethnicity &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; depress_avg &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; depress_sd &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; cocaine_avg &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; cocaine_sd &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; heroin_avg &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; heroin_sd &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; meth_avg &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; meth_sd &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; marijuana_avg &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; marijuana_sd &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Mexican American &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.18 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.06 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21.29 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.72 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 26.14 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.33 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 23.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 23.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.89 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.08 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Non-Hispanic Asian &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.01 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.26 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 22.35 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.84 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 27.86 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 12.29 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 22.70 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 22.70 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.49 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.70 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Non-Hispanic Black &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.16 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.17 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20.38 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.80 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 22.18 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.13 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21.25 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21.25 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.26 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.79 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Non-Hispanic White &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.53 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.78 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21.57 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.80 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21.60 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.04 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20.85 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20.85 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.17 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.40 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Other Hispanic &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.45 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.47 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21.87 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.51 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 25.14 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.48 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21.87 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21.87 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.88 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.67 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Other Race - Including Multi-Racial &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.47 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.46 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20.08 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.40 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 22.33 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.53 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.88 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.88 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.87 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.77 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 ---
 
+#JP's findings
+
+
+&lt;table class="table table-striped" style="font-size: 10px; width: auto !important; "&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Var1 &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Freq &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Female &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2478 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Male &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2365 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table class="table table-striped" style="font-size: 10px; width: auto !important; "&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Var1 &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Freq &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Mexican American &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 930 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Non-Hispanic Asian &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 520 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Non-Hispanic Black &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1012 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Non-Hispanic White &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1504 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Other Hispanic &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 643 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Other Race - Including Multi-Racial &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 234 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+---
+&lt;table class="table table-striped" style="font-size: 10px; width: auto !important; "&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Var1 &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Freq &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; $0 - $4,999 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 128 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; $100,000 and over &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 796 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; $15,000 to $19,999 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 299 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; $20,000 to $24,999 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 298 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; $25,000 to $34,999 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 508 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; $35,000 to $44,999 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 459 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; $45,000 to $54,999 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 351 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; $5,000 to $9,999 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 184 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; $55,000 to $64,999 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 316 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; $65,000 to $74,999 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 263 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; $75,000 to $99,999 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 449 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 10,000 to $14,999 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 247 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Don't know &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 72 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Refused &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 99 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+---
 #R Hurdles to Tackle
 ###Shaina
 Become familiar with Rmd presentation options (e.g., images, animations, emojis, memes, layouts)
-###name 2
-something 
+###Maria
+utilize papaja more in academic writing
+---
+#R Hurdles to Tackle
 ###Alejandra
-- Manage my anxiety, continue to learn the R language and being able to completely ditch SPSS and use only R!
-###name 4
-something else else :) 
+Manage my anxiety, continue to learn the R language and being able to completely ditch SPSS and use only R!
+
+###JP
+further my knowledge of analyses in R (e.g., lavaan) through the datacamp modules and to learn more base r coding
 ---
 class: center, middle
 #Questions?
@@ -437,7 +745,7 @@ Install the **xaringan** package from [Github](https://github.com/yihui/xaringan
 
 
 ```r
-devtools::install_github("yihui/xaringan")
+# devtools::install_github("yihui/xaringan")
 ```
 
 --

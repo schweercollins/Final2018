@@ -15,8 +15,8 @@ The code chunk below explains the nhanes and the other packages that are needed 
 
 ```{r nhanes data, echo = FALSE, warning = FALSE, message = FALSE}
 
-#install.packages("nhanesA")
-#install.packages("naniar")
+# install.packages("nhanesA")
+# install.packages("naniar")
 
 library(nhanesA)
 library(tidyverse)
@@ -282,9 +282,11 @@ td2 <- td1 %>%
   separate(drug, c("dis", "drug"), sep = "_") %>% 
   select(-dis) %>% 
   na.omit() 
-  ggplot(aes(x = age_use)) +
-  geom_histogram(aes(fill = rehab)) +
-  facet_wrap (~ drug)
+
+# The code below is not working - JP 11/28/18
+  # ggplot(aes(x = age_use)) +
+  # geom_histogram(aes(fill = rehab)) +
+  # facet_wrap (~ drug)
 
 ##AAC: Great use of facet/spread/separate and cool plot- you went above and beyond! The only thing I would say is that it is kind of hard for me to read without the gridlines on the plot. I would also add a title to this graph. 
 
@@ -424,7 +426,6 @@ knitr::kable(sum_td1_mental_yes, format = "html", digits = round(2))
 td_plot <- td1 %>%
     select(age_stim, age_heroin, ethnicity, mental_health) 
 
-
 #one option for a visualization of onset of stim and opiod use by ethnicity
 # td_plot %>%
 #      drop_na(mental_health) %>%
@@ -456,13 +457,29 @@ td_plot %>%
 ```
 
 ```{r exploratory spreading}
-# demographics_ex <- td1 %>%
-#   group_by(sex, income, ethnicity, age) %>% 
-#   summarize(age_avg = mean(age),
-#             age_sd = sd(age),
-#             n = n())
+# JP - still working on how to make a table with everything on it 11/28/18
+str(td1)
+
+td1$sex <- as.factor(td1$sex)
+td1$income <- as.factor(td1$income)
+td1$ethnicity <- as.factor(td1$ethnicity)
+td1$age <- as.numeric(td1$age)
+
+td1 <- td1 %>% 
+  mutate(sex = factor(sex),
+         income = factor(income),
+         ethnicity = factor(ethnicity))
+  
+demographics_ex <- table(td1$sex, td1$income)
+demographics <- table(td1$ethnicity, td1$income)
 
 
+knitr::kable(demographics_ex, format = "html", digits = 2) %>%
+  kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "left",
+                font_size = 10)
+knitr::kable(demographics, format = "html", digits = 2) %>%
+  kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "left",
+                font_size = 10)
 ##AAC: I'm not sure what this is or if I should run it or not. 
 
 
