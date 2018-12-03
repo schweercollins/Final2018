@@ -10,7 +10,7 @@ author:
     email         : "my@email.com"
   - name          : "Maria Schweer-Collins"
     affiliation   : "1"
-  - name          : "Ernst-August Doelle"
+  - name          : "Alejandra Garcia Isaza"
     affiliation   : "1"
   - name          : "Ernst-August Doelle"
     affiliation   : "1"
@@ -92,7 +92,8 @@ sign up:
 
 # Results
 We should use inline code here
-sign up:
+sign up: 
+Alejandra will do the description of her plot (depression, health insurance coverage, visit to mental health, broken down by ethnicities). 
 
 # Discussion
 sign up:
@@ -104,9 +105,12 @@ Insert Table -- JP?
 \newpage
 
 # References
+sign up:
+Alejandra will include the references used in the intro. 
 ```{r create_r-references}
 r_refs(file = "r-references.bib")
-sign up:
+
+  
 ```
 
 \begingroup
