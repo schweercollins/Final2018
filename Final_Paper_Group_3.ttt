@@ -1,0 +1,20 @@
+\begin{table*}[hbt]
+\ifnextchar[{\eatarg}{}
+[tbp]
+\begin{center}
+\begin{threeparttable}
+\caption{\label{tab:ST_table}Average depression score and age of first use of opioids and stimulants}
+\begin{tabular}{llll}
+\toprule
+Ethnicity & \multicolumn{1}{c}{Depression Score} & \multicolumn{1}{c}{Opioid Use} & \multicolumn{1}{c}{Stimulant Use}\\
+\midrule
+Asian & 3.01 & 27.86 & 21.73\\
+Black & 3.16 & 22.18 & 20.30\\
+Hispanic & 3.29 & 25.81 & 21.43\\
+Other/Multiracial & 3.47 & 22.33 & 18.93\\
+White & 3.53 & 21.60 & 20.23\\
+\bottomrule
+\end{tabular}
+\end{threeparttable}
+\end{center}
+\end{table*}

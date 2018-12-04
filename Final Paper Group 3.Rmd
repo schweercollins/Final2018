@@ -62,6 +62,7 @@ output            : papaja::apa6_pdf
 ---
 
 ```{r setup, include = FALSE}
+#need to install naniar package - install.packages("naniar")
 library("papaja")
 library(tidyverse)
 library(rio)
@@ -113,7 +114,7 @@ td <- td %>%
                                RIDRETH3 == 3 ~ "White",
                                RIDRETH3 == 4 ~ "Black",
                                RIDRETH3 == 6 ~ "Asian",
-                               RIDRETH3 == 7 ~ "Other Race - Including Multi-Racial",
+                               RIDRETH3 == 7 ~ "Other/Multiracial",
                                TRUE ~ NA_character_)) 
 td <- td %>% 
   mutate(sex = case_when(RIAGENDR == 1 ~ "Male", 
@@ -229,7 +230,7 @@ td1 %>%
 
 
 Shaina will describe her plot of drug use by ethnicities
-```{r ST_plot, echo = FALSE, fig.height = 4, dev = 'svg'}
+```{r ST_plot1, echo = FALSE, fig.height = 4}
 pd_st <- td1 %>% 
            select(id, age_stim, age_heroin, sum_depression, rehab, ethnicity) %>%
            rename(age_Stimulants = age_stim,
@@ -237,7 +238,7 @@ pd_st <- td1 %>%
            gather(drug, age_use, age_Stimulants:age_Opioids) %>% 
            separate(drug, c("dis", "drug"), sep = "_") %>% 
            select(-dis) %>% 
-           filter(ethnicity != "Other Race - Including Multi-Racial") %>% 
+           filter(ethnicity != "Other/Multiracial") %>% 
            na.omit(age_use)
 
 ggplot(pd_st, aes(x = fct_infreq(ethnicity), y = age_use)) +
@@ -247,21 +248,108 @@ ggplot(pd_st, aes(x = fct_infreq(ethnicity), y = age_use)) +
        subtitle = "Based on two drug types (opioids and stimulants)",
        caption = "Source: NHANES",
        x = "Ethnicity",
-       y = "Age at first use") #get rid of legend
+       y = "Age at first use") +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+plot 2
+```{r ST_plot, echo = FALSE}
+pd_st1 <- td1 %>% 
+           select(id, age_stim, age_heroin, sum_depression, rehab, ethnicity) %>%
+           rename(age_Stimulants = age_stim,
+                  age_Opioids = age_heroin) %>% 
+           gather(drug, age_use, age_Stimulants:age_Opioids) %>% 
+           separate(drug, c("dis", "drug"), sep = "_") %>% 
+           select(-dis) %>% 
+           filter(ethnicity != "Other/Multiracial") %>% 
+           mutate(ethnicity = fct_infreq(ethnicity)) %>% 
+           na.omit(age_use) %>% 
+           filter(drug == "Stimulants" | drug == "Opioids") %>% 
+           group_by(ethnicity) %>% 
+           count(drug)
+
+ggplot(pd_st1, aes(x = ethnicity, y = n)) +
+  geom_col(aes(fill = ethnicity)) +
+  facet_wrap(~ drug) +
+  labs(title = "Number of Individuals Reporting Drug Use by Ethnicity", 
+       subtitle = "Based on two drug types (opioids and stimulants)",
+       caption = "Source: NHANES",
+       x = "Ethnicity",
+       y = "Frequency") +
+  theme(legend.position = "none")
+```
+
+plot 3
+```{r ST_plott, echo = FALSE}
+pd_st3 <- td1 %>% 
+           select(id, age_stim, age_heroin, sum_depression, rehab, ethnicity) %>%
+           rename(age_Stimulants = age_stim,
+                  age_Opioids = age_heroin) %>% 
+           gather(drug, age_use, age_Stimulants:age_Opioids) %>% 
+           separate(drug, c("dis", "drug"), sep = "_") %>% 
+           select(-dis) %>% 
+           filter(ethnicity != "Other/Multiracial") %>% 
+           na.omit(age_use) %>% 
+           filter(drug == "Stimulants" | drug == "Opioids") %>% 
+           group_by(ethnicity, drug) %>% 
+           summarize(dep_avg = mean(sum_depression))
+
+ggplot(pd_st3, aes(x = fct_infreq(ethnicity), y = dep_avg)) +
+  geom_col(aes(fill = ethnicity)) +
+  facet_wrap(~ drug) +
+  labs(title = "Average Depression Score by Ethnicity", 
+       subtitle = "Based on two drug types (opioids and stimulants)",
+       caption = "Source: NHANES",
+       x = "Ethnicity",
+       y = "Depression score") +
+  theme(legend.position = "none") #wont render
+```
+
+ST table
+```{r ST_table, results = "asis", echo = FALSE}
+ST_tbl <- td1 %>% 
+  select(id, age_stim, age_heroin, sum_depression, ethnicity) %>%
+  rename(age_Stimulants = age_stim,
+         age_Opioids = age_heroin, 
+         Ethnicity = ethnicity) %>% 
+  group_by(Ethnicity) %>% 
+  summarize(`Depression Score`= mean(sum_depression, na.rm = TRUE),
+            `Opioid Use` = mean(age_Opioids, na.rm = TRUE),
+            `Stimulant Use` = mean(age_Stimulants, na.rm = TRUE)) %>% 
+  gather(drug, average, `Opioid Use`:`Stimulant Use`) %>% 
+  separate(drug, c("drug", "dis"), sep = "_") %>% 
+  select(-dis) %>% 
+  spread(drug, average)
+apa_table(ST_tbl, caption = "Average depression score and age of first opioid and stimulant use") #renders in appendix - float intext not working
+
 ```
 
 
-```{r ST_plot1, echo = FALSE, fig.height = 4, dev = 'svg'}
-td1 %>% 
-  select(1, 3:6, sum_depression, ethnicity) %>% 
-  gather(drug, age_use, 2:4) %>% 
-  separate(drug, c("dis", "drug"), sep = "_") %>% 
-  select(-dis) %>% 
-  na.omit() %>% 
-  ggplot(aes(x = age_use, y = sum_depression, color = ethnicity)) +
+
+# Discussion
+sign up:
+
+Insert one data visualization -- we are using two, I believe Alejandra's viz. and one from Shaina
+Exploratory association plot?
+```{r ST_plot3, echo = FALSE, fig.height = 4}
+pd_st2 <- td1 %>% 
+           select(id, age_stim, age_heroin, sum_depression, rehab, ethnicity) %>%
+           rename(age_Stimulants = age_stim,
+                  age_Opioids = age_heroin) %>% 
+           gather(drug, age_use, age_Stimulants:age_Opioids) %>% 
+           separate(drug, c("dis", "drug"), sep = "_") %>% 
+           select(-dis) %>% 
+           filter(ethnicity != "Other/Multiracial") %>% 
+           mutate(ethnicity = fct_infreq(ethnicity)) %>% 
+           na.omit(age_use) %>% 
+           filter(drug == "Stimulants" | drug == "Opioids") 
+           
+ 
+ggplot(pd_st2, aes(x = age_use, y = sum_depression, color = ethnicity)) + # try switching color and facet
   geom_point(size = .75) +
   geom_smooth(method = "lm", se = FALSE, size = 1) +
-  facet_wrap(~drug)
+  facet_wrap(~ drug) +
   labs(title = "Association between Age at First Use and Depression", 
        subtitle = "Colored to show differences among drug types",
        caption = "Source: NHANES",
@@ -269,10 +357,6 @@ td1 %>%
        y = "Total depression score") 
 
 ```
-# Discussion
-sign up:
-
-Insert one data visualization -- we are using two, I believe Alejandra's viz. and one from Shaina
 Insert Table -- JP?
 
 
