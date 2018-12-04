@@ -193,6 +193,7 @@ Sign up:
 
 ##Measures
 sign up:
+Alejandra will describe the measures for depression, use of mental health services, and insurance coverage. 
 
 ## Data analysis
 We used `r cite_r("r-references.bib")` for all our analyses.
@@ -201,7 +202,32 @@ sign up:
 # Results
 We should use inline code here
 sign up: 
+
 Alejandra will do the description of her plot (depression, health insurance coverage, visit to mental health, broken down by ethnicities). 
+
+```{r plot1, echo = FALSE, message = FALSE}
+
+td1 %>%
+  filter(mental_health != "Don't know") %>% 
+  filter(insurance == "Yes" | insurance == "No") %>% 
+  mutate(ethnicity = fct_infreq(ethnicity),
+         mental_health = fct_infreq(mental_health)) %>%
+  group_by(ethnicity, mental_health) %>%
+  ggplot(aes(x = ethnicity, y = sum_depression)) +
+  geom_col(aes(fill = mental_health),
+           position = "dodge") +
+   labs(title = "Total Depression Score by Ethnicity and Usage of Mental Health Services",
+       subtitle = "Faceted by Insurance Coverage",
+         caption = "Source: NHANES",
+         x = "Ethnicity",
+         y = "Total Depression Score",
+       fill = "Usage of Mental Health Services") +
+  facet_wrap(~insurance) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+
+
 Shaina will describe her plot of drug use by ethnicities
 ```{r ST_plot, echo = FALSE, fig.height = 4, dev = 'svg'}
 pd_st <- td1 %>% 
