@@ -1,5 +1,5 @@
 ---
-title             : "Final Project: Group 3"
+title             : "Racial/Ethnic Disparities in Mental Health"
 shorttitle        : "Title"
 
 author: 
@@ -20,13 +20,9 @@ affiliation:
     institution   : "University of Oregon"
  
 
-authornote: |
-  Add complete departmental affiliations for each author here. Each new line herein must be indented, like this line.
-
-  Enter author note here.
-
 abstract: |
   Sign Up:
+  
   One or two sentences providing a **basic introduction** to the field,  comprehensible to a scientist in any discipline.
   
   Two to three sentences of **more detailed background**, comprehensible  to scientists in related disciplines.
@@ -43,8 +39,7 @@ abstract: |
   
   <!-- https://tinyurl.com/ybremelq -->
   
-keywords          : "keywords"
-wordcount         : "X"
+keywords          : "race, ethnicity, mental health disparities, depression, substance use"
 
 bibliography      : ["r-references.bib"]
 
@@ -99,15 +94,18 @@ fd <- merge(d2, hiq_i, by = "V1")
 #select columns
 td0 <- fd %>% 
   select(V1,DPQ010, DPQ020, DPQ030, DPQ040, DPQ050, DPQ060, DPQ070, DPQ080, DPQ090, DPQ100, RIDRETH3, RIAGENDR, DMDEDUC2, INDHHIN2, RIDAGEYR, DUQ260, DUQ300, DUQ340, DUQ430, DUQ210, HIQ011, HUQ090) 
+
 #computing depression total score
 td0 <- td0 %>%
   mutate(sum_depression = DPQ010 + DPQ020 + DPQ030 + DPQ040 + DPQ050 + DPQ060 + DPQ070 + DPQ080 + DPQ090)
+
 #replace value with NA
 #install.packages("naniar")
  td <- td0 %>% 
    naniar::replace_with_na(replace = list(DUQ340 = 999)) %>% 
    mutate(age_stim = (DUQ260 + DUQ340) / 2) 
-# Labels for categorical variables
+
+ # Labels for categorical variables
 td <- td %>% 
   mutate(ethnicity = case_when(RIDRETH3 == 1 ~ "Hispanic", #Shaina changed these for paper
                                RIDRETH3 == 2 ~ "Hispanic", 
@@ -147,6 +145,7 @@ td <- td %>%
                             INDHHIN2 == 77 ~ "Refused",
                             INDHHIN2 == 99 ~ "Don't know",
                             TRUE ~ NA_character_))
+
 #RIDAGEYR is half categorical (0-79 are values and 80 is 80 and older)
 td <- td %>% 
   mutate(insurance = case_when(HIQ011 == 1 ~ "Yes",
@@ -205,7 +204,13 @@ Sign up:
 
 ##Measures
 sign up:
-Alejandra will describe the measures for depression, use of mental health services, and insurance coverage. 
+
+To assess depression symptoms, we used the depression module from the full Patient Health Questionnaire [@kroenke2001phq: PHQ]. The PHQ-9 is a 9-item, self-report screening instrument. Participants are prompted by the stem “Over the last 2 weeks, how often have you been bothered by any of the following problems?”. Sample questions include “Feeling down, depressed, or hopeless?” and “Thoughts that you would be better off dead or of hurting yourself in some way”. The module uses a 4-point scale that goes from 0 (not at all) to 3 (nearly every day). “Refuse to answer” and “Don’t know” options are also included. A single score is derived from the depression module by summing the responses for the 9 items. Scores can range from 0 to 27; higher scores reflect more severe depressive symptoms.
+
+Insurance coverage was assessed with the item “Are you covered by health insurance or some other kind of health care plan?” from the NHANES Health Insurance Questionnaire. Response choices included “Yes”. “No”, “Refused”, and “Don’t know”. 
+
+Usage of mental health services was assessed with the item “During the past 12 months, have you seen or talked to a mental health professional such as a psychologist, psychiatrist, psychiatric nurse or clinical social worker about your health?” from the NHANES Hospital Utilization and Access to Care questionnaire. Response choices included “Yes”. “No”, “Refused”, and “Don’t know”. 
+
 
 ## Data analysis
 We used `r cite_r("r-references.bib")` for all our analyses.
@@ -213,12 +218,9 @@ sign up:
 
 # Results
 We should use inline code here
-sign up: 
 
-Alejandra will do the description of her plot (depression, health insurance coverage, visit to mental health, broken down by ethnicities). 
-
-```{r plot1, echo = FALSE, message = FALSE}
-
+Description of plot 1: Alejandra
+```{r plot1, echo = FALSE, fig.height = 4}
 td1 %>%
   filter(mental_health != "Don't know") %>% 
   filter(insurance == "Yes" | insurance == "No") %>% 
@@ -237,8 +239,6 @@ td1 %>%
   facet_wrap(~insurance) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
-
-
 
 Shaina will describe her plot of drug use by ethnicities
 ```{r ST_plot1, echo = FALSE, fig.height = 4}
@@ -368,15 +368,14 @@ ggplot(pd_st2, aes(x = age_use, y = sum_depression, color = ethnicity)) + # try 
        y = "Total depression score") 
 
 ```
+
 Insert Table -- JP?
 
 
 \newpage
 
 # References
-sign up:
-Alejandra will include the references used in the intro. 
-```{r create_r-references}
+```{r create_r-references, message=FALSE, warning=FALSE}
 r_refs(file = "r-references.bib")
 
   
