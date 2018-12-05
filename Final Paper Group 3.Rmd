@@ -12,7 +12,7 @@ author:
     affiliation   : "1"
   - name          : "Alejandra Garcia Isaza"
     affiliation   : "1"
-  - name          : "Ernst-August Doelle"
+  - name          : "Jonathan Pedroza"
     affiliation   : "1"
 
 affiliation:
@@ -62,7 +62,8 @@ library("papaja")
 library(tidyverse)
 library(rio)
 library(here)
-library(kableExtra) #If install is needed use - devtools::install_github("haozhu233/kableExtra")
+library(kableExtra) 
+#If install is needed use - devtools::install_github("haozhu233/kableExtra")
 theme_set(theme_minimal())
 ```
 
@@ -195,12 +196,71 @@ In the present study, we aim to explore some of the health disparities among dif
 NOTE: The WHO reference is not working well. Is showing the access date. 
 
 # Methods
-Sign up:
+Sign up:JP
 
 We report how we determined our sample size, all data exclusions (if any), all manipulations, and all measures in the study. <!-- 21-word solution (Simmons, Nelson & Simonsohn, 2012; retrieved from http://ssrn.com/abstract=2160588) -->
 
-## Participants
-Sign up:
+## Participants & Design
+```{r table of descriptives, echo = FALSE}
+# include mean age in the inline code 
+
+td1$sex <- as.factor(td1$sex)
+td1$income <- as.factor(td1$income)
+td1$ethnicity <- as.factor(td1$ethnicity)
+td1$age <- as.numeric(td1$age)
+
+td1 %>% 
+  mutate(sex = factor(sex),
+         income = factor(income),
+         ethnicity = factor(ethnicity))
+
+td1_male <- td1 %>%
+  filter(sex == "Male") %>% 
+  count(sex)
+
+td1_female <- td1 %>%
+  filter(sex == "Female") %>% 
+  count(sex)
+
+td1_hispanic <- td1 %>%
+  filter(ethnicity == "Hispanic") %>% 
+  count()
+
+td1_100k <- td1 %>%
+  filter(income == "$100,000 and over") %>% 
+  count()
+
+td1_male
+td1_female
+td1_hispanic
+td1_100k
+
+mean_td1 <- td1 %>% 
+  summarize(mean_age = mean(age))
+
+sd_td1 <- td1 %>% 
+  summarize(sd_age = sd(age))
+
+```
+The present study gathered data from the Center for Disease Control and Prevention's (CDC) National Health and Nutrition Examination Survey (NHANES). Using the 2015-2016 NHANES dataset, we were able to investigate levels of depression, drug use, whether or not individuals had insurance, if they have sought out mental health services, based on racial/ethnic group. 
+Data from 4,843 participants was gathered, with the average age of participants being `r mean_td1` ($SD = `r sd_td1`$) years old. The majority of participants were women (` r td1_female`), Hispanic (`r td1_hispanic`), and made $100,000 or more (`r td1_100k`). Table 1 presents the breakdown of the sample based on race/ethnicity.  
+
+```{r apa table, echo = FALSE}
+td_table <- td1 %>% 
+  mutate(sex = factor(sex),
+         income = factor(income),
+         ethnicity = factor(ethnicity)) %>% 
+  select(sex, income, ethnicity) %>% 
+  group_by(ethnicity) %>% 
+  summarize(sex_n = n(),
+            income_n = n())
+
+apa_table(td_table)
+```
+
+
+Sign up:JP
+
 
 ##Measures
 sign up:
@@ -370,6 +430,7 @@ ggplot(pd_st2, aes(x = age_use, y = sum_depression, color = ethnicity)) + # try 
 ```
 
 Insert Table -- JP?
+
 
 
 \newpage
