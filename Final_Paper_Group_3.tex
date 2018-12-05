@@ -144,8 +144,47 @@ readily comprehensible to a scientist in any discipline.
 
 \section{Introduction}\label{introduction}
 
-Alejandra will do depression and health disparities (short 1 parapraph)
-Maria will do drug use onset and health disparities (short 1 paragraph)
+Despite advances in access to health services, quality of care, and
+overall gains in life expectancy, racial/ethnic disparities in health in
+the United States (U.S.) remains to disproportionally affect the lives
+of racial/ethnic minority groups. Williams and Mohammed (2009) refer to
+the finding of Levine et al. (2016) that approximately 100,000 African
+Americans who would not die if there were no racial disparities die
+prematurely every year. Unfortunately, in the mental health arena,
+racial/ethnic disparities are no exception.
+
+Even though the burden and impact of physical diseases on different
+racial/ethnic subgroups have been far more studied than the impact and
+burden of mental health disorders, we know that globally, depression is
+the leading cause of disability and loss of productivity, and that its
+direst outcome, death via suicide, is on the rise (WHO, 2018 (accessed
+December 4, 2018)). It is well-known that mental health services are
+costly and thus a high proportion of the American population cannot
+afford them.
+
+Given that depression is usually screened and treated first in primary
+care settings, access to medical care is the first barrier to treatment
+that racial/ethnic minority groups face (Williams \& Mohammed, 2009).
+From there, racial/ethnic minority groups experience barriers such as
+low detection rate of mental health disorders in comparison to Whites
+(Borowsky et al., 2000); language barriers for non-English speakers
+(Fiscella, Franks, Doescher, \& Saver, 2002); use of screening measures
+not translated or validated for racial/ethnic minority groups; issues of
+trust related but not limited to underrepresentation of racial/ethnic
+minorities among mental health professionals, and cultural differences
+in understanding and treating mental health disorders (Miranda \&
+Cooper, 2004). Overall, these and other barriers affect the access and
+quality of treatment racial/ethnic minority groups receive in respect to
+their mental health.
+
+-----Maria will do drug use onset and health disparities (short 1
+paragraph) ---- use of substances as an alternative treatment for
+depression that people may recur to----
+
+In the present study, we aim to explore some of the health disparities
+among different racial/ethnic groups using a nationally representative
+sample, the National Health and Nutrition Examination Survey (NHANES)
+2015 -- 2016.
 
 \section{Methods}\label{methods}
 
@@ -172,10 +211,10 @@ We used R (Version 3.5.1; R Core Team, 2018) and the R-packages
 2016), \emph{here} (Version 0.1; Müller, 2017), \emph{kableExtra}
 (Version 0.9.0; Zhu, n.d.), \emph{papaja} (Version 0.1.0.9842; Aust \&
 Barth, 2018), \emph{purrr} (Version 0.2.5; Henry \& Wickham, 2018),
-\emph{readr} (Version 1.1.1; Wickham, Hester, \& Francois, 2018),
+\emph{readr} (Version 1.2.1; Wickham, Hester, \& Francois, 2018),
 \emph{rio} (Version 0.5.10; C.-h. Chan, Chan, Leeper, \& Becker, 2018),
 \emph{stringr} (Version 1.3.1; Wickham, 2018b), \emph{tibble} (Version
-1.4.2; Müller \& Wickham, 2018), \emph{tidyr} (Version 0.8.1; Wickham \&
+1.4.2; Müller \& Wickham, 2018), \emph{tidyr} (Version 0.8.2; Wickham \&
 Henry, 2018), and \emph{tidyverse} (Version 1.2.1; Wickham, 2017) for
 all our analyses. sign up:
 
@@ -215,7 +254,7 @@ ST table
 \begin{table}[tbp]
 \begin{center}
 \begin{threeparttable}
-\caption{\label{tab:ST_table}Average depression score and age of first use of opioids and stimulants}
+\caption{\label{tab:ST_table}Average depression score and age of first opioid and stimulant use}
 \begin{tabular}{llll}
 \toprule
 Ethnicity & \multicolumn{1}{c}{Depression Score} & \multicolumn{1}{c}{Opioid Use} & \multicolumn{1}{c}{Stimulant Use}\\
@@ -254,13 +293,35 @@ sign up: Alejandra will include the references used in the intro.
 Aust, F., \& Barth, M. (2018). \emph{papaja: Create APA manuscripts with
 R Markdown}. Retrieved from \url{https://github.com/crsh/papaja}
 
+\hypertarget{ref-borowsky2000risk}{}
+Borowsky, S. J., Rubenstein, L. V., Meredith, L. S., Camp, P.,
+Jackson-Triche, M., \& Wells, K. B. (2000). Who is at risk of
+nondetection of mental health problems in primary care? \emph{Journal of
+General Internal Medicine}, \emph{15}(6), 381--388.
+
 \hypertarget{ref-R-rio}{}
 Chan, C.-h., Chan, G. C., Leeper, T. J., \& Becker, J. (2018).
 \emph{Rio: A swiss-army knife for data file i/o}.
 
+\hypertarget{ref-fiscella2002disparities}{}
+Fiscella, K., Franks, P., Doescher, M. P., \& Saver, B. G. (2002).
+Disparities in health care by race, ethnicity, and language among the
+insured: Findings from a national sample. \emph{Medical Care}, 52--59.
+
 \hypertarget{ref-R-purrr}{}
 Henry, L., \& Wickham, H. (2018). \emph{Purrr: Functional programming
 tools}. Retrieved from \url{https://CRAN.R-project.org/package=purrr}
+
+\hypertarget{ref-levine2016black}{}
+Levine, R. S., Foster, J. E., Fullilove, R. E., Fullilove, M. T.,
+Briggs, N. C., Hull, P. C., \ldots{} Hennekens, C. H. (2016).
+Black-white inequalities in mortality and life expectancy, 1933--1999:
+Implications for healthy people 2010. \emph{Public Health Reports}.
+
+\hypertarget{ref-miranda2004disparities}{}
+Miranda, J., \& Cooper, L. A. (2004). Disparities in care for depression
+among primary care patients. \emph{Journal of General Internal
+Medicine}, \emph{19}(2), 120--126.
 
 \hypertarget{ref-R-here}{}
 Müller, K. (2017). \emph{Here: A simpler way to find your files}.
@@ -279,6 +340,10 @@ Retrieved from \url{https://CRAN.R-project.org/package=tibble}
 R Core Team. (2018). \emph{R: A language and environment for statistical
 computing}. Vienna, Austria: R Foundation for Statistical Computing.
 Retrieved from \url{https://www.R-project.org/}
+
+\hypertarget{ref-who}{}
+WHO. (2018 (accessed December 4, 2018)). Depression. Retrieved from
+\url{http://www.who.int/news-room/fact-sheets/detail/depression}
 
 \hypertarget{ref-R-ggplot2}{}
 Wickham, H. (2016). \emph{Ggplot2: Elegant graphics for data analysis}.
@@ -313,6 +378,11 @@ A grammar of data manipulation}. Retrieved from
 Wickham, H., Hester, J., \& Francois, R. (2018). \emph{Readr: Read
 rectangular text data}. Retrieved from
 \url{https://CRAN.R-project.org/package=readr}
+
+\hypertarget{ref-williams2009discrimination}{}
+Williams, D. R., \& Mohammed, S. A. (2009). Discrimination and racial
+disparities in health: Evidence and needed research. \emph{Journal of
+Behavioral Medicine}, \emph{32}(1), 20--47.
 
 \hypertarget{ref-R-kableExtra}{}
 Zhu, H. (n.d.). \emph{KableExtra: Construct complex table with 'kable'

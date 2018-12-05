@@ -181,8 +181,19 @@ td1 <- td1 %>%
 ```
 
 #Introduction
-Alejandra will do depression and health disparities (short 1 parapraph)
-Maria will do drug use onset and health disparities (short 1 paragraph)
+
+Despite advances in access to health services, quality of care, and overall gains in life expectancy, racial/ethnic disparities in health in the United States (U.S.) remains to disproportionally affect the lives of racial/ethnic minority groups. @williams2009discrimination refer to the finding of @levine2016black that approximately 100,000 African Americans who would not die if there were no racial disparities die prematurely every year. Unfortunately, in the mental health arena, racial/ethnic disparities are no exception.
+
+Even though the burden and impact of physical diseases on different racial/ethnic subgroups have been far more studied than the impact and burden of mental health disorders, we know that globally, depression is the leading cause of disability and loss of productivity, and that its direst outcome, death via suicide, is on the rise [@who]. It is well-known that mental health services are costly and thus a high proportion of the American population cannot afford them. 
+
+Given that depression is usually screened and treated first in primary care settings, access to medical care is the first barrier to treatment that racial/ethnic minority groups face [@williams2009discrimination]. From there, racial/ethnic minority groups experience barriers such as low detection rate of mental health disorders in comparison to Whites [@borowsky2000risk]; language barriers for non-English speakers [@fiscella2002disparities]; use of screening measures not translated or validated for racial/ethnic minority groups; issues of trust related but not limited to underrepresentation of racial/ethnic minorities among mental health professionals, and cultural differences in understanding and treating mental health disorders [@miranda2004disparities]. Overall, these and other barriers affect the access and quality of treatment racial/ethnic minority groups receive in respect to their mental health. 
+
+-----Maria will do drug use onset and health disparities (short 1 paragraph) ---- use of substances as an alternative treatment for depression that people may recur to----
+
+In the present study, we aim to explore some of the health disparities among different racial/ethnic groups using a nationally representative sample, the National Health and Nutrition Examination Survey (NHANES) 2015 – 2016.
+
+
+NOTE: The WHO reference is not working well. Is showing the access date. 
 
 # Methods
 Sign up:

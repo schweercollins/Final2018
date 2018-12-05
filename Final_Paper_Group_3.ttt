@@ -3,7 +3,7 @@
 [tbp]
 \begin{center}
 \begin{threeparttable}
-\caption{\label{tab:ST_table}Average depression score and age of first use of opioids and stimulants}
+\caption{\label{tab:ST_table}Average depression score and age of first opioid and stimulant use}
 \begin{tabular}{llll}
 \toprule
 Ethnicity & \multicolumn{1}{c}{Depression Score} & \multicolumn{1}{c}{Opioid Use} & \multicolumn{1}{c}{Stimulant Use}\\
