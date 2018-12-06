@@ -307,6 +307,7 @@ apa_table(ST_tbl, caption = "Average depression score and age of first opioid an
 
 ```
 
+
 ```{r ST_inline, echo = FALSE}
 inline <- ST_tbl %>% 
   janitor::clean_names()
@@ -334,9 +335,6 @@ as_st <- inline %>%
 mix_st <- inline %>% 
   filter(ethnicity == "Other/Multiracial") %>% 
   select(stimulant_use)
-
-
-
 ```
 
 The average depression score and average age of first opioid and stimulant use for each racial/ethnic group is presented in Table 2. Briefly, White individuals had the earliest age of first use for opioids (`r wt_op$opioid_use` years). Interestingly, Asian individuals had the lowest average depression score (`r as_dep$depression_score`) and started using both opioids and stimulants later than all other groups (mean age `r as_op$opioid_use`, `r as_st$stimulant_use` years respectively). Individuals who reported another race or multiracial reported the earliest age of first use for stimulants (`r mix_st$stimulant_use` years) and highest reported depression score (`r mix_dep$depression_score`). 
@@ -448,6 +446,8 @@ ggplot(pd_st2, aes(x = age_use, y = sum_depression, color = ethnicity)) + # try 
 
 ```
 
+##Disparities in mental health
+
 Description of plot 1: Alejandra
 ```{r AG_fig5, echo = FALSE, fig.height = 4}
 td1 %>%
@@ -477,6 +477,11 @@ Exploratory association plot?
 
 
 Insert Table -- JP?
+
+```{r desc_table, echo = FALSE, results = "asis"}
+
+```
+
 
 
 
