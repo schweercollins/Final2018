@@ -100,9 +100,6 @@ Isaza\textsuperscript{1}, \& Jonathan Pedroza\textsuperscript{1}}
 \makeatletter
 \renewcommand{\efloat@iwrite}[1]{\immediate\expandafter\protected@write\csname efloat@post#1\endcsname{}}
 \makeatother
-\usepackage{lineno}
-
-\linenumbers
 
 \authornote{
 
@@ -111,29 +108,22 @@ Trevino, 1600 Millrace Ave. Eugene, OR 97403. E-mail:
 \href{mailto:strevino@uoregon.edu}{\nolinkurl{strevino@uoregon.edu}}}
 
 \abstract{
-Sign Up:
-
-One or two sentences providing a \textbf{basic introduction} to the
-field, comprehensible to a scientist in any discipline.
-
-Two to three sentences of \textbf{more detailed background},
-comprehensible to scientists in related disciplines.
-
-One sentence clearly stating the \textbf{general problem} being
-addressed by this particular study.
-
-One sentence summarizing the main result (with the words ``\textbf{here
-we show}'' or their equivalent).
-
-Two or three sentences explaining what the \textbf{main result} reveals
-in direct comparison to what was thought to be the case previously, or
-how the main result adds to previous knowledge.
-
-One or two sentences to put the results into a more \textbf{general
-context}.
-
-Two or three sentences to provide a \textbf{broader perspective},
-readily comprehensible to a scientist in any discipline.
+Despite advances in access to health services, quality of care, and
+overall gains in life expectancy, racial / ethnic disparities in health
+in the United States persist and disproportionally affect the lives of
+racial and ethnic minority groups. This project is a descriptive
+approach to identifying mental health disparities for racial/ethnic
+groups in the U. S. using national survey data from the Centers for
+Disease Control's National Health and Nutrition Examination Survey,
+2015-2016. Summary statistics and visualizations suggest the following:
+(1) health disparities exist for age at onset of drug use, with those
+Hispanic participants reporting the most variabilty in age of first use
+of both opioids and stimulants, and (2) health disparities in depression
+occurrence exist for racial/ethinic minority groups and for those
+without mental healht insurance coverage. These preliminary findings
+provide a rationale to prioritize funding and policy change to increase
+the capacity of prevention and intervention efforts to address these
+disparities.
 
 
 }
@@ -156,10 +146,9 @@ Even though the burden and impact of physical diseases on different
 racial/ethnic subgroups have been far more studied than the impact and
 burden of mental health disorders, we know that globally, depression is
 the leading cause of disability and loss of productivity, and that its
-direst outcome, death via suicide, is on the rise (WHO, 2018 (accessed
-December 4, 2018)). It is well-known that mental health services are
-costly and thus a high proportion of the American population cannot
-afford them.
+direst outcome, death via suicide, is on the rise (WHO, 2018). It is
+well-known that mental health services are costly and thus a high
+proportion of the American population cannot afford them.
 
 Given that depression is usually screened and treated first in primary
 care settings, access to medical care is the first barrier to treatment
@@ -176,20 +165,26 @@ differences in understanding and treating mental health disorders
 access and quality of treatment racial/ethnic minority groups receive in
 respect to their mental health.
 
------Maria will do drug use onset and health disparities (short 1
-paragraph) ---- use of substances as an alternative treatment for
-depression that people may recur to----
+Racial and ethnic minority groups in the U. S. are also
+disproportionally affected by drug use disorders and carry a greater
+burden of drug-overdose related deaths (Disease Control, Prevention, \&
+others, 2011). Addressing these health disparities also means addressing
+the social and economic conditions, which systemically reinforce these
+disparities and influence individual-level drug-use behaviors. Some
+evidence suggests that early-onset of drug use is predictive of poorer
+drug-use outcomes in emerging and later adulthood (C.-Y. Chen, O'Brien,
+\& Anthony, 2005), but few studies have examined the age of drug use
+onset -- later drug use behavior relationship outside of alcohol,
+tobacco and cannabis use (Anthony, Chen, \& Storr, 2005). Thus, we
+choose to explore age of drug use onset for stimulants and opioids to
+extend what is known about drug use health disparities.
 
 In the present study, we aim to explore some of the health disparities
 among different racial/ethnic groups using a nationally representative
 sample, the National Health and Nutrition Examination Survey (NHANES)
 2015 -- 2016.
 
-NOTE: The WHO reference is not working well. Is showing the access date.
-
 \section{Methods}\label{methods}
-
-Sign up:JP
 
 We report how we determined our sample size, all data exclusions (if
 any), all manipulations, and all measures in the study.
@@ -14789,8 +14784,6 @@ White & 1504 & 1504\\
 \end{center}
 \end{table}
 
-Sign up:JP
-
 \subsection{Measures}\label{measures}
 
 To assess depression symptoms, we used the depression module from the
@@ -14820,6 +14813,18 @@ nurse or clinical social worker about your health?} from the NHANES
 Hospital Utilization and Access to Care questionnaire. Response choices
 included \enquote{Yes}. \enquote{No}, \enquote{Refused}, and
 \enquote{Don't know}.
+
+Age of first drug use variables were assessed with single items from the
+NHANES Drug Use Questionnaire (DUQ). For this study we created a
+composite measure for age of first stimulant use, by averaging the items
+\enquote{How old were you the first time you used cocaine, in any form?}
+and \enquote{How old were you the first time you used methamphetamine?}
+Age of first opioid use was assessed with the item \enquote{How old were
+you the first time you used heroin?} For each of the three drug use
+items, participants responded with a numerical value representing their
+age at first use, ranging from 0-59 or with \enquote{I don't know.}
+Participants were also permitted to refuse answering any question on the
+DUQ.
 
 \subsection{Data analysis}\label{data-analysis}
 
@@ -14980,6 +14985,11 @@ identified as Other or Multiracial.
 \setlength{\parindent}{-0.5in} \setlength{\leftskip}{0.5in}
 
 \hypertarget{refs}{}
+\hypertarget{ref-anthony2005drug}{}
+Anthony, J. C., Chen, C. Y., \& Storr, C. L. (2005). Drug dependence
+epidemiology. \emph{Clinical Neuroscience Research}, \emph{2}(5),
+55--68.
+
 \hypertarget{ref-R-papaja}{}
 Aust, F., \& Barth, M. (2018). \emph{papaja: Create APA manuscripts with
 R Markdown}. Retrieved from \url{https://github.com/crsh/papaja}
@@ -14993,6 +15003,17 @@ General Internal Medicine}, \emph{15}(6), 381--388.
 \hypertarget{ref-R-rio}{}
 Chan, C.-h., Chan, G. C., Leeper, T. J., \& Becker, J. (2018).
 \emph{Rio: A swiss-army knife for data file i/o}.
+
+\hypertarget{ref-chen2005becomes}{}
+Chen, C.-Y., O'Brien, M. S., \& Anthony, J. C. (2005). Who becomes
+cannabis dependent soon after onset of use? Epidemiological evidence
+from the united states: 2000--2001. \emph{Drug and Alcohol Dependence},
+\emph{79}(1), 11--22.
+
+\hypertarget{ref-centers2011cdc}{}
+Disease Control, C. for, Prevention, \& others. (2011). CDC health
+disparities and inequalities report: United states. \emph{Http://Www.
+Cdc. Gov/Mmwr/Pdf/Other/Su6001. Pdf}.
 
 \hypertarget{ref-fiscella2002disparities}{}
 Fiscella, K., Franks, P., Doescher, M. P., \& Saver, B. G. (2002).
@@ -15038,7 +15059,7 @@ computing}. Vienna, Austria: R Foundation for Statistical Computing.
 Retrieved from \url{https://www.R-project.org/}
 
 \hypertarget{ref-who}{}
-WHO. (2018 (accessed December 4, 2018)). Depression. Retrieved from
+WHO. (2018). Depression. Retrieved from
 \url{http://www.who.int/news-room/fact-sheets/detail/depression}
 
 \hypertarget{ref-R-ggplot2}{}
