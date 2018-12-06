@@ -69,7 +69,7 @@ Schweer-Collins\textsuperscript{1}, Alejandra Garcia
 Isaza\textsuperscript{1}, \& Jonathan Pedroza\textsuperscript{1}}
     \date{}
   
-\shorttitle{Title}
+\shorttitle{Racial Disparities}
 \affiliation{
 \vspace{0.5cm}
 \textsuperscript{1} University of Oregon}
@@ -107,8 +107,8 @@ Isaza\textsuperscript{1}, \& Jonathan Pedroza\textsuperscript{1}}
 \authornote{
 
 Correspondence concerning this article should be addressed to Shaina
-Trevino, Postal address. E-mail:
-\href{mailto:my@email.com}{\nolinkurl{my@email.com}}}
+Trevino, 1600 Millrace Ave. Eugene, OR 97403. E-mail:
+\href{mailto:strevino@uoregon.edu}{\nolinkurl{strevino@uoregon.edu}}}
 
 \abstract{
 Sign Up:
@@ -6569,7 +6569,7 @@ any), all manipulations, and all measures in the study.
 ## 1525             NA  <NA>            No        Yes $35,000 to $44,999
 ## 1526              6    No            No        Yes $45,000 to $54,999
 ## 1527              9    No            No        Yes $25,000 to $34,999
-## 1528             39  <NA>           Yes         No $25,000 to $34,999
+## 1528             NA  <NA>           Yes         No $25,000 to $34,999
 ## 1529              4    No            No         No $15,000 to $19,999
 ## 1530              2    No            No        Yes               <NA>
 ## 1531              7  <NA>            No        Yes $65,000 to $74,999
@@ -7367,7 +7367,7 @@ any), all manipulations, and all measures in the study.
 ## 2323              0  <NA>           Yes        Yes               <NA>
 ## 2324              0    No            No        Yes $15,000 to $19,999
 ## 2325             11    No            No        Yes $55,000 to $64,999
-## 2326             40  <NA>           Yes        Yes  $100,000 and over
+## 2326             NA  <NA>           Yes        Yes  $100,000 and over
 ## 2327              1    No            No        Yes $35,000 to $44,999
 ## 2328              0  <NA>            No        Yes $25,000 to $34,999
 ## 2329              5  <NA>            No        Yes $35,000 to $44,999
@@ -7436,7 +7436,7 @@ any), all manipulations, and all measures in the study.
 ## 2392             11    No            No        Yes  $100,000 and over
 ## 2393              3  <NA>            No        Yes $25,000 to $34,999
 ## 2394              7   Yes            No         No $45,000 to $54,999
-## 2395             36  <NA>            No        Yes $65,000 to $74,999
+## 2395             NA  <NA>            No        Yes $65,000 to $74,999
 ## 2396              0    No            No        Yes   $5,000 to $9,999
 ## 2397              0  <NA>          <NA>        Yes               <NA>
 ## 2398              2  <NA>            No        Yes   $5,000 to $9,999
@@ -8801,7 +8801,7 @@ any), all manipulations, and all measures in the study.
 ## 3757              1  <NA>            No        Yes $65,000 to $74,999
 ## 3758             NA    No            No        Yes $55,000 to $64,999
 ## 3759              0    No            No        Yes $65,000 to $74,999
-## 3760             33  <NA>            No        Yes $65,000 to $74,999
+## 3760             NA  <NA>            No        Yes $65,000 to $74,999
 ## 3761              0  <NA>            No        Yes               <NA>
 ## 3762              0  <NA>            No        Yes   $5,000 to $9,999
 ## 3763              6   Yes            No        Yes $15,000 to $19,999
@@ -14770,34 +14770,28 @@ participants were women (\texttt{r\ td1\_female}), Hispanic (), and made
 \$100,000 or more (). Table 1 presents the breakdown of the sample based
 on race/ethnicity.
 
-\begin{verbatim}
-## 
-## 
-## \begin{table}[tbp]
-## \begin{center}
-## \begin{threeparttable}
-## \caption{\label{tab:apa table}}
-## \begin{tabular}{lll}
-## \toprule
-## ethnicity & \multicolumn{1}{c}{sex\_n} & \multicolumn{1}{c}{income\_n}\\
-## \midrule
-## Asian & 520 & 520\\
-## Black & 1012 & 1012\\
-## Hispanic & 1573 & 1573\\
-## Other/Multiracial & 234 & 234\\
-## White & 1504 & 1504\\
-## \bottomrule
-## \end{tabular}
-## \end{threeparttable}
-## \end{center}
-## \end{table}
-\end{verbatim}
+\begin{table}[tbp]
+\begin{center}
+\begin{threeparttable}
+\caption{\label{tab:apa table}}
+\begin{tabular}{lll}
+\toprule
+ethnicity & \multicolumn{1}{c}{sex\_n} & \multicolumn{1}{c}{income\_n}\\
+\midrule
+Asian & 520 & 520\\
+Black & 1012 & 1012\\
+Hispanic & 1573 & 1573\\
+Other/Multiracial & 234 & 234\\
+White & 1504 & 1504\\
+\bottomrule
+\end{tabular}
+\end{threeparttable}
+\end{center}
+\end{table}
 
 Sign up:JP
 
 \subsection{Measures}\label{measures}
-
-sign up:
 
 To assess depression symptoms, we used the depression module from the
 full Patient Health Questionnaire (Kroenke, Spitzer, \& Williams, 2001:
@@ -14832,7 +14826,7 @@ included \enquote{Yes}. \enquote{No}, \enquote{Refused}, and
 We used R (Version 3.5.1; R Core Team, 2018) and the R-packages
 \emph{bindrcpp} (Version 0.2.2; Müller, 2018), \emph{dplyr} (Version
 0.7.8; Wickham, François, Henry, \& Müller, 2018), \emph{forcats}
-(Version 0.3.0; Wickham, 2018a), \emph{ggplot2} (Version 3.1.0; Wickham,
+(Version 0.3.0; Wickham, 2018a), \emph{ggplot2} (Version 3.0.0; Wickham,
 2016), \emph{here} (Version 0.1; Müller, 2017), \emph{kableExtra}
 (Version 0.9.0; Zhu, n.d.), \emph{papaja} (Version 0.1.0.9842; Aust \&
 Barth, 2018), \emph{purrr} (Version 0.2.5; Henry \& Wickham, 2018),
@@ -14841,39 +14835,9 @@ Barth, 2018), \emph{purrr} (Version 0.2.5; Henry \& Wickham, 2018),
 \emph{stringr} (Version 1.3.1; Wickham, 2018b), \emph{tibble} (Version
 1.4.2; Müller \& Wickham, 2018), \emph{tidyr} (Version 0.8.2; Wickham \&
 Henry, 2018), and \emph{tidyverse} (Version 1.2.1; Wickham, 2017) for
-all our analyses. sign up:
+all our analyses.
 
 \section{Results}\label{results}
-
-We should use inline code here
-
-Description of plot 1: Alejandra
-
-\begin{verbatim}
-## Warning: Removed 425 rows containing missing values (geom_col).
-\end{verbatim}
-
-\begin{figure}
-\centering
-\includegraphics{Final_Paper_Group_3_files/figure-latex/plot1-1.pdf}
-\caption{}
-\end{figure}
-
-Shaina will describe her plot of drug use by ethnicities
-\includegraphics{Final_Paper_Group_3_files/figure-latex/ST_plot1-1.pdf}
-
-plot 2
-\includegraphics{Final_Paper_Group_3_files/figure-latex/ST_plot-1.pdf}
-
-plot 3
-\includegraphics{Final_Paper_Group_3_files/figure-latex/ST_plott-1.pdf}
-
-ST table
-
-\begin{verbatim}
-## Warning: Expected 2 pieces. Missing pieces filled with `NA` in 10 rows [1,
-## 2, 3, 4, 5, 6, 7, 8, 9, 10].
-\end{verbatim}
 
 \begin{table}[tbp]
 \begin{center}
@@ -14887,22 +14851,126 @@ Asian & 3.01 & 27.86 & 21.73\\
 Black & 3.16 & 22.18 & 20.30\\
 Hispanic & 3.29 & 25.81 & 21.43\\
 Other/Multiracial & 3.47 & 22.33 & 18.93\\
-White & 3.53 & 21.60 & 20.23\\
+White & 3.43 & 21.60 & 20.23\\
 \bottomrule
 \end{tabular}
 \end{threeparttable}
 \end{center}
 \end{table}
 
+The average depression score and average age of first opioid and
+stimulant use for each racial/ethnic group is presented in Table 2.
+Briefly, White individuals had the earliest age of first use for opioids
+(21.60 years). Interestingly, Asian individuals had the lowest average
+depression score (3.01) and started using both opioids and stimulants
+later than all other groups (mean age 27.86, 21.73 years respectively).
+Individuals who reported another race or multiracial reported the
+earliest age of first use for stimulants (18.93 years) and highest
+reported depression score (3.47).
+
+\subsection{Disparities in opioid and stimulant
+use}\label{disparities-in-opioid-and-stimulant-use}
+
+In our sample, 215 participants reported either opioid or stimulant use.
+To explore racial/ethnic disparities in reported use, we plotted the
+number of individuals who reported using opioids and/or stimulants based
+on their racial category. As shown in Figure 1, more Hispanic
+participants reported opioid and stimulant use, whereas Asian
+participants had the lowest reported frequency of use for both
+substances. To further explore disparities in substance use, we
+visualized the age of first use by ethnicity (see Figure 2). This plot
+shows that across both substance types Hispanic individuals have the
+most variability in their age of first use. Additionally, Asian
+participants have much more variability in their age of first opioid use
+compared to stimulants. This observation is slightly observed among
+Black and White individuals. Overall, it seems that the majority of
+participants reported their age of first use to be between ages 15-25
+for both substance types. However, it is more pronounced for reported
+stimulant use.
+
+\begin{figure}
+\centering
+\includegraphics{Final_Paper_Group_3_files/figure-latex/ST_fig1-1.pdf}
+\caption{}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{Final_Paper_Group_3_files/figure-latex/ST_fig2-1.pdf}
+\caption{}
+\end{figure}
+
+Since depression and substance are strongly linked in the literature, we
+also produced a plot to explore racial disparities in average depression
+scores by substance type. As you can see in Figure 3, Asian individuals
+that reported stimulant use had the highest reported average depression
+score compared to all other groups. For opioids, White participants had
+the highest reported depression score. To further explore the relation
+between age of first substance use and depression, we graphed age of
+first use by the total depression score and faceted by substance type.
+Then, we overlaid a best fit linear regression onto the graph according
+to racial groups (see Figure 4). Interestingly, the plot suggests that
+there is a positive association between age of first opioid use and
+depression for Black individuals and a negative association for all
+other racial groups. Additionally, we observed a positive relationship
+between age of first stimulant use and depression for all racial groups,
+however the slope of the relationship was more robust for Asian
+individuals.
+
+\begin{figure}
+\centering
+\includegraphics{Final_Paper_Group_3_files/figure-latex/ST_fig3-1.pdf}
+\caption{}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{Final_Paper_Group_3_files/figure-latex/ST_fig4-1.pdf}
+\caption{}
+\end{figure}
+
+\subsection{Disparities in mental
+health}\label{disparities-in-mental-health}
+
+\begin{figure}
+\centering
+\includegraphics{Final_Paper_Group_3_files/figure-latex/AG_fig5-1.pdf}
+\caption{}
+\end{figure}
+
+To investigate racial/ethnic disparities in mental health, we explored
+insurance coverage and reported usage of mental health services (MHS) in
+the last year by racial/ethnic group. As can be seen in Figure 5,
+individuals who had insurance coverage had, on average, greater
+depression scores than individuals who did not have insurance coverage.
+Among individuals who did not have insurance coverage, the ones who
+reported no usage of MHS in the last year had, on average, higher
+depression scores than individuals who did report use of MHS in the last
+year. Alternatively, the average depression score of individuals who had
+insurance coverage did not differ substantially between individuals who
+reported usage of MHS in the last year and individuals who reported no
+usage of MHS in the last year.
+
+When looking at the differences between racial/ethnic groups in regards
+to insurance coverage, we see that in each racial/ethnic group there
+were more insured individuals than uninsured individuals. However, when
+evaluating the percentages of insured and uninsured individuals between
+each racial/ethnic group, the differences were evident. For instance,
+the percentage of White individuals who were insured, 92.48\%, was
+substantially higher than the percentage of Hispanic individuals who
+were insured, 77.13\%.
+
+Among uninsured individuals, Black and Asian individuals who used MHS in
+the last year seemed to have much lower depression scores than their
+uninsured counterparts who did not use MHS in the last year. On the
+other hand, the discrepancy was much smaller between uninsured Hispanic
+and White individuals who used MHS in the last year than those who did
+not. In regards to insured individuals who reported use of MHS in the
+last year and those who did not, the differences were not as significant
+regardless of their racial/ethnic group, except for individuals who
+identified as Other or Multiracial.
+
 \section{Discussion}\label{discussion}
-
-sign up:
-
-Insert one data visualization -- we are using two, I believe Alejandra's
-viz. and one from Shaina Exploratory association plot?
-\includegraphics{Final_Paper_Group_3_files/figure-latex/ST_plot3-1.pdf}
-
-Insert Table -- JP?
 
 \newpage
 

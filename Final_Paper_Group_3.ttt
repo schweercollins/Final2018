@@ -3,6 +3,26 @@
 [tbp]
 \begin{center}
 \begin{threeparttable}
+\caption{\label{tab:apa table}}
+\begin{tabular}{lll}
+\toprule
+ethnicity & \multicolumn{1}{c}{sex\_n} & \multicolumn{1}{c}{income\_n}\\
+\midrule
+Asian & 520 & 520\\
+Black & 1012 & 1012\\
+Hispanic & 1573 & 1573\\
+Other/Multiracial & 234 & 234\\
+White & 1504 & 1504\\
+\bottomrule
+\end{tabular}
+\end{threeparttable}
+\end{center}
+\end{table*}
+\begin{table*}[hbt]
+\ifnextchar[{\eatarg}{}
+[tbp]
+\begin{center}
+\begin{threeparttable}
 \caption{\label{tab:ST_table}Average depression score and age of first opioid and stimulant use}
 \begin{tabular}{llll}
 \toprule
@@ -12,7 +32,7 @@ Asian & 3.01 & 27.86 & 21.73\\
 Black & 3.16 & 22.18 & 20.30\\
 Hispanic & 3.29 & 25.81 & 21.43\\
 Other/Multiracial & 3.47 & 22.33 & 18.93\\
-White & 3.53 & 21.60 & 20.23\\
+White & 3.43 & 21.60 & 20.23\\
 \bottomrule
 \end{tabular}
 \end{threeparttable}

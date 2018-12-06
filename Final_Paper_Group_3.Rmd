@@ -1,0 +1,492 @@
+---
+title             : "Racial/Ethnic Disparities in Mental Health"
+shorttitle        : "Racial Disparities"
+
+author: 
+  - name          : "Shaina Trevino"
+    affiliation   : "1"
+    corresponding : yes    # Define only one corresponding author
+    address       : "1600 Millrace Ave. Eugene, OR 97403"
+    email         : "strevino@uoregon.edu"
+  - name          : "Maria Schweer-Collins"
+    affiliation   : "1"
+  - name          : "Alejandra Garcia Isaza"
+    affiliation   : "1"
+  - name          : "Jonathan Pedroza"
+    affiliation   : "1"
+
+affiliation:
+  - id            : "1"
+    institution   : "University of Oregon"
+ 
+
+abstract: |
+  Sign Up:
+  
+  One or two sentences providing a **basic introduction** to the field,  comprehensible to a scientist in any discipline.
+  
+  Two to three sentences of **more detailed background**, comprehensible  to scientists in related disciplines.
+  
+  One sentence clearly stating the **general problem** being addressed by  this particular study.
+  
+  One sentence summarizing the main result (with the words "**here we show**" or their equivalent).
+  
+  Two or three sentences explaining what the **main result** reveals in direct comparison to what was thought to be the case previously, or how the  main result adds to previous knowledge.
+  
+  One or two sentences to put the results into a more **general context**.
+  
+  Two or three sentences to provide a **broader perspective**, readily comprehensible to a scientist in any discipline.
+  
+  <!-- https://tinyurl.com/ybremelq -->
+  
+keywords          : "race, ethnicity, mental health disparities, depression, substance use"
+
+bibliography      : ["r-references.bib"]
+
+floatsintext      : no
+figurelist        : no
+tablelist         : no
+footnotelist      : no
+linenumbers       : yes
+mask              : no
+draft             : no
+
+documentclass     : "apa6"
+classoption       : "man"
+output            : papaja::apa6_pdf
+---
+
+```{r setup, include = FALSE}
+#need to install naniar package - install.packages("naniar")
+library("papaja")
+library(tidyverse)
+library(rio)
+library(here)
+library(kableExtra) 
+#If install is needed use - devtools::install_github("haozhu233/kableExtra")
+theme_set(theme_minimal())
+```
+
+```{r analysis-preferences}
+# Seed for random number generation
+set.seed(42)
+knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
+```
+
+```{r data, echo = FALSE}
+
+# Loading CSV files
+duq_i <- import(here("data", "duq_i.csv"), 
+                setclass = "tbl_df")
+demo_i <- import(here("data", "demo_i.csv"),
+                setclass = "tbl_df")
+dpq_i <- import(here("data", "dpq_i.csv"),
+                setclass = "tbl_df")
+huq_i <- import(here("data", "huq_i.csv"),
+                setclass = "tbl_df")
+hiq_i <- import(here("data", "hiq_i.csv"),
+                setclass = "tbl_df")
+#merge files
+d <- merge(duq_i,demo_i, by = "V1")
+d1 <- merge(dpq_i, huq_i, by = "V1")
+d2 <- merge(d, d1, by = "V1") 
+fd <- merge(d2, hiq_i, by = "V1")
+
+#select columns
+td0 <- fd %>% 
+  select(V1,DPQ010, DPQ020, DPQ030, DPQ040, DPQ050, DPQ060, DPQ070, DPQ080, DPQ090, DPQ100, RIDRETH3, RIAGENDR, DMDEDUC2, INDHHIN2, RIDAGEYR, DUQ260, DUQ300, DUQ340, DUQ430, DUQ210, HIQ011, HUQ090) 
+
+#computing depression total score
+td0 <- td0 %>%
+  mutate(sum_depression = DPQ010 + DPQ020 + DPQ030 + DPQ040 + DPQ050 + DPQ060 + DPQ070 + DPQ080 + DPQ090)
+
+#replace value with NA
+#install.packages("naniar")
+ td <- td0 %>% 
+   naniar::replace_with_na(replace = list(DUQ340 = 999)) %>% 
+   mutate(age_stim = (DUQ260 + DUQ340) / 2)
+
+#added code from Alejandra to replace data entry errors in depression scores 
+td <- td %>% 
+  naniar::replace_with_na(replace = list(sum_depression = 33))
+td <- td %>% 
+  naniar::replace_with_na(replace = list(sum_depression = 36))
+td <- td %>% 
+  naniar::replace_with_na(replace = list(sum_depression = 39))
+td <- td %>% 
+  naniar::replace_with_na(replace = list(sum_depression = 40))
+
+ # Labels for categorical variables
+td <- td %>% 
+  mutate(ethnicity = case_when(RIDRETH3 == 1 ~ "Hispanic", #Shaina changed these for paper
+                               RIDRETH3 == 2 ~ "Hispanic", 
+                               RIDRETH3 == 3 ~ "White",
+                               RIDRETH3 == 4 ~ "Black",
+                               RIDRETH3 == 6 ~ "Asian",
+                               RIDRETH3 == 7 ~ "Other/Multiracial",
+                               TRUE ~ NA_character_)) 
+td <- td %>% 
+  mutate(sex = case_when(RIAGENDR == 1 ~ "Male", 
+                         RIAGENDR == 2 ~ "Female", 
+                         TRUE ~ NA_character_)) 
+td <- td %>% 
+  mutate(education = case_when(DMDEDUC2 == 1 ~ "Less than 9th grade",
+                               DMDEDUC2 == 2 ~ "9-12th grade (no diploma)",
+                               DMDEDUC2 == 3 ~ "High school graduate/GED or equivalent",
+                               DMDEDUC2 == 4 ~ "Some college of AA degree",
+                               DMDEDUC2 == 5 ~ "College graduate of above", 
+                               DMDEDUC2 == 7 ~ "Refused",
+                               DMDEDUC2 == 9 ~ "Don't know",
+                               TRUE ~ NA_character_))
+td <- td %>% 
+  mutate(income = case_when(INDHHIN2 == 1 ~ "$0 - $4,999",
+                            INDHHIN2 == 2 ~ "$5,000 to $9,999",
+                            INDHHIN2 == 3 ~ "10,000 to $14,999",
+                            INDHHIN2 == 4 ~ "$15,000 to $19,999",
+                            INDHHIN2 == 5 ~ "$20,000 to $24,999",
+                            INDHHIN2 == 6 ~ "$25,000 to $34,999",
+                            INDHHIN2 == 7 ~ "$35,000 to $44,999",
+                            INDHHIN2 == 8 ~ "$45,000 to $54,999",
+                            INDHHIN2 == 9 ~ "$55,000 to $64,999",
+                            INDHHIN2 == 10 ~ "$65,000 to $74,999",
+                            INDHHIN2 == 12 ~ NA_character_,
+                            INDHHIN2 == 13 ~ NA_character_,
+                            INDHHIN2 == 14 ~ "$75,000 to $99,999",
+                            INDHHIN2 == 15 ~ "$100,000 and over",
+                            INDHHIN2 == 77 ~ "Refused",
+                            INDHHIN2 == 99 ~ "Don't know",
+                            TRUE ~ NA_character_))
+
+#RIDAGEYR is half categorical (0-79 are values and 80 is 80 and older)
+td <- td %>% 
+  mutate(insurance = case_when(HIQ011 == 1 ~ "Yes",
+                               HIQ011 == 2 ~ "No",
+                               HIQ011 == 7 ~ "Refused",
+                               HIQ011 == 9 ~ "Don't know",
+                               TRUE ~ NA_character_))
+td <- td %>% 
+  mutate(mental_health = case_when(HUQ090 == 1 ~ "Yes",
+                                   HUQ090 == 2 ~ "No",
+                                   HUQ090 == 7 ~ "Refused",
+                                   HUQ090 == 9 ~ "Don't know",
+                                   TRUE ~ NA_character_))
+td <- td %>% 
+  mutate(rehab = case_when(DUQ430 == 1 ~ "Yes",
+                           DUQ430 == 2 ~ "No",
+                           DUQ430 == 7 ~ "Refused",
+                           DUQ430 == 9 ~ "Don't know",
+                           TRUE ~ NA_character_))
+#select and rename
+td1 <- td %>% 
+  select(-2:-15, -HIQ011, -HUQ090, -DUQ430, income) %>% 
+  rename(age_marijuana = DUQ210, 
+         age_cocaine = DUQ260, 
+         age_heroin = DUQ300, 
+         age_meth = DUQ340)
+#reorder
+td1 <- td1 %>% 
+  select(1:6, age_stim, sum_depression, rehab, mental_health, insurance, income, 7:10) %>%
+  rename(age = RIDAGEYR,
+         id = V1)
+```
+
+#Introduction
+
+Despite advances in access to health services, quality of care, and overall gains in life expectancy, racial/ethnic disparities in health in the United States (U.S.) remains to disproportionally affect the lives of racial/ethnic minority groups. @williams2009discrimination refer to the finding of @levine2016black that approximately 100,000 African Americans who would not die if there were no racial disparities die prematurely every year. Unfortunately, in the mental health arena, racial/ethnic disparities are no exception.
+
+Even though the burden and impact of physical diseases on different racial/ethnic subgroups have been far more studied than the impact and burden of mental health disorders, we know that globally, depression is the leading cause of disability and loss of productivity, and that its direst outcome, death via suicide, is on the rise [@who]. It is well-known that mental health services are costly and thus a high proportion of the American population cannot afford them. 
+
+Given that depression is usually screened and treated first in primary care settings, access to medical care is the first barrier to treatment that racial/ethnic minority groups face [@williams2009discrimination]. From there, racial/ethnic minority groups experience barriers such as low detection rate of mental health disorders in comparison to Whites [@borowsky2000risk]; language barriers for non-English speakers [@fiscella2002disparities]; use of screening measures not translated or validated for racial/ethnic minority groups; issues of trust related but not limited to underrepresentation of racial/ethnic minorities among mental health professionals, and cultural differences in understanding and treating mental health disorders [@miranda2004disparities]. Overall, these and other barriers affect the access and quality of treatment racial/ethnic minority groups receive in respect to their mental health. 
+
+-----Maria will do drug use onset and health disparities (short 1 paragraph) ---- use of substances as an alternative treatment for depression that people may recur to----
+
+In the present study, we aim to explore some of the health disparities among different racial/ethnic groups using a nationally representative sample, the National Health and Nutrition Examination Survey (NHANES) 2015 – 2016.
+
+
+NOTE: The WHO reference is not working well. Is showing the access date. 
+
+# Methods
+Sign up:JP
+
+We report how we determined our sample size, all data exclusions (if any), all manipulations, and all measures in the study. <!-- 21-word solution (Simmons, Nelson & Simonsohn, 2012; retrieved from http://ssrn.com/abstract=2160588) -->
+
+## Participants & Design
+```{r table of descriptives, echo = FALSE}
+# include mean age in the inline code 
+# this renders horrifically, is this supposed to be a table? 
+
+td1$sex <- as.factor(td1$sex)
+td1$income <- as.factor(td1$income)
+td1$ethnicity <- as.factor(td1$ethnicity)
+td1$age <- as.numeric(td1$age)
+
+td1 %>% 
+  mutate(sex = factor(sex),
+         income = factor(income),
+         ethnicity = factor(ethnicity))
+
+td1_male <- td1 %>%
+  filter(sex == "Male") %>% 
+  count(sex)
+
+td1_female <- td1 %>%
+  filter(sex == "Female") %>% 
+  count(sex)
+
+td1_hispanic <- td1 %>%
+  filter(ethnicity == "Hispanic") %>% 
+  count()
+
+td1_100k <- td1 %>%
+  filter(income == "$100,000 and over") %>% 
+  count()
+
+td1_male
+td1_female
+td1_hispanic
+td1_100k
+
+mean_td1 <- td1 %>% 
+  summarize(mean_age = mean(age))
+
+sd_td1 <- td1 %>% 
+  summarize(sd_age = sd(age))
+
+```
+The present study gathered data from the Center for Disease Control and Prevention's (CDC) National Health and Nutrition Examination Survey (NHANES). Using the 2015-2016 NHANES dataset, we were able to investigate levels of depression, drug use, whether or not individuals had insurance, if they have sought out mental health services, based on racial/ethnic group. 
+Data from 4,843 participants was gathered, with the average age of participants being `r mean_td1` ($SD = `r sd_td1`$) years old. The majority of participants were women (` r td1_female`), Hispanic (`r td1_hispanic`), and made $100,000 or more (`r td1_100k`). Table 1 presents the breakdown of the sample based on race/ethnicity.  
+
+```{r apa table, results = "asis", echo = FALSE, warning = FALSE}
+td_table <- td1 %>% 
+  mutate(sex = factor(sex),
+         income = factor(income),
+         ethnicity = factor(ethnicity)) %>% 
+  select(sex, income, ethnicity) %>% 
+  group_by(ethnicity) %>% 
+  summarize(sex_n = n(),
+            income_n = n())
+
+apa_table(td_table)
+```
+
+
+Sign up:JP
+
+
+##Measures
+
+To assess depression symptoms, we used the depression module from the full Patient Health Questionnaire [@kroenke2001phq: PHQ]. The PHQ-9 is a 9-item, self-report screening instrument. Participants are prompted by the stem “Over the last 2 weeks, how often have you been bothered by any of the following problems?”. Sample questions include “Feeling down, depressed, or hopeless?” and “Thoughts that you would be better off dead or of hurting yourself in some way”. The module uses a 4-point scale that goes from 0 (not at all) to 3 (nearly every day). “Refuse to answer” and “Don’t know” options are also included. A single score is derived from the depression module by summing the responses for the 9 items. Scores can range from 0 to 27; higher scores reflect more severe depressive symptoms.
+
+Insurance coverage was assessed with the item “Are you covered by health insurance or some other kind of health care plan?” from the NHANES Health Insurance Questionnaire. Response choices included “Yes”. “No”, “Refused”, and “Don’t know”. 
+
+Usage of mental health services was assessed with the item “During the past 12 months, have you seen or talked to a mental health professional such as a psychologist, psychiatrist, psychiatric nurse or clinical social worker about your health?” from the NHANES Hospital Utilization and Access to Care questionnaire. Response choices included “Yes”. “No”, “Refused”, and “Don’t know”. 
+
+
+## Data analysis
+We used `r cite_r("r-references.bib")` for all our analyses.
+
+# Results
+
+```{r ST_table, results = "asis", echo = FALSE, warning = FALSE}
+ST_tbl <- td1 %>% 
+  select(id, age_stim, age_heroin, sum_depression, ethnicity) %>%
+  rename(age_Stimulants = age_stim,
+         age_Opioids = age_heroin, 
+         Ethnicity = ethnicity) %>% 
+  group_by(Ethnicity) %>% 
+  summarize(`Depression Score`= mean(sum_depression, na.rm = TRUE),
+            `Opioid Use` = mean(age_Opioids, na.rm = TRUE),
+            `Stimulant Use` = mean(age_Stimulants, na.rm = TRUE)) %>% 
+  gather(drug, average, `Opioid Use`:`Stimulant Use`) %>% 
+  separate(drug, c("drug", "dis"), sep = "_") %>% 
+  select(-dis) %>% 
+  spread(drug, average)
+apa_table(ST_tbl, caption = "Average depression score and age of first opioid and stimulant use") #renders in appendix - float intext not working
+
+```
+
+
+```{r ST_inline, echo = FALSE}
+inline <- ST_tbl %>% 
+  janitor::clean_names()
+
+mix_dep <- inline %>% 
+  filter(ethnicity == "Other/Multiracial") %>% 
+  select(depression_score)
+
+wt_op <- inline %>% 
+  filter(ethnicity == "White") %>% 
+  select(opioid_use)
+
+as_dep <- inline %>% 
+  filter(ethnicity == "Asian") %>% 
+  select(depression_score)
+
+as_op <- inline %>% 
+  filter(ethnicity == "Asian") %>% 
+  select(opioid_use)
+
+as_st <- inline %>% 
+  filter(ethnicity == "Asian") %>% 
+  select(stimulant_use)
+
+mix_st <- inline %>% 
+  filter(ethnicity == "Other/Multiracial") %>% 
+  select(stimulant_use)
+```
+
+The average depression score and average age of first opioid and stimulant use for each racial/ethnic group is presented in Table 2. Briefly, White individuals had the earliest age of first use for opioids (`r wt_op$opioid_use` years). Interestingly, Asian individuals had the lowest average depression score (`r as_dep$depression_score`) and started using both opioids and stimulants later than all other groups (mean age `r as_op$opioid_use`, `r as_st$stimulant_use` years respectively). Individuals who reported another race or multiracial reported the earliest age of first use for stimulants (`r mix_st$stimulant_use` years) and highest reported depression score (`r mix_dep$depression_score`). 
+
+## Disparities in opioid and stimulant use
+
+In our sample, 215 participants reported either opioid or stimulant use. To explore racial/ethnic disparities in reported use, we plotted the number of individuals who reported using opioids and/or stimulants based on their racial category. As shown in Figure 1, more Hispanic participants reported opioid and stimulant use, whereas Asian participants had the lowest reported frequency of use for both substances. To further explore disparities in substance use, we visualized the age of first use by ethnicity (see Figure 2). This plot shows that across both substance types Hispanic individuals have the most variability in their age of first use. Additionally, Asian participants have much more variability in their age of first opioid use compared to stimulants. This observation is slightly observed among Black and White individuals. Overall, it seems that the majority of participants reported their age of first use to be between ages 15-25 for both substance types. However, it is more pronounced for reported stimulant use. 
+
+```{r ST_fig1, echo = FALSE}
+pd_st1 <- td1 %>% 
+           select(id, age_stim, age_heroin, sum_depression, rehab, ethnicity) %>%
+           rename(age_Stimulants = age_stim,
+                  age_Opioids = age_heroin) %>% 
+           gather(drug, age_use, age_Stimulants:age_Opioids) %>% 
+           separate(drug, c("dis", "drug"), sep = "_") %>% 
+           select(-dis) %>% 
+           filter(ethnicity != "Other/Multiracial") %>% 
+           mutate(ethnicity = fct_infreq(ethnicity)) %>% 
+           na.omit(age_use) %>% 
+           filter(drug == "Stimulants" | drug == "Opioids") %>% 
+           group_by(ethnicity) %>% 
+           count(drug)
+
+ggplot(pd_st1, aes(x = ethnicity, y = n)) +
+  geom_col(aes(fill = ethnicity)) +
+  facet_wrap(~ drug) +
+  labs(title = "Number of Individuals Reporting Drug Use by Ethnicity", 
+       subtitle = "Based on two drug types (opioids and stimulants)",
+       caption = "Source: NHANES",
+       x = "Ethnicity",
+       y = "Frequency") +
+  theme(legend.position = "none")
+```
+
+
+```{r ST_fig2, echo = FALSE, fig.height = 4}
+pd_st <- td1 %>% 
+           select(id, age_stim, age_heroin, sum_depression, rehab, ethnicity) %>%
+           rename(age_Stimulants = age_stim,
+                  age_Opioids = age_heroin) %>% 
+           gather(drug, age_use, age_Stimulants:age_Opioids) %>% 
+           separate(drug, c("dis", "drug"), sep = "_") %>% 
+           select(-dis) %>% 
+           filter(ethnicity != "Other/Multiracial") %>% 
+           na.omit(age_use)
+
+ggplot(pd_st, aes(x = fct_infreq(ethnicity), y = age_use)) +
+  geom_violin(aes(fill = ethnicity), alpha = .8) +
+  facet_wrap (~ drug) +
+  labs(title = "Age of First Use by Ethnicity", 
+       subtitle = "Based on two drug types (opioids and stimulants)",
+       caption = "Source: NHANES",
+       x = "Ethnicity",
+       y = "Age at first use") +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+Since depression and substance are strongly linked in the literature, we also produced a plot to explore racial disparities in average depression scores by substance type. As you can see in Figure 3, Asian individuals that reported stimulant use had the highest reported average depression score compared to all other groups. For opioids, White participants had the highest reported depression score. To further explore the relation between age of first substance use and depression, we graphed age of first use by the total depression score and faceted by substance type. Then, we overlaid a best fit linear regression onto the graph according to racial groups (see Figure 4). Interestingly, the plot suggests that there is a positive association between age of first opioid use and depression for Black individuals and a negative association for all other racial groups. Additionally, we observed a positive relationship between age of first stimulant use and depression for all racial groups, however the slope of the relationship was more robust for Asian individuals. 
+
+```{r ST_fig3, echo = FALSE}
+pd_st3 <- td1 %>% 
+           select(id, age_stim, age_heroin, sum_depression, rehab, ethnicity) %>%
+           rename(age_Stimulants = age_stim,
+                  age_Opioids = age_heroin) %>% 
+           gather(drug, age_use, age_Stimulants:age_Opioids) %>% 
+           separate(drug, c("dis", "drug"), sep = "_") %>% 
+           select(-dis) %>% 
+           filter(ethnicity != "Other/Multiracial") %>% 
+           na.omit(age_use) %>% 
+           filter(drug == "Stimulants" | drug == "Opioids") %>% 
+           group_by(ethnicity, drug) %>% 
+           summarize(dep_avg = mean(sum_depression))
+
+ggplot(pd_st3, aes(x = fct_infreq(ethnicity), y = dep_avg)) +
+  geom_col(aes(fill = ethnicity)) +
+  facet_wrap(~ drug) +
+  labs(title = "Average Depression Score by Ethnicity", 
+       subtitle = "Based on two drug types (opioids and stimulants)",
+       caption = "Source: NHANES",
+       x = "Ethnicity",
+       y = "Depression score") +
+  theme(legend.position = "none") #wont render
+```
+
+```{r ST_fig4, echo = FALSE, fig.height = 4}
+pd_st2 <- td1 %>% 
+           select(id, age_stim, age_heroin, sum_depression, rehab, ethnicity) %>%
+           rename(age_Stimulants = age_stim,
+                  age_Opioids = age_heroin) %>% 
+           gather(drug, age_use, age_Stimulants:age_Opioids) %>% 
+           separate(drug, c("dis", "drug"), sep = "_") %>% 
+           select(-dis) %>% 
+           filter(ethnicity != "Other/Multiracial") %>% 
+           mutate(ethnicity = fct_infreq(ethnicity)) %>% 
+           na.omit(age_use) %>% 
+           filter(drug == "Stimulants" | drug == "Opioids") 
+           
+ 
+ggplot(pd_st2, aes(x = age_use, y = sum_depression, color = ethnicity)) + # try switching color and facet
+  geom_point(size = .75) +
+  geom_smooth(method = "lm", se = FALSE, size = 1) +
+  facet_wrap(~ drug) +
+  labs(title = "Association between Age at First Use and Depression", 
+       subtitle = "Colored to show differences among drug types",
+       caption = "Source: NHANES",
+       x = "Age at first use ",
+       y = "Total depression score") 
+
+```
+
+##Disparities in mental health
+
+```{r AG_fig5, echo = FALSE, warning = FALSE, fig.height = 4}
+td1 %>%
+  filter(mental_health != "Don't know") %>% 
+  filter(insurance == "Yes" | insurance == "No") %>% 
+  mutate(ethnicity = fct_infreq(ethnicity),
+         mental_health = fct_infreq(mental_health)) %>%
+  group_by(ethnicity, mental_health) %>%
+  ggplot(aes(x = ethnicity, y = sum_depression)) +
+  geom_col(aes(fill = mental_health),
+           position = "dodge") +
+   labs(title = "Total Depression Score by Ethnicity and Usage of Mental Health Services",
+       subtitle = "Faceted by Insurance Coverage",
+         caption = "Source: NHANES",
+         x = "Ethnicity",
+         y = "Total Depression Score",
+       fill = "Usage of Mental Health Services") +
+  facet_wrap(~insurance) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+To investigate racial/ethnic disparities in mental health, we explored insurance coverage and reported usage of mental health services (MHS) in the last year by racial/ethnic group. As can be seen in Figure 5, individuals who had insurance coverage had, on average, greater depression scores than individuals who did not have insurance coverage. Among individuals who did not have insurance coverage, the ones who reported no usage of MHS in the last year had, on average, higher depression scores than individuals who did report use of MHS in the last year. Alternatively, the average depression score of individuals who had insurance coverage did not differ substantially between individuals who reported usage of MHS in the last year and individuals who reported no usage of MHS in the last year. 
+
+When looking at the differences between racial/ethnic groups in regards to insurance coverage, we see that in each racial/ethnic group there were more insured individuals than uninsured individuals. However, when evaluating the percentages of insured and uninsured individuals between each racial/ethnic group, the differences were evident. For instance, the percentage of White individuals who were insured, 92.48%, was substantially higher than the percentage of Hispanic individuals who were insured, 77.13%. 
+
+Among uninsured individuals, Black and Asian individuals who used MHS in the last year seemed to have much lower depression scores than their uninsured counterparts who did not use MHS in the last year. On the other hand, the discrepancy was much smaller between uninsured Hispanic and White individuals who used MHS in the last year than those who did not. In regards to insured individuals who reported use of MHS in the last year and those who did not, the differences were not as significant regardless of their racial/ethnic group, except for individuals who identified as Other or Multiracial. 
+
+# Discussion
+
+
+\newpage
+
+# References
+```{r create_r-references, message=FALSE, warning=FALSE}
+r_refs(file = "r-references.bib")
+
+  
+```
+
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+<div id = "refs"></div>
+\endgroup
