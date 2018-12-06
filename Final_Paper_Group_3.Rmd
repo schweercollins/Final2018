@@ -177,7 +177,6 @@ td1 <- td1 %>%
 ```
 
 #Introduction
-
 Despite advances in access to health services, quality of care, and overall gains in life expectancy, racial/ethnic disparities in health in the United States (U.S.) remains to disproportionally affect the lives of racial/ethnic minority groups. @williams2009discrimination refer to the finding of @levine2016black that approximately 100,000 African Americans who would not die if there were no racial disparities die prematurely every year. Unfortunately, in the mental health arena, racial/ethnic disparities are no exception.
 
 Even though the burden and impact of physical diseases on different racial/ethnic subgroups have been far more studied than the impact and burden of mental health disorders, we know that globally, depression is the leading cause of disability and loss of productivity, and that its direst outcome, death via suicide, is on the rise [@who]. It is well-known that mental health services are costly and thus a high proportion of the American population cannot afford them. 
@@ -188,15 +187,10 @@ Racial and ethnic minority groups in the U. S. are also disproportionally affect
 
 In the present study, we aim to explore some of the health disparities among different racial/ethnic groups using a nationally representative sample, the National Health and Nutrition Examination Survey (NHANES) 2015 – 2016.
 
-
-
 # Methods
 
-
-We report how we determined our sample size, all data exclusions (if any), all manipulations, and all measures in the study. <!-- 21-word solution (Simmons, Nelson & Simonsohn, 2012; retrieved from http://ssrn.com/abstract=2160588) -->
-
 ## Participants & Design
-```{r table of descriptives, echo = FALSE}
+```{r table of descriptives, echo = FALSE, include = FALSE}
 # include mean age in the inline code 
 # this renders horrifically, is this supposed to be a table? 
 
@@ -239,41 +233,32 @@ sd_td1 <- td1 %>%
 
 ```
 The present study gathered data from the Center for Disease Control and Prevention's (CDC) National Health and Nutrition Examination Survey (NHANES). Using the 2015-2016 NHANES dataset, we were able to investigate levels of depression, drug use, whether or not individuals had insurance, if they have sought out mental health services, based on racial/ethnic group. 
-Data from 4,843 participants was gathered, with the average age of participants being `r mean_td1` ($SD = `r sd_td1`$) years old. The majority of participants were women (` r td1_female`), Hispanic (`r td1_hispanic`), and made $100,000 or more (`r td1_100k`). Table 1 presents the breakdown of the sample based on race/ethnicity.  
+Data from 4,843 participants was gathered, with the average age of participants being `r mean_td1$mean_age` ($SD$ = `r sd_td1$sd_age`) years old. The majority of participants were women (`r td1_female$n`), Hispanic (`r td1_hispanic$n`), and made \$100,000 or more (`r td1_100k$n`). Table 1 presents the breakdown of the sample size and average age based on race/ethnicity.
 
 ```{r apa table, results = "asis", echo = FALSE, warning = FALSE}
 td_table <- td1 %>% 
   mutate(sex = factor(sex),
          income = factor(income),
-         ethnicity = factor(ethnicity)) %>% 
-  select(sex, income, ethnicity) %>% 
-  group_by(ethnicity) %>% 
-  summarize(sex_n = n(),
-            income_n = n())
+         Ethnicity = factor(ethnicity)) %>% 
+  select(sex, income, Ethnicity, age) %>% 
+  group_by(Ethnicity) %>% 
+  summarize(Age = mean(age),
+            N = n())
 
-apa_table(td_table)
+apa_table(td_table, caption = "Average age and sample sizes by ethnicity")
 ```
-
-
-
-
-
 ##Measures
-
-To assess depression symptoms, we used the depression module from the full Patient Health Questionnaire [@kroenke2001phq: PHQ]. The PHQ-9 is a 9-item, self-report screening instrument. Participants are prompted by the stem “Over the last 2 weeks, how often have you been bothered by any of the following problems?”. Sample questions include “Feeling down, depressed, or hopeless?” and “Thoughts that you would be better off dead or of hurting yourself in some way”. The module uses a 4-point scale that goes from 0 (not at all) to 3 (nearly every day). “Refuse to answer” and “Don’t know” options are also included. A single score is derived from the depression module by summing the responses for the 9 items. Scores can range from 0 to 27; higher scores reflect more severe depressive symptoms.
-
+To assess depression symptoms, we used the depression module from the full Patient Health Questionnaire [@kroenke2001phq: PHQ]. The PHQ-9 is a 9-item, self-report screening instrument. Participants are prompted by the stem “Over the last 2 weeks, how often have you been bothered by any of the following problems?” Sample questions include “Feeling down, depressed, or hopeless?” and “Thoughts that you would be better off dead or of hurting yourself in some way”. The module uses a 4-point scale that goes from 0 (not at all) to 3 (nearly every day). “Refuse to answer” and “Don’t know” options are also included. A single score is derived from the depression module by summing the responses for the 9 items. Scores can range from 0 to 27; higher scores reflect more severe depressive symptoms.
 Insurance coverage was assessed with the item “Are you covered by health insurance or some other kind of health care plan?” from the NHANES Health Insurance Questionnaire. Response choices included “Yes”. “No”, “Refused”, and “Don’t know”. 
-
 Usage of mental health services was assessed with the item “During the past 12 months, have you seen or talked to a mental health professional such as a psychologist, psychiatrist, psychiatric nurse or clinical social worker about your health?” from the NHANES Hospital Utilization and Access to Care questionnaire. Response choices included “Yes”. “No”, “Refused”, and “Don’t know”. 
-
 Age of first drug use variables were assessed with single items from the NHANES Drug Use Questionnaire (DUQ). For this study we created a composite measure for age of first stimulant use, by averaging the items “How old were you the first time you used cocaine, in any form?” and “How old were you the first time you used methamphetamine?” Age of first opioid use was assessed with the item “How old were you the first time you used heroin?” For each of the three drug use items, participants responded with a numerical value representing their age at first use, ranging from 0-59 or with “I don’t know.” Participants were also permitted to refuse answering any question on the DUQ. 
-
 
 ## Data analysis
 We used `r cite_r("r-references.bib")` for all our analyses.
 
-# Results
+To explore health disparities among racial/ethnic groups, we employed a variety of data visualizations with our variables of interest. First, we plotted the frequency of substance use accross ethnicities according to opioid and stimulant use. Then we plotted distributions of age of first substance use for each ethnic group. To assess depression, we first plotted average depression scores by ethnic group and explored the association of age of first substance use and depression scores accross ethnic groups by fitting a linear regression in our plot. Lastly, we explored differences in depression scores among the racial categories according to whether or not individuals had insurance covereage or has reported using mental health services. 
 
+# Results
 ```{r ST_table, results = "asis", echo = FALSE, warning = FALSE}
 ST_tbl <- td1 %>% 
   select(id, age_stim, age_heroin, sum_depression, ethnicity) %>%
@@ -288,10 +273,9 @@ ST_tbl <- td1 %>%
   separate(drug, c("drug", "dis"), sep = "_") %>% 
   select(-dis) %>% 
   spread(drug, average)
-apa_table(ST_tbl, caption = "Average depression score and age of first opioid and stimulant use") #renders in appendix - float intext not working
+apa_table(ST_tbl, caption = "Average depression score and age of first opioid and stimulant use by ethnicity") #renders in appendix - float intext not working
 
 ```
-
 
 ```{r ST_inline, echo = FALSE}
 inline <- ST_tbl %>% 
@@ -321,11 +305,9 @@ mix_st <- inline %>%
   filter(ethnicity == "Other/Multiracial") %>% 
   select(stimulant_use)
 ```
-
 The average depression score and average age of first opioid and stimulant use for each racial/ethnic group is presented in Table 2. Briefly, White individuals had the earliest age of first use for opioids (`r wt_op$opioid_use` years). Interestingly, Asian individuals had the lowest average depression score (`r as_dep$depression_score`) and started using both opioids and stimulants later than all other groups (mean age `r as_op$opioid_use`, `r as_st$stimulant_use` years respectively). Individuals who reported another race or multiracial reported the earliest age of first use for stimulants (`r mix_st$stimulant_use` years) and highest reported depression score (`r mix_dep$depression_score`). 
 
 ## Disparities in opioid and stimulant use
-
 In our sample, 215 participants reported either opioid or stimulant use. To explore racial/ethnic disparities in reported use, we plotted the number of individuals who reported using opioids and/or stimulants based on their racial category. As shown in Figure 1, more Hispanic participants reported opioid and stimulant use, whereas Asian participants had the lowest reported frequency of use for both substances. To further explore disparities in substance use, we visualized the age of first use by ethnicity (see Figure 2). This plot shows that across both substance types Hispanic individuals have the most variability in their age of first use. Additionally, Asian participants have much more variability in their age of first opioid use compared to stimulants. This observation is slightly observed among Black and White individuals. Overall, it seems that the majority of participants reported their age of first use to be between ages 15-25 for both substance types. However, it is more pronounced for reported stimulant use. 
 
 ```{r ST_fig1, echo = FALSE}
@@ -353,7 +335,6 @@ ggplot(pd_st1, aes(x = ethnicity, y = n)) +
        y = "Frequency") +
   theme(legend.position = "none")
 ```
-
 
 ```{r ST_fig2, echo = FALSE, fig.height = 4}
 pd_st <- td1 %>% 
@@ -454,13 +435,14 @@ td1 %>%
 ```
 
 To investigate racial/ethnic disparities in mental health, we explored insurance coverage and reported usage of mental health services (MHS) in the last year by racial/ethnic group. As can be seen in Figure 5, individuals who had insurance coverage had, on average, greater depression scores than individuals who did not have insurance coverage. Among individuals who did not have insurance coverage, the ones who reported no usage of MHS in the last year had, on average, higher depression scores than individuals who did report use of MHS in the last year. Alternatively, the average depression score of individuals who had insurance coverage did not differ substantially between individuals who reported usage of MHS in the last year and individuals who reported no usage of MHS in the last year. 
-
 When looking at the differences between racial/ethnic groups in regards to insurance coverage, we see that in each racial/ethnic group there were more insured individuals than uninsured individuals. However, when evaluating the percentages of insured and uninsured individuals between each racial/ethnic group, the differences were evident. For instance, the percentage of White individuals who were insured, 92.48%, was substantially higher than the percentage of Hispanic individuals who were insured, 77.13%. 
-
 Among uninsured individuals, Black and Asian individuals who used MHS in the last year seemed to have much lower depression scores than their uninsured counterparts who did not use MHS in the last year. On the other hand, the discrepancy was much smaller between uninsured Hispanic and White individuals who used MHS in the last year than those who did not. In regards to insured individuals who reported use of MHS in the last year and those who did not, the differences were not as significant regardless of their racial/ethnic group, except for individuals who identified as Other or Multiracial. 
 
 # Discussion
-
+The results from this exploratory study provide a description of racial and ethnic disparities based on recent date from a national U.S. sample from 2015-2016. Strengths of this study include the nationally representative sample, specifically exploring health disparities in drugs have been overlooked until very recently (i.e., opioids and stimulants), and identifying health disparities based on access to adequate supports through insurance coverage. 
+Results indicate that having insurance coverage did not necessarily relate to lower depression scores, in fact individuals who reported having insurance reported higher depression scores, on average. This measure of insurance may not have captured whether coverage was adequate, affordable, and if other systemic factors such as a stigma, cultural values, or racism might have affected depression outcomes. An additional limitation of this study, is that the depression measure used in the NHANES study has not shown evidence for cross-cultural validation, nor do we know if this measure was administered in languages other than English. 
+Finally, results indicated that health disparities in opioid and stimulant drug use and age of onset for first drug use exist in racial and ethnic minority groups within the U. S. Hispanic individuals endorsed the greatest levels of opioid and stimulant use and the most variability in onset of drug use for both of these substances. Asian individuals reported the lowest levels of opioid and stimulant use, which is in line with a recent findings from the CDC [@centers2011cdc].
+Future studies should address the relationship between access to mental health services and substance abuse treatment and age of onset, chronicity, and frequency of drug use, as individuals may have alternate options when struggling with mental health issues. Moreover, research on health disparities is incomplete without the inclusion of systemic variables, including socioeconomic conditions, and the perceived discrimination within the systems that are intended to support prevention, treatment, and rehabilitation of mental health conditions. 
 
 \newpage
 

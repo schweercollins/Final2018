@@ -3,16 +3,16 @@
 [tbp]
 \begin{center}
 \begin{threeparttable}
-\caption{\label{tab:apa table}}
+\caption{\label{tab:apa table}Average age and sample sizes by ethnicity}
 \begin{tabular}{lll}
 \toprule
-ethnicity & \multicolumn{1}{c}{sex\_n} & \multicolumn{1}{c}{income\_n}\\
+Ethnicity & \multicolumn{1}{c}{Age} & \multicolumn{1}{c}{N}\\
 \midrule
-Asian & 520 & 520\\
-Black & 1012 & 1012\\
-Hispanic & 1573 & 1573\\
-Other/Multiracial & 234 & 234\\
-White & 1504 & 1504\\
+Asian & 33.72 & 520\\
+Black & 30.97 & 1012\\
+Hispanic & 30.42 & 1573\\
+Other/Multiracial & 22.82 & 234\\
+White & 35.32 & 1504\\
 \bottomrule
 \end{tabular}
 \end{threeparttable}
@@ -23,7 +23,7 @@ White & 1504 & 1504\\
 [tbp]
 \begin{center}
 \begin{threeparttable}
-\caption{\label{tab:ST_table}Average depression score and age of first opioid and stimulant use}
+\caption{\label{tab:ST_table}Average depression score and age of first opioid and stimulant use by ethnicity}
 \begin{tabular}{llll}
 \toprule
 Ethnicity & \multicolumn{1}{c}{Depression Score} & \multicolumn{1}{c}{Opioid Use} & \multicolumn{1}{c}{Stimulant Use}\\
