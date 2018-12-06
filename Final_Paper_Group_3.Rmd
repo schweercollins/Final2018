@@ -227,24 +227,19 @@ td1 %>%
 
 td1_male <- td1 %>%
   filter(sex == "Male") %>% 
-  count(sex)
+  select(sex)
 
 td1_female <- td1 %>%
   filter(sex == "Female") %>% 
-  count(sex)
+  select(sex)
 
 td1_hispanic <- td1 %>%
   filter(ethnicity == "Hispanic") %>% 
-  count()
+  select(ethnicity)
 
 td1_100k <- td1 %>%
   filter(income == "$100,000 and over") %>% 
-  count()
-
-td1_male
-td1_female
-td1_hispanic
-td1_100k
+  select(income)
 
 mean_td1 <- td1 %>% 
   summarize(mean_age = mean(age))
@@ -253,24 +248,10 @@ sd_td1 <- td1 %>%
   summarize(sd_age = sd(age))
 
 ```
-The present study gathered data from the Center for Disease Control and Prevention's (CDC) National Health and Nutrition Examination Survey (NHANES). Using the 2015-2016 NHANES dataset, we were able to investigate levels of depression, drug use, whether or not individuals had insurance, if they have sought out mental health services, based on racial/ethnic group. 
-Data from 4,843 participants was gathered, with the average age of participants being `r mean_td1` ($SD = `r sd_td1`$) years old. The majority of participants were women (` r td1_female`), Hispanic (`r td1_hispanic`), and made $100,000 or more (`r td1_100k`). Table 1 presents the breakdown of the sample based on race/ethnicity.  
-
-```{r apa table, echo = FALSE, results = "asis"}
-td_table <- td1 %>% 
-  mutate(sex = factor(sex),
-         income = factor(income),
-         ethnicity = factor(ethnicity)) %>% 
-  select(sex, income, ethnicity) %>% 
-  group_by(ethnicity) %>% 
-  summarize(sex_n = n(),
-            income_n = n())
-
-apa_table(td_table)
-```
+The present study gathered data from the Center for Disease Control and Prevention's (CDC) National Health and Nutrition Examination Survey (NHANES). Using the 2015-2016 NHANES dataset, we were able to investigate levels of depression, drug use, whether or not individuals had insurance, if they have sought out mental health services, based on racial/ethnic group. Due to the data being publically available, the present study did not require IRB approval. Use of the data was consistent with NHANES protocols for data visualizations. 
+Data from 4,843 participants was gathered, with the average age of participants being `r mean_td1` (SD = `r sd_td1`) years old. The majority of participants were women (` r td1_female$sex`), Hispanic (`r td1_hispanic$ethnicity`), and made 100,000 or more (`r td1_100k$income`). Table 1 presents the breakdown of the sample based on race/ethnicity.  
 
 
-Sign up:JP
 
 
 ##Measures
@@ -283,7 +264,7 @@ Usage of mental health services was assessed with the item “During the past 12
 
 
 ## Data analysis
-We used `r cite_r("r-references.bib")` for all our analyses.
+Analyses were conducted using R `r citation()` and several packages, such as: nhanesA, the tidyverse, rio, and the here package. Data was downloaded from the NHANES 2015-2016 website, using the nhanesA package from R (ref). For replicability purposes, the data was downloaded and transformed to .csv files as a precaution to potential changes made to the NHANES datasets. Consistent with open science, the present study’s script is available at [Final 2018 github]( https://github.com/schweercollins/Final2018). The datasets of the study variables were then merged to create one master dataset with all the key variables. Study variables were re-coded to have meaningful names rather than the names provided by the NHANES website. The data was then cleaned and transformed to create variables that were useful in the visual analyses. For analyses that utilized depression scores, a sum score was created to capture several components of depression and the relationship that depression has with other key variables. This study presents its findings through visuals. The first visual displays the rates of depression across different racial/ethnic groups and whether or not they have utilized mental health services. The second plot shows age at which different racial/ethnic groups engaged in opioid and stimulant drug use. To examine how many individuals reported drug use ever, the frequency of drug use was gathered to show the number of participants that had reported stimulant and opioid drug use based on racial/ethnic group. Similarly, average depressions core was also examined by different racial/ethnic groups comparing those that reported opioid use and stimulant use. A table was created to examine overall depression scores, opioid use, and stimulant use across all racial/ethnic groups. Lastly, to examine the associations between age at first drug use and depression scores, a scatterplot was created to see any racial/ethnic differences for opioid users and stimulant users.
 
 # Results
 
@@ -469,6 +450,11 @@ td1 %>%
 
 # Discussion
 
+## Limitations
+As with any other study, there were limitations to the present study. First, the findings stated for this study are based on visual interpretations and should not be interpreted as causal as no inferential statistics were conducted. Secondly, while the data was gathered from a national database, it is possible that the data does not fully represent racial/ethnic groups throughout the U.S. Finally, with the majority of the data gathered through self-report measures, there is potential bias in the answers, particularly for drug use and depression questions. 
+
+## Implications
+The implications for future research is to examine the associations between race/ethnicity, depression, and drug use based on insurance and use of mental health services through inferential statistical techniques to note if depression and drug use are different across different races/ethnicities. The clinical implications are that depression and drug use still differ across race/ethnicity suggesting that there are health disparities across the U.S. Knowing that there are differences in depression rates for different races/ethnicities based on uses of mental health services, it is crucial to find routes to getting mental health help for racial/ethnic groups that are experiencing high rates of depression. 
 
 
 \newpage

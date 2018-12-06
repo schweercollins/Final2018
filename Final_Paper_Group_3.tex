@@ -14731,65 +14731,19 @@ any), all manipulations, and all measures in the study.
 ## 4843             White   Male
 \end{verbatim}
 
-\begin{verbatim}
-## # A tibble: 1 x 2
-##   sex       n
-##   <fct> <int>
-## 1 Male   2365
-\end{verbatim}
-
-\begin{verbatim}
-## # A tibble: 1 x 2
-##   sex        n
-##   <fct>  <int>
-## 1 Female  2478
-\end{verbatim}
-
-\begin{verbatim}
-## # A tibble: 1 x 1
-##       n
-##   <int>
-## 1  1573
-\end{verbatim}
-
-\begin{verbatim}
-## # A tibble: 1 x 1
-##       n
-##   <int>
-## 1   796
-\end{verbatim}
-
 The present study gathered data from the Center for Disease Control and
 Prevention's (CDC) National Health and Nutrition Examination Survey
 (NHANES). Using the 2015-2016 NHANES dataset, we were able to
 investigate levels of depression, drug use, whether or not individuals
 had insurance, if they have sought out mental health services, based on
-racial/ethnic group. Data from 4,843 participants was gathered, with the
-average age of participants being (\$SD = \$) years old. The majority of
-participants were women (\texttt{r\ td1\_female}), Hispanic (), and made
-\$100,000 or more (). Table 1 presents the breakdown of the sample based
-on race/ethnicity.
-
-\begin{table}[tbp]
-\begin{center}
-\begin{threeparttable}
-\caption{\label{tab:apa table}}
-\begin{tabular}{lll}
-\toprule
-ethnicity & \multicolumn{1}{c}{sex\_n} & \multicolumn{1}{c}{income\_n}\\
-\midrule
-Asian & 520 & 520\\
-Black & 1012 & 1012\\
-Hispanic & 1573 & 1573\\
-Other/Multiracial & 234 & 234\\
-White & 1504 & 1504\\
-\bottomrule
-\end{tabular}
-\end{threeparttable}
-\end{center}
-\end{table}
-
-Sign up:JP
+racial/ethnic group. Due to the data being publically available, the
+present study did not require IRB approval. Use of the data was
+consistent with NHANES protocols for data visualizations. Data from
+4,843 participants was gathered, with the average age of participants
+being (SD = ) years old. The majority of participants were women
+(\texttt{r\ td1\_female\$sex}), Hispanic (), and made 100,000 or more
+(). Table 1 presents the breakdown of the sample based on
+race/ethnicity.
 
 \subsection{Measures}\label{measures}
 
@@ -14823,19 +14777,34 @@ included \enquote{Yes}. \enquote{No}, \enquote{Refused}, and
 
 \subsection{Data analysis}\label{data-analysis}
 
-We used R (Version 3.5.1; R Core Team, 2018) and the R-packages
-\emph{bindrcpp} (Version 0.2.2; Müller, 2018), \emph{dplyr} (Version
-0.7.8; Wickham, François, Henry, \& Müller, 2018), \emph{forcats}
-(Version 0.3.0; Wickham, 2018a), \emph{ggplot2} (Version 3.1.0; Wickham,
-2016), \emph{here} (Version 0.1; Müller, 2017), \emph{kableExtra}
-(Version 0.9.0; Zhu, n.d.), \emph{papaja} (Version 0.1.0.9842; Aust \&
-Barth, 2018), \emph{purrr} (Version 0.2.5; Henry \& Wickham, 2018),
-\emph{readr} (Version 1.2.1; Wickham, Hester, \& Francois, 2018),
-\emph{rio} (Version 0.5.16; C.-h. Chan, Chan, Leeper, \& Becker, 2018),
-\emph{stringr} (Version 1.3.1; Wickham, 2018b), \emph{tibble} (Version
-1.4.2; Müller \& Wickham, 2018), \emph{tidyr} (Version 0.8.2; Wickham \&
-Henry, 2018), and \emph{tidyverse} (Version 1.2.1; Wickham, 2017) for
-all our analyses.
+Analyses were conducted using R and several packages, such as: nhanesA,
+the tidyverse, rio, and the here package. Data was downloaded from the
+NHANES 2015-2016 website, using the nhanesA package from R (ref). For
+replicability purposes, the data was downloaded and transformed to .csv
+files as a precaution to potential changes made to the NHANES datasets.
+Consistent with open science, the present study's script is available at
+\href{https://github.com/schweercollins/Final2018}{Final 2018 github}.
+The datasets of the study variables were then merged to create one
+master dataset with all the key variables. Study variables were re-coded
+to have meaningful names rather than the names provided by the NHANES
+website. The data was then cleaned and transformed to create variables
+that were useful in the visual analyses. For analyses that utilized
+depression scores, a sum score was created to capture several components
+of depression and the relationship that depression has with other key
+variables. This study presents its findings through visuals. The first
+visual displays the rates of depression across different racial/ethnic
+groups and whether or not they have utilized mental health services. The
+second plot shows age at which different racial/ethnic groups engaged in
+opioid and stimulant drug use. To examine how many individuals reported
+drug use ever, the frequency of drug use was gathered to show the number
+of participants that had reported stimulant and opioid drug use based on
+racial/ethnic group. Similarly, average depressions core was also
+examined by different racial/ethnic groups comparing those that reported
+opioid use and stimulant use. A table was created to examine overall
+depression scores, opioid use, and stimulant use across all
+racial/ethnic groups. Lastly, to examine the associations between age at
+first drug use and depression scores, a scatterplot was created to see
+any racial/ethnic differences for opioid users and stimulant users.
 
 \section{Results}\label{results}
 
@@ -14946,6 +14915,32 @@ Description of plot 1: Alejandra
 
 \section{Discussion}\label{discussion}
 
+\subsection{Limitations}\label{limitations}
+
+As with any other study, there were limitations to the present study.
+First, the findings stated for this study are based on visual
+interpretations and should not be interpreted as causal as no
+inferential statistics were conducted. Secondly, while the data was
+gathered from a national database, it is possible that the data does not
+fully represent racial/ethnic groups throughout the U.S. Finally, with
+the majority of the data gathered through self-report measures, there is
+potential bias in the answers, particularly for drug use and depression
+questions.
+
+\subsection{Implications}\label{implications}
+
+The implications for future research is to examine the associations
+between race/ethnicity, depression, and drug use based on insurance and
+use of mental health services through inferential statistical techniques
+to note if depression and drug use are different across different
+races/ethnicities. The clinical implications are that depression and
+drug use still differ across race/ethnicity suggesting that there are
+health disparities across the U.S. Knowing that there are differences in
+depression rates for different races/ethnicities based on uses of mental
+health services, it is crucial to find routes to getting mental health
+help for racial/ethnic groups that are experiencing high rates of
+depression.
+
 \newpage
 
 \section{References}\label{references}
@@ -14954,28 +14949,16 @@ Description of plot 1: Alejandra
 \setlength{\parindent}{-0.5in} \setlength{\leftskip}{0.5in}
 
 \hypertarget{refs}{}
-\hypertarget{ref-R-papaja}{}
-Aust, F., \& Barth, M. (2018). \emph{papaja: Create APA manuscripts with
-R Markdown}. Retrieved from \url{https://github.com/crsh/papaja}
-
 \hypertarget{ref-borowsky2000risk}{}
 Borowsky, S. J., Rubenstein, L. V., Meredith, L. S., Camp, P.,
 Jackson-Triche, M., \& Wells, K. B. (2000). Who is at risk of
 nondetection of mental health problems in primary care? \emph{Journal of
 General Internal Medicine}, \emph{15}(6), 381--388.
 
-\hypertarget{ref-R-rio}{}
-Chan, C.-h., Chan, G. C., Leeper, T. J., \& Becker, J. (2018).
-\emph{Rio: A swiss-army knife for data file i/o}.
-
 \hypertarget{ref-fiscella2002disparities}{}
 Fiscella, K., Franks, P., Doescher, M. P., \& Saver, B. G. (2002).
 Disparities in health care by race, ethnicity, and language among the
 insured: Findings from a national sample. \emph{Medical Care}, 52--59.
-
-\hypertarget{ref-R-purrr}{}
-Henry, L., \& Wickham, H. (2018). \emph{Purrr: Functional programming
-tools}. Retrieved from \url{https://CRAN.R-project.org/package=purrr}
 
 \hypertarget{ref-kroenke2001phq}{}
 Kroenke, K., Spitzer, R. L., \& Williams, J. B. (2001). The phq-9:
@@ -14993,70 +14976,14 @@ Miranda, J., \& Cooper, L. A. (2004). Disparities in care for depression
 among primary care patients. \emph{Journal of General Internal
 Medicine}, \emph{19}(2), 120--126.
 
-\hypertarget{ref-R-here}{}
-Müller, K. (2017). \emph{Here: A simpler way to find your files}.
-Retrieved from \url{https://CRAN.R-project.org/package=here}
-
-\hypertarget{ref-R-bindrcpp}{}
-Müller, K. (2018). \emph{Bindrcpp: An 'rcpp' interface to active
-bindings}. Retrieved from
-\url{https://CRAN.R-project.org/package=bindrcpp}
-
-\hypertarget{ref-R-tibble}{}
-Müller, K., \& Wickham, H. (2018). \emph{Tibble: Simple data frames}.
-Retrieved from \url{https://CRAN.R-project.org/package=tibble}
-
-\hypertarget{ref-R-base}{}
-R Core Team. (2018). \emph{R: A language and environment for statistical
-computing}. Vienna, Austria: R Foundation for Statistical Computing.
-Retrieved from \url{https://www.R-project.org/}
-
 \hypertarget{ref-who}{}
 WHO. (2018 (accessed December 4, 2018)). Depression. Retrieved from
 \url{http://www.who.int/news-room/fact-sheets/detail/depression}
-
-\hypertarget{ref-R-ggplot2}{}
-Wickham, H. (2016). \emph{Ggplot2: Elegant graphics for data analysis}.
-Springer-Verlag New York. Retrieved from \url{http://ggplot2.org}
-
-\hypertarget{ref-R-tidyverse}{}
-Wickham, H. (2017). \emph{Tidyverse: Easily install and load the
-'tidyverse'}. Retrieved from
-\url{https://CRAN.R-project.org/package=tidyverse}
-
-\hypertarget{ref-R-forcats}{}
-Wickham, H. (2018a). \emph{Forcats: Tools for working with categorical
-variables (factors)}. Retrieved from
-\url{https://CRAN.R-project.org/package=forcats}
-
-\hypertarget{ref-R-stringr}{}
-Wickham, H. (2018b). \emph{Stringr: Simple, consistent wrappers for
-common string operations}. Retrieved from
-\url{https://CRAN.R-project.org/package=stringr}
-
-\hypertarget{ref-R-tidyr}{}
-Wickham, H., \& Henry, L. (2018). \emph{Tidyr: Easily tidy data with
-'spread()' and 'gather()' functions}. Retrieved from
-\url{https://CRAN.R-project.org/package=tidyr}
-
-\hypertarget{ref-R-dplyr}{}
-Wickham, H., François, R., Henry, L., \& Müller, K. (2018). \emph{Dplyr:
-A grammar of data manipulation}. Retrieved from
-\url{https://CRAN.R-project.org/package=dplyr}
-
-\hypertarget{ref-R-readr}{}
-Wickham, H., Hester, J., \& Francois, R. (2018). \emph{Readr: Read
-rectangular text data}. Retrieved from
-\url{https://CRAN.R-project.org/package=readr}
 
 \hypertarget{ref-williams2009discrimination}{}
 Williams, D. R., \& Mohammed, S. A. (2009). Discrimination and racial
 disparities in health: Evidence and needed research. \emph{Journal of
 Behavioral Medicine}, \emph{32}(1), 20--47.
-
-\hypertarget{ref-R-kableExtra}{}
-Zhu, H. (n.d.). \emph{KableExtra: Construct complex table with 'kable'
-and pipe syntax}.
 
 \endgroup
 
