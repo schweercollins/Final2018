@@ -1,13 +1,13 @@
 ---
 title             : "Racial/Ethnic Disparities in Mental Health"
-shorttitle        : "Title"
+shorttitle        : "Racial Disparities"
 
 author: 
   - name          : "Shaina Trevino"
     affiliation   : "1"
     corresponding : yes    # Define only one corresponding author
-    address       : "Postal address"
-    email         : "my@email.com"
+    address       : "1600 Millrace Ave. Eugene, OR 97403"
+    email         : "strevino@uoregon.edu"
   - name          : "Maria Schweer-Collins"
     affiliation   : "1"
   - name          : "Alejandra Garcia Isaza"
@@ -288,55 +288,59 @@ We used `r cite_r("r-references.bib")` for all our analyses.
 sign up:
 
 # Results
-We should use inline code here
 
-Description of plot 1: Alejandra
-```{r plot1, echo = FALSE, fig.height = 4}
-td1 %>%
-  filter(mental_health != "Don't know") %>% 
-  filter(insurance == "Yes" | insurance == "No") %>% 
-  mutate(ethnicity = fct_infreq(ethnicity),
-         mental_health = fct_infreq(mental_health)) %>%
-  group_by(ethnicity, mental_health) %>%
-  ggplot(aes(x = ethnicity, y = sum_depression)) +
-  geom_col(aes(fill = mental_health),
-           position = "dodge") +
-   labs(title = "Total Depression Score by Ethnicity and Usage of Mental Health Services",
-       subtitle = "Faceted by Insurance Coverage",
-         caption = "Source: NHANES",
-         x = "Ethnicity",
-         y = "Total Depression Score",
-       fill = "Usage of Mental Health Services") +
-  facet_wrap(~insurance) +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```{r ST_table, results = "asis", echo = FALSE, warning = FALSE}
+ST_tbl <- td1 %>% 
+  select(id, age_stim, age_heroin, sum_depression, ethnicity) %>%
+  rename(age_Stimulants = age_stim,
+         age_Opioids = age_heroin, 
+         Ethnicity = ethnicity) %>% 
+  group_by(Ethnicity) %>% 
+  summarize(`Depression Score`= mean(sum_depression, na.rm = TRUE),
+            `Opioid Use` = mean(age_Opioids, na.rm = TRUE),
+            `Stimulant Use` = mean(age_Stimulants, na.rm = TRUE)) %>% 
+  gather(drug, average, `Opioid Use`:`Stimulant Use`) %>% 
+  separate(drug, c("drug", "dis"), sep = "_") %>% 
+  select(-dis) %>% 
+  spread(drug, average)
+apa_table(ST_tbl, caption = "Average depression score and age of first opioid and stimulant use") #renders in appendix - float intext not working
+
 ```
 
-Shaina will describe her plot of drug use by ethnicities
-```{r ST_plot1, echo = FALSE, fig.height = 4}
-pd_st <- td1 %>% 
-           select(id, age_stim, age_heroin, sum_depression, rehab, ethnicity) %>%
-           rename(age_Stimulants = age_stim,
-                  age_Opioids = age_heroin) %>% 
-           gather(drug, age_use, age_Stimulants:age_Opioids) %>% 
-           separate(drug, c("dis", "drug"), sep = "_") %>% 
-           select(-dis) %>% 
-           filter(ethnicity != "Other/Multiracial") %>% 
-           na.omit(age_use)
+```{r ST_inline, echo = FALSE}
+mix_dep <- ST_tbl %>% 
+  filter(Ethnicity == "Other/Multiracial") %>% 
+  select(`Depression Score`)
 
-ggplot(pd_st, aes(x = fct_infreq(ethnicity), y = age_use)) +
-  geom_violin(aes(fill = ethnicity), alpha = .8) +
-  facet_wrap (~ drug) +
-  labs(title = "Age of First Use by Ethnicity", 
-       subtitle = "Based on two drug types (opioids and stimulants)",
-       caption = "Source: NHANES",
-       x = "Ethnicity",
-       y = "Age at first use") +
-  theme(legend.position = "none",
-        axis.text.x = element_text(angle = 45, hjust = 1))
+wt_op <- ST_tbl %>% 
+  filter(Ethnicity == "White") %>% 
+  select(`Opioid Use`)
+
+as_dep <- ST_tbl %>% 
+  filter(Ethnicity == "Asian") %>% 
+  select(`Depression Score`)
+
+as_op <- ST_tbl %>% 
+  filter(Ethnicity == "Asian") %>% 
+  select(`Opioid Use`)
+
+as_st <- ST_tbl %>% 
+  filter(Ethnicity == "Asian") %>% 
+  select(`Stimulant Use`)
+
+mix_st <- ST_tbl %>% 
+  filter(Ethnicity == "Other/Multiracial") %>% 
+  select(`Stimulant Use`)
+
 ```
 
-plot 2
-```{r ST_plot, echo = FALSE}
+The average depression score and average age of first opioid and stimulant use for each racial/ethnic group is presented in Table 2. Briefly, White individuals had the earliest age of first use for opioids (`r printnum(wt_op)` years). Interestingly, Asian individuals had the lowest average depression score (`r as_dep`) and started using both opioids and stimulants later than all other groups (mean age `r as_op`, `r as_st` years respectively). Individuals who reported another race or multiracial reported the earliest age of first use for stimulants (`r mix_st` years) and highest reported depression score (`r mix_dep`). 
+
+## Disparities in opioid and stimulant use
+
+In our sample, 215 participants reported either opioid or stimulant use. To explore racial/ethnic disparities in reported use, we plotted the number of individuals who reported using opioids and/or stimulants based on their racial category. As shown in Figure 1, more Hispanic participants reported opioid and stimulant use, whereas Asian participants had the lowest reported frequency of use for both substances. To further explore disparities in substance use, we visualized the age of first use by ethnicity (see Figure 2). This plot shows that across both substance types Hispanic individuals have the most variability in their age of first use. Additionally, Asian participants have much more variability in their age of first opioid use compared to stimulants. This observation is slightly observed among Black and White individuals. Overall, it seems that the majority of participants reported their age of first use to be between ages 15-25 for both substance types. However, it is more pronounced for reported stimulant use. 
+
+```{r ST_fig1, echo = FALSE}
 pd_st1 <- td1 %>% 
            select(id, age_stim, age_heroin, sum_depression, rehab, ethnicity) %>%
            rename(age_Stimulants = age_stim,
@@ -362,8 +366,33 @@ ggplot(pd_st1, aes(x = ethnicity, y = n)) +
   theme(legend.position = "none")
 ```
 
-plot 3
-```{r ST_plott, echo = FALSE}
+
+```{r ST_fig2, echo = FALSE, fig.height = 4}
+pd_st <- td1 %>% 
+           select(id, age_stim, age_heroin, sum_depression, rehab, ethnicity) %>%
+           rename(age_Stimulants = age_stim,
+                  age_Opioids = age_heroin) %>% 
+           gather(drug, age_use, age_Stimulants:age_Opioids) %>% 
+           separate(drug, c("dis", "drug"), sep = "_") %>% 
+           select(-dis) %>% 
+           filter(ethnicity != "Other/Multiracial") %>% 
+           na.omit(age_use)
+
+ggplot(pd_st, aes(x = fct_infreq(ethnicity), y = age_use)) +
+  geom_violin(aes(fill = ethnicity), alpha = .8) +
+  facet_wrap (~ drug) +
+  labs(title = "Age of First Use by Ethnicity", 
+       subtitle = "Based on two drug types (opioids and stimulants)",
+       caption = "Source: NHANES",
+       x = "Ethnicity",
+       y = "Age at first use") +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+Since depression and substance are strongly linked in the literature, we also produced a plot to explore racial disparities in average depression scores by substance type. As you can see in Figure 3, Asian individuals that reported stimulant use had the highest reported average depression score compared to all other groups. For opioids, White participants had the highest reported depression score. To further explore the relation between age of first substance use and depression, we graphed age of first use by the total depression score and faceted by substance type. Then, we overlaid a best fit linear regression onto the graph according to racial groups (see Figure 4). Interestingly, the plot suggests that there is a positive association between age of first opioid use and depression for Black individuals and a negative association for all other racial groups. Additionally, we observed a positive relationship between age of first stimulant use and depression for all racial groups, however the slope of the relationship was more robust for Asian individuals. 
+
+```{r ST_fig3, echo = FALSE}
 pd_st3 <- td1 %>% 
            select(id, age_stim, age_heroin, sum_depression, rehab, ethnicity) %>%
            rename(age_Stimulants = age_stim,
@@ -388,33 +417,7 @@ ggplot(pd_st3, aes(x = fct_infreq(ethnicity), y = dep_avg)) +
   theme(legend.position = "none") #wont render
 ```
 
-ST table
-```{r ST_table, results = "asis", echo = FALSE, warning = FALSE}
-ST_tbl <- td1 %>% 
-  select(id, age_stim, age_heroin, sum_depression, ethnicity) %>%
-  rename(age_Stimulants = age_stim,
-         age_Opioids = age_heroin, 
-         Ethnicity = ethnicity) %>% 
-  group_by(Ethnicity) %>% 
-  summarize(`Depression Score`= mean(sum_depression, na.rm = TRUE),
-            `Opioid Use` = mean(age_Opioids, na.rm = TRUE),
-            `Stimulant Use` = mean(age_Stimulants, na.rm = TRUE)) %>% 
-  gather(drug, average, `Opioid Use`:`Stimulant Use`) %>% 
-  separate(drug, c("drug", "dis"), sep = "_") %>% 
-  select(-dis) %>% 
-  spread(drug, average)
-apa_table(ST_tbl, caption = "Average depression score and age of first opioid and stimulant use") #renders in appendix - float intext not working
-
-```
-
-
-
-# Discussion
-sign up:
-
-Insert one data visualization -- we are using two, I believe Alejandra's viz. and one from Shaina
-Exploratory association plot?
-```{r ST_plot3, echo = FALSE, fig.height = 4}
+```{r ST_fig4, echo = FALSE, fig.height = 4}
 pd_st2 <- td1 %>% 
            select(id, age_stim, age_heroin, sum_depression, rehab, ethnicity) %>%
            rename(age_Stimulants = age_stim,
@@ -439,6 +442,34 @@ ggplot(pd_st2, aes(x = age_use, y = sum_depression, color = ethnicity)) + # try 
        y = "Total depression score") 
 
 ```
+
+Description of plot 1: Alejandra
+```{r AG_fig5, echo = FALSE, fig.height = 4}
+td1 %>%
+  filter(mental_health != "Don't know") %>% 
+  filter(insurance == "Yes" | insurance == "No") %>% 
+  mutate(ethnicity = fct_infreq(ethnicity),
+         mental_health = fct_infreq(mental_health)) %>%
+  group_by(ethnicity, mental_health) %>%
+  ggplot(aes(x = ethnicity, y = sum_depression)) +
+  geom_col(aes(fill = mental_health),
+           position = "dodge") +
+   labs(title = "Total Depression Score by Ethnicity and Usage of Mental Health Services",
+       subtitle = "Faceted by Insurance Coverage",
+         caption = "Source: NHANES",
+         x = "Ethnicity",
+         y = "Total Depression Score",
+       fill = "Usage of Mental Health Services") +
+  facet_wrap(~insurance) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+# Discussion
+sign up:
+
+Insert one data visualization -- we are using two, I believe Alejandra's viz. and one from Shaina
+Exploratory association plot?
+
 
 Insert Table -- JP?
 
