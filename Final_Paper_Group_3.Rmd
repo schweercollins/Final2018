@@ -308,33 +308,38 @@ apa_table(ST_tbl, caption = "Average depression score and age of first opioid an
 ```
 
 ```{r ST_inline, echo = FALSE}
-mix_dep <- ST_tbl %>% 
-  filter(Ethnicity == "Other/Multiracial") %>% 
-  select(`Depression Score`)
+inline <- ST_tbl %>% 
+  janitor::clean_names()
 
-wt_op <- ST_tbl %>% 
-  filter(Ethnicity == "White") %>% 
-  select(`Opioid Use`)
+mix_dep <- inline %>% 
+  filter(ethnicity == "Other/Multiracial") %>% 
+  select(depression_score)
 
-as_dep <- ST_tbl %>% 
-  filter(Ethnicity == "Asian") %>% 
-  select(`Depression Score`)
+wt_op <- inline %>% 
+  filter(ethnicity == "White") %>% 
+  select(opioid_use)
 
-as_op <- ST_tbl %>% 
-  filter(Ethnicity == "Asian") %>% 
-  select(`Opioid Use`)
+as_dep <- inline %>% 
+  filter(ethnicity == "Asian") %>% 
+  select(depression_score)
 
-as_st <- ST_tbl %>% 
-  filter(Ethnicity == "Asian") %>% 
-  select(`Stimulant Use`)
+as_op <- inline %>% 
+  filter(ethnicity == "Asian") %>% 
+  select(opioid_use)
 
-mix_st <- ST_tbl %>% 
-  filter(Ethnicity == "Other/Multiracial") %>% 
-  select(`Stimulant Use`)
+as_st <- inline %>% 
+  filter(ethnicity == "Asian") %>% 
+  select(stimulant_use)
+
+mix_st <- inline %>% 
+  filter(ethnicity == "Other/Multiracial") %>% 
+  select(stimulant_use)
+
+
 
 ```
 
-The average depression score and average age of first opioid and stimulant use for each racial/ethnic group is presented in Table 2. Briefly, White individuals had the earliest age of first use for opioids (`r printnum(wt_op)` years). Interestingly, Asian individuals had the lowest average depression score (`r as_dep`) and started using both opioids and stimulants later than all other groups (mean age `r as_op`, `r as_st` years respectively). Individuals who reported another race or multiracial reported the earliest age of first use for stimulants (`r mix_st` years) and highest reported depression score (`r mix_dep`). 
+The average depression score and average age of first opioid and stimulant use for each racial/ethnic group is presented in Table 2. Briefly, White individuals had the earliest age of first use for opioids (`r wt_op$opioid_use` years). Interestingly, Asian individuals had the lowest average depression score (`r as_dep$depression_score`) and started using both opioids and stimulants later than all other groups (mean age `r as_op$opioid_use`, `r as_st$stimulant_use` years respectively). Individuals who reported another race or multiracial reported the earliest age of first use for stimulants (`r mix_st$stimulant_use` years) and highest reported depression score (`r mix_dep$depression_score`). 
 
 ## Disparities in opioid and stimulant use
 
