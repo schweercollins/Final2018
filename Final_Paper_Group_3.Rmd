@@ -274,7 +274,6 @@ Sign up:JP
 
 
 ##Measures
-sign up:
 
 To assess depression symptoms, we used the depression module from the full Patient Health Questionnaire [@kroenke2001phq: PHQ]. The PHQ-9 is a 9-item, self-report screening instrument. Participants are prompted by the stem “Over the last 2 weeks, how often have you been bothered by any of the following problems?”. Sample questions include “Feeling down, depressed, or hopeless?” and “Thoughts that you would be better off dead or of hurting yourself in some way”. The module uses a 4-point scale that goes from 0 (not at all) to 3 (nearly every day). “Refuse to answer” and “Don’t know” options are also included. A single score is derived from the depression module by summing the responses for the 9 items. Scores can range from 0 to 27; higher scores reflect more severe depressive symptoms.
 
@@ -285,7 +284,6 @@ Usage of mental health services was assessed with the item “During the past 12
 
 ## Data analysis
 We used `r cite_r("r-references.bib")` for all our analyses.
-sign up:
 
 # Results
 
@@ -470,18 +468,6 @@ td1 %>%
 ```
 
 # Discussion
-sign up:
-
-Insert one data visualization -- we are using two, I believe Alejandra's viz. and one from Shaina
-Exploratory association plot?
-
-
-Insert Table -- JP?
-
-```{r desc_table, echo = FALSE, results = "asis"}
-
-```
-
 
 
 
